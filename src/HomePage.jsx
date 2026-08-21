@@ -7,7 +7,7 @@ import {
 const PRODUCT_CATALOG = {
   diagnosis: {
     name: "AI诊断", eyebrow: "持续监测", icon: Pulse,
-    building: "/product-buildings/ai-diagnosis-tower-v3.png",
+    building: "/product-buildings/ai-diagnosis-tower-v4.png",
     visualSummary: "港口观察塔",
     summary: "持续发现问题，给出下一步建议",
     description: "以轻量方式持续监控企业在 GEO、AIGC、AI 官网与运营链路中的表现，定位问题、判断优先级，并给出可执行的产品建议。",
@@ -16,7 +16,7 @@ const PRODUCT_CATALOG = {
   },
   geo: {
     name: "GEO", eyebrow: "AI 认知入口", icon: GlobeHemisphereWest,
-    building: "/product-buildings/geo-lighthouse-v3.png",
+    building: "/product-buildings/geo-lighthouse-v4.png",
     visualSummary: "AI认知灯塔",
     summary: "在 AI 世界中被发现与理解",
     description: "帮助企业进入豆包、DeepSeek 等 AI 平台的答案与推荐，在用户产生需求和建立品牌认知时被看见、被理解。",
@@ -25,7 +25,7 @@ const PRODUCT_CATALOG = {
   },
   aigc: {
     name: "AIGC", eyebrow: "内容获客", icon: Megaphone,
-    building: "/product-buildings/aigc-workshop-v3.png",
+    building: "/product-buildings/aigc-workshop-v4.png",
     visualSummary: "内容传播工坊",
     summary: "全媒体内容与广告获客",
     description: "生成面向真实用户的文章、图片和视频内容，并投放到搜索引擎、社交媒体与第三方媒体，持续扩大触达。",
@@ -34,7 +34,7 @@ const PRODUCT_CATALOG = {
   },
   website: {
     name: "AI官网", eyebrow: "承接与转化", icon: HouseLine,
-    building: "/product-buildings/ai-website-terminal-v3.png",
+    building: "/product-buildings/ai-website-terminal-v4.png",
     visualSummary: "客户抵达港",
     summary: "承接流量、建立信任、理解需求",
     description: "重塑企业官网：既为 GEO 提供更清晰的品牌与知识表达，也主动理解访客需求，通过内容与对话建立信任。",
@@ -43,7 +43,7 @@ const PRODUCT_CATALOG = {
   },
   operation: {
     name: "AI运营", eyebrow: "公私域运营", icon: UsersThree,
-    building: "/product-buildings/ai-operation-clubhouse-v3.png",
+    building: "/product-buildings/ai-operation-clubhouse-v4.png",
     visualSummary: "客户经营会馆",
     summary: "持续培育客户并推动转化",
     description: "托管企业在公域和私域中的用户运营，承接广告与官网线索，按用户阶段持续触达、培育和分层。",
@@ -52,7 +52,7 @@ const PRODUCT_CATALOG = {
   },
   knowledge: {
     name: "AI知识库", eyebrow: "数据与策略底座", icon: Database,
-    building: "/product-buildings/ai-knowledge-vault-v3.png",
+    building: "/product-buildings/ai-knowledge-vault-v4.png",
     visualSummary: "企业知识与策略底座",
     summary: "让所有产品理解企业、客群与需求",
     description: "沉淀企业上传和提炼的信息，并进一步推演客群、场景、需求、关键词和问题，形成面向营销决策的知识图谱。",
@@ -65,19 +65,19 @@ const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
 
 const PRIMARY_ROUTES = [
-  { id: "geo-website", from: "geo", to: "website", d: "M 263 302 C 382 302 456 347 548 374", duration: 2.8 },
-  { id: "aigc-website", from: "aigc", to: "website", d: "M 282 514 C 405 512 470 458 550 420", duration: 3.1 },
-  { id: "website-operation", from: "website", to: "operation", d: "M 675 398 C 770 398 830 420 902 424", duration: 2.5 },
+  { id: "geo-website", from: "geo", to: "website", d: "M 291 301 C 382 301 454 332 526 355", duration: 2.8 },
+  { id: "aigc-website", from: "aigc", to: "website", d: "M 310 512 C 405 512 462 453 526 420", duration: 3.1 },
+  { id: "website-operation", from: "website", to: "operation", d: "M 696 386 C 765 386 814 416 874 427", duration: 2.5 },
 ];
 
 const SUPPORT_ROUTES = [
-  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 570 157 C 466 176 350 222 248 273", duration: 4.4 },
-  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 611 164 C 611 220 611 286 611 335", duration: 3.7 },
-  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 655 158 C 770 185 870 272 935 365", duration: 4.8 },
-  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 568 607 C 435 570 332 441 248 343", duration: 5.2 },
-  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 567 631 C 448 617 352 565 282 534", duration: 4.7 },
-  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 621 604 C 621 550 621 500 621 450", duration: 4.1 },
-  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 678 610 C 805 575 884 502 935 458", duration: 5 },
+  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 525 128 C 430 145 330 180 270 214", duration: 4.4 },
+  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 195 C 610 228 610 260 610 291", duration: 3.7 },
+  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 695 130 C 804 155 900 246 960 340", duration: 4.8 },
+  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 560 526 C 440 505 318 430 225 388", duration: 5.2 },
+  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 550 545 C 450 564 360 590 280 599", duration: 4.7 },
+  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 620 526 C 620 505 620 485 620 465", duration: 4.1 },
+  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 690 545 C 790 548 890 530 960 514", duration: 5 },
 ];
 
 function HeaderActions({ notify }) {
@@ -105,11 +105,11 @@ function FlowNetwork({ hoveredProduct }) {
 
   return <svg className="harbor-flow-network" viewBox="0 0 1180 700" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
     <defs>
-      <marker id="harbor-primary-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#158f72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <marker id="harbor-primary-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+        <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#158f72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </marker>
-      <marker id="harbor-support-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-        <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#82ad9f" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <marker id="harbor-support-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+        <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#6eaa98" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
       </marker>
     </defs>
     {SUPPORT_ROUTES.map((route, index) => renderRoute(route, "support", index))}
@@ -126,19 +126,22 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
     onFocus={() => onHover(productKey)}
     onBlur={() => onHover(null)}
   >
-    <button className="building-visual" aria-label={`查看${product.name}详情`} onClick={() => onOpen(productKey)}>
-      <span className="building-local-ambient" />
-      <span className="building-ripple first" /><span className="building-ripple second" />
-      <img src={product.building} alt={`${product.name}：${product.visualSummary}`} draggable="false" />
-      <span className="building-spark spark-one" /><span className="building-spark spark-two" /><span className="building-spark spark-three" />
+    <button className="building-card-main" aria-label={`查看${product.name}详情`} onClick={() => onOpen(productKey)}>
+      <span className="building-visual">
+        <img src={product.building} alt={`${product.name}：${product.visualSummary}`} draggable="false" />
+      </span>
+      <span className="building-copy">
+        <span className="building-eyebrow">{product.eyebrow}</span>
+        <strong>{product.name}</strong>
+        <span className="building-summary">{product.visualSummary}</span>
+      </span>
     </button>
-    <div className="building-label">
-      <div className="building-label-title"><h3>{product.name}</h3>{opened ? <span className="open-state"><i />已开通</span> : null}</div>
-      <p>{product.visualSummary}</p>
+    <footer className="building-status-bar">
+      <span className={`card-product-status ${opened ? "active" : "inactive"}`}><i />{opened ? "已开通" : "未开通"}</span>
       {opened
-        ? <button className="building-detail-button" onClick={() => onOpen(productKey)}>查看详情 <ArrowRight size={11} /></button>
-        : <button className="open-product-button" onClick={() => onActivate(productKey)}>开通</button>}
-    </div>
+        ? <button className="card-status-action detail" onClick={() => onOpen(productKey)}>查看 <ArrowRight size={11} /></button>
+        : <button className="card-status-action activate" onClick={() => onActivate(productKey)}>开通</button>}
+    </footer>
   </article>;
 }
 
