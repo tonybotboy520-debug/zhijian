@@ -1204,9 +1204,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 
 .harbor-home .home-scroll {
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 51% 52%, rgba(172, 224, 207, .24), transparent 34%),
-    linear-gradient(180deg, #f8fcfa 0, #edf7f3 42%, #f3f9f7 100%);
+  background: #f1f8f5;
 }
 
 .harbor-hero {
@@ -1248,18 +1246,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .harbor-map::before {
-  content: "";
-  position: absolute;
-  inset: 4% 3% 3%;
-  z-index: -3;
-  border-radius: 48% 46% 43% 50%;
-  background:
-    radial-gradient(ellipse at 51% 44%, rgba(255, 255, 255, .8) 0 13%, rgba(209, 237, 227, .42) 14% 24%, transparent 25%),
-    radial-gradient(ellipse at 22% 43%, rgba(184, 225, 211, .31), transparent 29%),
-    radial-gradient(ellipse at 81% 55%, rgba(184, 225, 211, .27), transparent 27%),
-    radial-gradient(ellipse at 53% 84%, rgba(176, 220, 205, .3), transparent 25%);
-  filter: blur(2px);
-  opacity: .9;
+  display: none;
 }
 
 .harbor-map::after {
@@ -1357,7 +1344,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-map.has-hover .harbor-route.highlighted .harbor-route-flow { stroke-width: 3; animation-duration: .7s; }
 
 .building-node {
-  width: clamp(150px, 16.1%, 190px);
+  width: clamp(92px, 9.7%, 114px);
   position: absolute;
   z-index: 4;
   display: grid;
@@ -1372,7 +1359,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .node-aigc { left: 19.1%; top: 73.4%; }
 .node-website { left: 51.7%; top: 54%; }
 .node-operation { left: 81.4%; top: 60.6%; }
-.node-knowledge { width: clamp(150px, 14.6%, 172px); left: 52.5%; top: 89%; }
+.node-knowledge { width: clamp(92px, 9.7%, 114px); left: 52.5%; top: 89%; }
 
 .building-visual {
   width: 100%;
@@ -1396,7 +1383,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   z-index: 3;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 16px 12px rgba(43, 93, 78, .14));
+  filter: none;
   transform: translate3d(0, 0, 0) scale(1);
   transform-origin: 50% 72%;
   transition: transform .42s cubic-bezier(.2, .82, .25, 1), filter .42s ease;
@@ -1416,6 +1403,9 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   transform: scale(1);
   transition: transform .4s ease, opacity .4s ease;
 }
+.building-local-ambient,
+.building-ripple,
+.building-spark { display: none; }
 
 .building-ripple {
   width: 52%;
@@ -1451,8 +1441,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .building-node.hovered { z-index: 8; opacity: 1 !important; filter: none !important; }
 .building-node:hover .building-visual img,
 .building-node.hovered .building-visual img {
-  filter: drop-shadow(0 21px 15px rgba(27, 106, 83, .22)) drop-shadow(0 0 10px rgba(54, 174, 141, .18));
-  transform: translate3d(0, -9px, 0) scale(1.055);
+  filter: none;
+  transform: translate3d(0, -7px, 0) scale(1.24);
 }
 .building-node:hover .building-local-ambient,
 .building-node.hovered .building-local-ambient { opacity: .9; transform: scale(1.15); }
@@ -1482,7 +1472,10 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   backdrop-filter: blur(9px);
   transition: background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .28s ease;
 }
-.node-geo .building-label { transform: translate(110px, -82px); }
+.node-aigc .building-label,
+.node-operation .building-label,
+.node-knowledge .building-label { margin-top: -34px; }
+.node-geo .building-label { transform: translate(76px, -58px); }
 
 .building-node:hover .building-label,
 .building-node.hovered .building-label {
@@ -1492,7 +1485,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   transform: translateY(-3px);
 }
 .node-geo:hover .building-label,
-.node-geo.hovered .building-label { transform: translate(110px, -85px); }
+.node-geo.hovered .building-label { transform: translate(76px, -61px); }
 
 .building-label-title { display: flex; align-items: center; justify-content: center; gap: 7px; }
 .building-label h3 { margin: 0; font-size: 14px; line-height: 1.3; letter-spacing: -.01em; white-space: nowrap; }
@@ -1552,7 +1545,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-map-legend {
   position: absolute;
   left: 50%;
-  bottom: -10px;
+  bottom: -34px;
   z-index: 7;
   display: flex;
   align-items: center;
@@ -1573,6 +1566,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   align-items: center;
   gap: 12px;
   overflow: hidden;
+  background: #f1f8f5 !important;
 }
 .drawer-building-preview img { width: 126px; height: 126px; margin: -10px; object-fit: contain; filter: drop-shadow(0 11px 8px rgba(28, 93, 73, .16)); }
 .drawer-building-preview strong { display: block; margin-bottom: 5px; color: #21463c; font-size: 14px; }
@@ -1590,7 +1584,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 
 @media (max-width: 1220px) {
   .harbor-map { width: 1080px; min-height: 640px; }
-  .building-node { width: 170px; }
+  .building-node,
+  .node-knowledge { width: 104px; }
   .harbor-route-caption { display: none; }
 }
 

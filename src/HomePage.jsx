@@ -7,7 +7,7 @@ import {
 const PRODUCT_CATALOG = {
   diagnosis: {
     name: "AI诊断", eyebrow: "持续监测", icon: Pulse,
-    building: "/product-buildings/ai-diagnosis-tower.png",
+    building: "/product-buildings/ai-diagnosis-tower-v3.png",
     visualSummary: "港口观察塔",
     summary: "持续发现问题，给出下一步建议",
     description: "以轻量方式持续监控企业在 GEO、AIGC、AI 官网与运营链路中的表现，定位问题、判断优先级，并给出可执行的产品建议。",
@@ -16,7 +16,7 @@ const PRODUCT_CATALOG = {
   },
   geo: {
     name: "GEO", eyebrow: "AI 认知入口", icon: GlobeHemisphereWest,
-    building: "/product-buildings/geo-lighthouse.png",
+    building: "/product-buildings/geo-lighthouse-v3.png",
     visualSummary: "AI认知灯塔",
     summary: "在 AI 世界中被发现与理解",
     description: "帮助企业进入豆包、DeepSeek 等 AI 平台的答案与推荐，在用户产生需求和建立品牌认知时被看见、被理解。",
@@ -25,7 +25,7 @@ const PRODUCT_CATALOG = {
   },
   aigc: {
     name: "AIGC", eyebrow: "内容获客", icon: Megaphone,
-    building: "/product-buildings/aigc-workshop.png",
+    building: "/product-buildings/aigc-workshop-v3.png",
     visualSummary: "内容传播工坊",
     summary: "全媒体内容与广告获客",
     description: "生成面向真实用户的文章、图片和视频内容，并投放到搜索引擎、社交媒体与第三方媒体，持续扩大触达。",
@@ -34,7 +34,7 @@ const PRODUCT_CATALOG = {
   },
   website: {
     name: "AI官网", eyebrow: "承接与转化", icon: HouseLine,
-    building: "/product-buildings/ai-website-terminal.png",
+    building: "/product-buildings/ai-website-terminal-v3.png",
     visualSummary: "客户抵达港",
     summary: "承接流量、建立信任、理解需求",
     description: "重塑企业官网：既为 GEO 提供更清晰的品牌与知识表达，也主动理解访客需求，通过内容与对话建立信任。",
@@ -43,7 +43,7 @@ const PRODUCT_CATALOG = {
   },
   operation: {
     name: "AI运营", eyebrow: "公私域运营", icon: UsersThree,
-    building: "/product-buildings/ai-operation-clubhouse.png",
+    building: "/product-buildings/ai-operation-clubhouse-v3.png",
     visualSummary: "客户经营会馆",
     summary: "持续培育客户并推动转化",
     description: "托管企业在公域和私域中的用户运营，承接广告与官网线索，按用户阶段持续触达、培育和分层。",
@@ -52,7 +52,7 @@ const PRODUCT_CATALOG = {
   },
   knowledge: {
     name: "AI知识库", eyebrow: "数据与策略底座", icon: Database,
-    building: "/product-buildings/ai-knowledge-vault.png",
+    building: "/product-buildings/ai-knowledge-vault-v3.png",
     visualSummary: "企业知识与策略底座",
     summary: "让所有产品理解企业、客群与需求",
     description: "沉淀企业上传和提炼的信息，并进一步推演客群、场景、需求、关键词和问题，形成面向营销决策的知识图谱。",
@@ -65,19 +65,19 @@ const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
 
 const PRIMARY_ROUTES = [
-  { id: "geo-website", from: "geo", to: "website", d: "M 286 307 C 380 307 430 355 500 382", duration: 2.8 },
-  { id: "aigc-website", from: "aigc", to: "website", d: "M 315 520 C 402 518 448 472 505 436", duration: 3.1 },
-  { id: "website-operation", from: "website", to: "operation", d: "M 716 414 C 784 414 826 426 886 430", duration: 2.5 },
+  { id: "geo-website", from: "geo", to: "website", d: "M 263 302 C 382 302 456 347 548 374", duration: 2.8 },
+  { id: "aigc-website", from: "aigc", to: "website", d: "M 282 514 C 405 512 470 458 550 420", duration: 3.1 },
+  { id: "website-operation", from: "website", to: "operation", d: "M 675 398 C 770 398 830 420 902 424", duration: 2.5 },
 ];
 
 const SUPPORT_ROUTES = [
-  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 545 171 C 456 186 352 220 268 260", duration: 4.4 },
-  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 611 184 C 611 224 611 260 611 295", duration: 3.7 },
-  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 684 174 C 775 198 850 264 918 342", duration: 4.8 },
-  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 535 613 C 432 584 346 469 278 372", duration: 5.2 },
-  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 536 642 C 450 625 370 582 312 548", duration: 4.7 },
-  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 621 593 C 621 558 621 524 621 492", duration: 4.1 },
-  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 716 620 C 804 590 864 528 918 490", duration: 5 },
+  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 570 157 C 466 176 350 222 248 273", duration: 4.4 },
+  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 611 164 C 611 220 611 286 611 335", duration: 3.7 },
+  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 655 158 C 770 185 870 272 935 365", duration: 4.8 },
+  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 568 607 C 435 570 332 441 248 343", duration: 5.2 },
+  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 567 631 C 448 617 352 565 282 534", duration: 4.7 },
+  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 621 604 C 621 550 621 500 621 450", duration: 4.1 },
+  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 678 610 C 805 575 884 502 935 458", duration: 5 },
 ];
 
 function HeaderActions({ notify }) {
