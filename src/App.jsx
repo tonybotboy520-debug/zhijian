@@ -5,13 +5,14 @@ import {
   Database, DotsThree, Eye, FileText, FilmStrip, FolderSimple, FunnelSimple,
   GlobeHemisphereWest, House, Lightning, MagnifyingGlass, MonitorPlay,
   Newspaper, PaperPlaneTilt, PencilLine, Plus, Pulse, Robot, SelectionAll,
-  Sparkle, Target, TrendUp, VideoCamera, X,
+  Sparkle, Target, TrendUp, VideoCamera, X, UsersThree,
 } from "@phosphor-icons/react";
+import { HomePage } from "./HomePage.jsx";
 
 const PRIMARY_NAV = [
   ["首页", House], ["知识库", Database], ["AI诊断", Pulse],
   ["GEO", GlobeHemisphereWest], ["AIGC", PencilLine],
-  ["AI官网", MonitorPlay], ["Agent", Robot],
+  ["AI官网", MonitorPlay], ["AI运营", UsersThree], ["Agent市场", Robot],
 ];
 
 const SECONDARY_NAV = [
@@ -743,7 +744,7 @@ function GeoAssistant({ context, messages, input, typing, collapsed, onToggleCol
 }
 
 export function App() {
-  const [primary, setPrimary] = useState("GEO"); const [secondary, setSecondary] = useState("项目");
+  const [primary, setPrimary] = useState("首页"); const [secondary, setSecondary] = useState("项目");
   const [tertiary, setTertiary] = useState({ 创作: "文章", 发布: "选择媒体", 统计: "项目概览" });
   const [projectView, setProjectView] = useState("list");
   const [projectId, setProjectId] = useState(1); const [selectedMedia, setSelectedMedia] = useState(new Set([1, 2, 3])); const [toast, setToast] = useState("");
@@ -785,7 +786,8 @@ export function App() {
   };
   const HeaderActions = () => <div className="top-actions"><button className="icon-button top-notification" aria-label="通知" onClick={() => notify("暂无新的通知")}><Bell size={19} /><i /></button><button className="user-account" aria-label="用户账户" onClick={() => notify("已打开个人账户菜单")}><span className="avatar">ZJ</span><span>张景</span><CaretDown size={13} /></button><button className="team-switcher"><Buildings size={17} />运营团队<CaretDown size={13} /></button></div>;
   let content;
-  if (primary !== "GEO") content = <EmptyStub title={primary} />;
+  if (primary === "首页") content = <HomePage notify={notify} onNavigate={setPrimary} />;
+  else if (primary !== "GEO") content = <EmptyStub title={primary} />;
   else if (secondary === "项目" && projectView === "list") content = <ProjectList onOpenDetail={openDetail} notify={notify} />;
   else if (secondary === "项目") content = <ProjectDetail projectId={projectId} onBack={() => setProjectView("list")} onViewStats={viewStats} onManage={openProjectManagement} notify={notify} />;
   else if (secondary === "选词") content = <KeywordPackages projectId={managementScope?.kind === "keyword" ? managementScope.projectId : null} notify={notify} />;
@@ -793,9 +795,9 @@ export function App() {
   else if (secondary === "发布" && tertiary.发布 === "选择媒体") content = <MediaLibrary projectId={managementScope?.kind === "media" ? managementScope.projectId : null} selectedMedia={selectedMedia} setSelectedMedia={setSelectedMedia} onCreateTask={createPublishTask} notify={notify} />;
   else if (secondary === "发布") content = <PublishTasks notify={notify} />;
   else content = <Statistics tab={tertiary.统计} projectId={projectId} />;
-  return <div className="app-frame">
+  return <div className={cx("app-frame", primary === "首页" && "home-active")}>
     <aside className="primary-rail"><button className="brand-mark" aria-label="智见新版" onClick={() => setPrimary("首页")}><Sparkle size={24} weight="fill" /><span>智见</span><small>新版</small></button><nav aria-label="一级导航">{PRIMARY_NAV.map(([label, Icon]) => <button className={cx("rail-item", primary === label && "active")} onClick={() => { setPrimary(label); setManagementScope(null); if (label === "GEO") { setSecondary("项目"); setProjectView("list"); } }} key={label}><Icon size={22} weight={primary === label ? "fill" : "regular"} /><span>{label}</span></button>)}</nav></aside>
-    <main className="app-main">{primary === "GEO" ? <>
+    <main className="app-main">{primary === "首页" ? content : primary === "GEO" ? <>
       <header className="secondary-bar"><nav aria-label="GEO二级导航">{SECONDARY_NAV.map(([label, Icon]) => <button className={cx(secondary === label && "active")} onClick={() => { setManagementScope(null); setSecondary(label); if (label === "项目") setProjectView("list"); }} key={label}><Icon size={17} /><span>{label}</span></button>)}</nav><HeaderActions /></header>
       <div className="geo-workspace">
         <GeoAssistant context={assistantContext} messages={assistantMessages} input={assistantInput} typing={assistantTyping} collapsed={assistantCollapsed} onToggleCollapsed={() => setAssistantCollapsed((current) => !current)} onInputChange={setAssistantInput} onSend={sendToAssistant} />
