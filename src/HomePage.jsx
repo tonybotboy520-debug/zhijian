@@ -7,7 +7,7 @@ import {
 const PRODUCT_CATALOG = {
   diagnosis: {
     name: "AI诊断", eyebrow: "持续监测", icon: Pulse,
-    building: "/product-buildings/ai-diagnosis-tower-v5.png",
+    building: "/product-buildings/ai-diagnosis-tower-v6.png",
     visualSummary: "港口观察塔",
     cardSummary: "持续发现问题，给出行动建议",
     summary: "持续发现问题，给出下一步建议",
@@ -17,7 +17,7 @@ const PRODUCT_CATALOG = {
   },
   geo: {
     name: "GEO", eyebrow: "AI 认知入口", icon: GlobeHemisphereWest,
-    building: "/product-buildings/geo-lighthouse-v5.png",
+    building: "/product-buildings/geo-lighthouse-v6.png",
     visualSummary: "AI认知灯塔",
     cardSummary: "在 AI 世界中被发现与理解",
     summary: "在 AI 世界中被发现与理解",
@@ -27,7 +27,7 @@ const PRODUCT_CATALOG = {
   },
   aigc: {
     name: "AIGC", eyebrow: "内容获客", icon: Megaphone,
-    building: "/product-buildings/aigc-workshop-v5.png",
+    building: "/product-buildings/aigc-workshop-v6.png",
     visualSummary: "内容传播工坊",
     cardSummary: "全媒体内容与广告获客",
     summary: "全媒体内容与广告获客",
@@ -37,7 +37,7 @@ const PRODUCT_CATALOG = {
   },
   website: {
     name: "AI官网", eyebrow: "承接与转化", icon: HouseLine,
-    building: "/product-buildings/ai-website-terminal-v5.png",
+    building: "/product-buildings/ai-website-terminal-v6.png",
     visualSummary: "客户抵达港",
     cardSummary: "承接流量，理解客户并推动转化",
     summary: "承接流量、建立信任、理解需求",
@@ -47,7 +47,7 @@ const PRODUCT_CATALOG = {
   },
   operation: {
     name: "AI运营", eyebrow: "公私域运营", icon: UsersThree,
-    building: "/product-buildings/ai-operation-clubhouse-v5.png",
+    building: "/product-buildings/ai-operation-clubhouse-v6.png",
     visualSummary: "客户经营会馆",
     cardSummary: "持续培育客户并推动转化",
     summary: "持续培育客户并推动转化",
@@ -57,7 +57,7 @@ const PRODUCT_CATALOG = {
   },
   knowledge: {
     name: "AI知识库", eyebrow: "数据与策略底座", icon: Database,
-    building: "/product-buildings/ai-knowledge-vault-v5.png",
+    building: "/product-buildings/ai-knowledge-vault-v6.png",
     visualSummary: "企业知识与策略底座",
     cardSummary: "统一企业知识与策略底座",
     summary: "让所有产品理解企业、客群与需求",
@@ -71,19 +71,19 @@ const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
 
 const PRIMARY_ROUTES = [
-  { id: "geo-website", from: "geo", to: "website", d: "M 335 292 C 390 292 438 330 480 350", duration: 2.8 },
-  { id: "aigc-website", from: "aigc", to: "website", d: "M 350 505 C 415 505 452 426 480 394", duration: 3.1 },
-  { id: "website-operation", from: "website", to: "operation", d: "M 740 370 C 780 370 810 404 830 415", duration: 2.5 },
+  { id: "geo-website", from: "geo", to: "website", d: "M 268 309 C 365 310 428 350 493 380", duration: 2.8 },
+  { id: "aigc-website", from: "aigc", to: "website", d: "M 333 525 C 405 523 458 466 501 431", duration: 3.1 },
+  { id: "website-operation", from: "website", to: "operation", d: "M 741 405 C 790 405 829 408 867 413", duration: 2.5 },
 ];
 
 const SUPPORT_ROUTES = [
-  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 480 110 C 410 130 330 190 280 236", duration: 4.4 },
-  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 161 C 610 212 610 265 610 314", duration: 3.7 },
-  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 740 112 C 825 145 920 255 970 359", duration: 4.8 },
-  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 490 585 C 405 545 315 420 245 348", duration: 5.2 },
-  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 490 625 C 425 625 350 584 280 561", duration: 4.7 },
-  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 620 554 C 620 510 620 466 620 426", duration: 4.1 },
-  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 750 580 C 830 565 920 515 970 471", duration: 5 },
+  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 540 142 C 425 156 335 211 287 256", duration: 4.4 },
+  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 187 C 610 218 610 248 610 280", duration: 3.7 },
+  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 684 146 C 787 175 872 246 914 321", duration: 4.8 },
+  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 533 585 C 427 548 341 447 286 390", duration: 5.2 },
+  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 519 625 C 438 625 371 587 326 562", duration: 4.7 },
+  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 620 548 C 620 526 620 510 620 494", duration: 4.1 },
+  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 708 588 C 798 559 859 511 901 475", duration: 5 },
 ];
 
 function HeaderActions({ notify }) {
@@ -109,7 +109,7 @@ function FlowNetwork({ hoveredProduct }) {
     </g>;
   };
 
-  return <svg className="harbor-flow-network" viewBox="0 0 1180 700" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  return <svg className="harbor-flow-network" viewBox="0 0 1180 700" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <marker id="harbor-primary-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
         <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#158f72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -132,20 +132,18 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
     onFocus={() => onHover(productKey)}
     onBlur={() => onHover(null)}
   >
-    <button className="building-card-main" aria-label={`查看${product.name}详情`} onClick={() => onOpen(productKey)}>
-      <span className="building-visual">
-        <img src={product.building} alt={`${product.name}：${product.visualSummary}`} draggable="false" />
-      </span>
-      <span className="building-copy">
-        <span className="building-eyebrow">{product.eyebrow}</span>
-        <strong>{product.name}</strong>
-        <span className="building-summary">{product.cardSummary}</span>
-      </span>
+    {opened ? <span className="building-activation-ring" aria-hidden="true"><i /><i /></span> : null}
+    <button className="building-visual" aria-label={`查看${product.name}详情`} onClick={() => onOpen(productKey)}>
+      <img src={product.building} alt={`${product.name}：${product.visualSummary}`} draggable="false" />
     </button>
-    <div className="building-card-state">
-      <span className={`card-product-status ${opened ? "active" : "inactive"}`}><i />{opened ? "已开通" : "未开通"}</span>
+    <div className="building-info-panel">
+      <button className="building-info-open" onClick={() => onOpen(productKey)} aria-label={`打开${product.name}产品介绍`}>
+        <span className="building-info-title"><strong>{product.name}</strong><span className={`card-product-status ${opened ? "active" : "inactive"}`}><i />{opened ? "已开通" : "未开通"}</span></span>
+        <span className="building-summary">{productKey === "diagnosis" ? product.cardSummary : product.visualSummary}</span>
+      </button>
       {!opened ? <button className="card-status-action activate" onClick={() => onActivate(productKey)}>开通</button> : null}
     </div>
+    {productKey === "website" ? <span className="building-capability-chip">承接流量 · 建立信任 · 促进转化</span> : null}
   </article>;
 }
 
