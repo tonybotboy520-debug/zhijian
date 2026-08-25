@@ -69,10 +69,7 @@ const PRODUCT_CATALOG = {
 
 const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
-const HARBOR_SCENERY = Object.fromEntries(VISIBLE_PRODUCT_KEYS.map((key) => [
-  key,
-  `/product-backgrounds/source/${key}-harbor.avif`,
-]));
+const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-master-v1.avif";
 
 const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 268 309 C 365 310 428 350 493 380", duration: 2.8 },
@@ -224,28 +221,47 @@ function HarborEnvironment({ hoveredProduct, onHover }) {
 }
 
 function HarborScenery({ hoveredProduct, onHover }) {
-  return <div className="harbor-scenery-layer" aria-label="港湾风景背景分区">
-    {VISIBLE_PRODUCT_KEYS.map((productKey) => <figure
-      className={`harbor-scenery-zone scenery-${productKey} ${hoveredProduct === productKey ? "highlighted" : ""}`}
-      key={`scenery-${productKey}`}
-      aria-hidden="true"
-    >
-      <svg viewBox="0 0 1254 1254" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <radialGradient id={`scenery-fade-${productKey}`}>
-            <stop offset="0" stopColor="white" />
-            <stop offset=".68" stopColor="white" />
-            <stop offset=".86" stopColor="white" stopOpacity=".68" />
-            <stop offset="1" stopColor="black" />
-          </radialGradient>
-          <mask id={`scenery-mask-${productKey}`}>
-            <rect width="1254" height="1254" fill={`url(#scenery-fade-${productKey})`} />
-          </mask>
-        </defs>
-        <image href={HARBOR_SCENERY[productKey]} width="1254" height="1254" preserveAspectRatio="xMidYMid slice" mask={`url(#scenery-mask-${productKey})`} />
-      </svg>
-      <i />
-    </figure>)}
+  const regionShapes = {
+    diagnosis: <path d="M 318 -18 H 932 L 884 236 C 802 284 704 278 615 248 C 519 285 401 263 325 215 Z" />,
+    geo: <path d="M -35 -18 H 391 L 440 203 C 423 325 349 421 223 458 L -35 409 Z" />,
+    aigc: <path d="M -35 362 C 116 330 302 357 443 434 L 489 700 H -35 Z" />,
+    website: <path d="M 354 181 C 476 130 693 139 828 238 L 850 490 C 721 579 501 586 344 494 L 309 303 Z" />,
+    operation: <path d="M 785 142 H 1215 V 700 H 785 L 746 488 C 833 380 838 263 785 142 Z" />,
+    knowledge: <path d="M 363 493 C 494 456 705 457 838 503 L 879 718 H 322 Z" />,
+  };
+
+  return <div className="harbor-scenery-layer" aria-label="同一张港湾母图的产品背景分区">
+    <svg className="harbor-master-scenery" viewBox="0 0 1180 700" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <radialGradient id="harbor-master-edge-fade" cx="50%" cy="49%" r="64%">
+          <stop offset="0" stopColor="white" />
+          <stop offset=".62" stopColor="white" stopOpacity=".98" />
+          <stop offset=".84" stopColor="white" stopOpacity=".58" />
+          <stop offset="1" stopColor="black" />
+        </radialGradient>
+        <mask id="harbor-master-edge-mask">
+          <rect width="1180" height="700" fill="url(#harbor-master-edge-fade)" />
+        </mask>
+        <filter id="harbor-region-feather" x="-12%" y="-12%" width="124%" height="124%">
+          <feGaussianBlur stdDeviation="22" />
+        </filter>
+        {VISIBLE_PRODUCT_KEYS.map((productKey) => <mask id={`harbor-master-mask-${productKey}`} key={`mask-${productKey}`} maskUnits="userSpaceOnUse" x="-80" y="-80" width="1340" height="860">
+          <g fill="white" filter="url(#harbor-region-feather)">{regionShapes[productKey]}</g>
+        </mask>)}
+      </defs>
+
+      <g mask="url(#harbor-master-edge-mask)">
+        <image className="harbor-master-base" href={HARBOR_MASTER_SCENERY} width="1180" height="700" preserveAspectRatio="none" />
+        {VISIBLE_PRODUCT_KEYS.map((productKey) => <g
+          className={`harbor-master-region region-${productKey} ${hoveredProduct === productKey ? "highlighted" : ""}`}
+          mask={`url(#harbor-master-mask-${productKey})`}
+          key={`region-${productKey}`}
+        >
+          <image href={HARBOR_MASTER_SCENERY} width="1180" height="700" preserveAspectRatio="none" />
+        </g>)}
+      </g>
+    </svg>
+    <span className={`harbor-scenery-focus ${hoveredProduct ? `focus-${hoveredProduct}` : ""}`} aria-hidden="true" />
     {VISIBLE_PRODUCT_KEYS.map((productKey) => <button
       className={`harbor-scenery-hit hit-${productKey}`}
       key={`hit-${productKey}`}
