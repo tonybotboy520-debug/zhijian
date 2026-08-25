@@ -7,8 +7,9 @@ import {
 const PRODUCT_CATALOG = {
   diagnosis: {
     name: "AI诊断", eyebrow: "持续监测", icon: Pulse,
-    building: "/product-buildings/ai-diagnosis-tower-v4.png",
+    building: "/product-buildings/ai-diagnosis-tower-v5.png",
     visualSummary: "港口观察塔",
+    cardSummary: "持续发现问题，给出行动建议",
     summary: "持续发现问题，给出下一步建议",
     description: "以轻量方式持续监控企业在 GEO、AIGC、AI 官网与运营链路中的表现，定位问题、判断优先级，并给出可执行的产品建议。",
     capabilities: ["跨产品健康度监测", "机会与问题自动识别", "按优先级输出行动建议"],
@@ -16,8 +17,9 @@ const PRODUCT_CATALOG = {
   },
   geo: {
     name: "GEO", eyebrow: "AI 认知入口", icon: GlobeHemisphereWest,
-    building: "/product-buildings/geo-lighthouse-v4.png",
+    building: "/product-buildings/geo-lighthouse-v5.png",
     visualSummary: "AI认知灯塔",
+    cardSummary: "在 AI 世界中被发现与理解",
     summary: "在 AI 世界中被发现与理解",
     description: "帮助企业进入豆包、DeepSeek 等 AI 平台的答案与推荐，在用户产生需求和建立品牌认知时被看见、被理解。",
     capabilities: ["AI 平台品牌可见度优化", "高意图问题与关键词策略", "权威内容与信源建设"],
@@ -25,8 +27,9 @@ const PRODUCT_CATALOG = {
   },
   aigc: {
     name: "AIGC", eyebrow: "内容获客", icon: Megaphone,
-    building: "/product-buildings/aigc-workshop-v4.png",
+    building: "/product-buildings/aigc-workshop-v5.png",
     visualSummary: "内容传播工坊",
+    cardSummary: "全媒体内容与广告获客",
     summary: "全媒体内容与广告获客",
     description: "生成面向真实用户的文章、图片和视频内容，并投放到搜索引擎、社交媒体与第三方媒体，持续扩大触达。",
     capabilities: ["多媒体内容批量生产", "多渠道分发与投放", "围绕客群与场景持续迭代"],
@@ -34,8 +37,9 @@ const PRODUCT_CATALOG = {
   },
   website: {
     name: "AI官网", eyebrow: "承接与转化", icon: HouseLine,
-    building: "/product-buildings/ai-website-terminal-v4.png",
+    building: "/product-buildings/ai-website-terminal-v5.png",
     visualSummary: "客户抵达港",
+    cardSummary: "承接流量，理解客户并推动转化",
     summary: "承接流量、建立信任、理解需求",
     description: "重塑企业官网：既为 GEO 提供更清晰的品牌与知识表达，也主动理解访客需求，通过内容与对话建立信任。",
     capabilities: ["GEO 友好的官网结构", "访客意图识别与内容匹配", "线索承接与私域导入"],
@@ -43,8 +47,9 @@ const PRODUCT_CATALOG = {
   },
   operation: {
     name: "AI运营", eyebrow: "公私域运营", icon: UsersThree,
-    building: "/product-buildings/ai-operation-clubhouse-v4.png",
+    building: "/product-buildings/ai-operation-clubhouse-v5.png",
     visualSummary: "客户经营会馆",
+    cardSummary: "持续培育客户并推动转化",
     summary: "持续培育客户并推动转化",
     description: "托管企业在公域和私域中的用户运营，承接广告与官网线索，按用户阶段持续触达、培育和分层。",
     capabilities: ["公私域用户统一承接", "自动化分层与培育", "运营任务持续托管"],
@@ -52,8 +57,9 @@ const PRODUCT_CATALOG = {
   },
   knowledge: {
     name: "AI知识库", eyebrow: "数据与策略底座", icon: Database,
-    building: "/product-buildings/ai-knowledge-vault-v4.png",
+    building: "/product-buildings/ai-knowledge-vault-v5.png",
     visualSummary: "企业知识与策略底座",
+    cardSummary: "统一企业知识与策略底座",
     summary: "让所有产品理解企业、客群与需求",
     description: "沉淀企业上传和提炼的信息，并进一步推演客群、场景、需求、关键词和问题，形成面向营销决策的知识图谱。",
     capabilities: ["企业知识统一沉淀", "客群与需求知识图谱", "前置策略推演与共用数据"],
@@ -65,19 +71,19 @@ const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
 
 const PRIMARY_ROUTES = [
-  { id: "geo-website", from: "geo", to: "website", d: "M 291 301 C 382 301 454 332 526 355", duration: 2.8 },
-  { id: "aigc-website", from: "aigc", to: "website", d: "M 310 512 C 405 512 462 453 526 420", duration: 3.1 },
-  { id: "website-operation", from: "website", to: "operation", d: "M 696 386 C 765 386 814 416 874 427", duration: 2.5 },
+  { id: "geo-website", from: "geo", to: "website", d: "M 335 292 C 390 292 438 330 480 350", duration: 2.8 },
+  { id: "aigc-website", from: "aigc", to: "website", d: "M 350 505 C 415 505 452 426 480 394", duration: 3.1 },
+  { id: "website-operation", from: "website", to: "operation", d: "M 740 370 C 780 370 810 404 830 415", duration: 2.5 },
 ];
 
 const SUPPORT_ROUTES = [
-  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 525 128 C 430 145 330 180 270 214", duration: 4.4 },
-  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 195 C 610 228 610 260 610 291", duration: 3.7 },
-  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 695 130 C 804 155 900 246 960 340", duration: 4.8 },
-  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 560 526 C 440 505 318 430 225 388", duration: 5.2 },
-  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 550 545 C 450 564 360 590 280 599", duration: 4.7 },
-  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 620 526 C 620 505 620 485 620 465", duration: 4.1 },
-  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 690 545 C 790 548 890 530 960 514", duration: 5 },
+  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 480 110 C 410 130 330 190 280 236", duration: 4.4 },
+  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 161 C 610 212 610 265 610 314", duration: 3.7 },
+  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 740 112 C 825 145 920 255 970 359", duration: 4.8 },
+  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 490 585 C 405 545 315 420 245 348", duration: 5.2 },
+  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 490 625 C 425 625 350 584 280 561", duration: 4.7 },
+  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 620 554 C 620 510 620 466 620 426", duration: 4.1 },
+  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 750 580 C 830 565 920 515 970 471", duration: 5 },
 ];
 
 function HeaderActions({ notify }) {
@@ -133,15 +139,13 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
       <span className="building-copy">
         <span className="building-eyebrow">{product.eyebrow}</span>
         <strong>{product.name}</strong>
-        <span className="building-summary">{product.visualSummary}</span>
+        <span className="building-summary">{product.cardSummary}</span>
       </span>
     </button>
-    <footer className="building-status-bar">
+    <div className="building-card-state">
       <span className={`card-product-status ${opened ? "active" : "inactive"}`}><i />{opened ? "已开通" : "未开通"}</span>
-      {opened
-        ? <button className="card-status-action detail" onClick={() => onOpen(productKey)}>查看 <ArrowRight size={11} /></button>
-        : <button className="card-status-action activate" onClick={() => onActivate(productKey)}>开通</button>}
-    </footer>
+      {!opened ? <button className="card-status-action activate" onClick={() => onActivate(productKey)}>开通</button> : null}
+    </div>
   </article>;
 }
 

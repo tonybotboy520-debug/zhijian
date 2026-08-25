@@ -1344,69 +1344,66 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-map.has-hover .harbor-route.highlighted .harbor-route-flow { stroke-width: 3; animation-duration: .7s; }
 
 .building-node {
-  width: 14.4%;
-  aspect-ratio: 168 / 174;
+  width: 22%;
+  aspect-ratio: 260 / 112;
   position: absolute;
   z-index: 4;
-  display: flex;
-  flex-direction: column;
+  display: block;
   overflow: hidden;
   color: var(--harbor-ink);
   background: #fff;
   border: 1px solid rgba(132, 177, 164, .48);
   border-radius: 16px;
-  box-shadow: 0 9px 24px rgba(39, 88, 74, .09);
+  box-shadow: 0 10px 26px rgba(39, 88, 74, .085);
   transform: translate(-50%, -50%);
-  transition: opacity .22s ease, filter .22s ease, border-color .3s ease, box-shadow .3s ease, transform .34s cubic-bezier(.2, .82, .25, 1);
+  transition: opacity .22s ease, filter .22s ease, background .3s ease, border-color .3s ease, box-shadow .3s ease, transform .34s cubic-bezier(.2, .82, .25, 1);
 }
 
 .harbor-map.has-hover .building-node:not(.hovered) { opacity: .68; filter: saturate(.74); }
-.node-diagnosis { left: 51.7%; top: 15.5%; }
-.node-geo { left: 17.4%; top: 43%; }
-.node-aigc { left: 19.1%; top: 73.2%; }
-.node-website { left: 51.7%; top: 54%; }
-.node-operation { left: 81.4%; top: 61%; }
-.node-knowledge { left: 52.5%; top: 87.5%; }
+.node-diagnosis { left: 51.7%; top: 15%; }
+.node-geo { left: 17.4%; top: 41.7%; }
+.node-aigc { left: 18.6%; top: 72.1%; }
+.node-website { left: 51.7%; top: 52.85%; }
+.node-operation { left: 81.4%; top: 59.3%; }
+.node-knowledge { left: 52.5%; top: 87.1%; }
 
 .building-card-main {
   width: 100%;
-  min-height: 0;
-  flex: 1;
+  height: 100%;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 42% 58%;
   align-items: center;
-  justify-content: center;
-  gap: 0;
-  padding: 5px 9px 4px;
+  padding: 0;
   color: inherit;
-  background: #fff;
+  background: transparent;
   border: 0;
   cursor: pointer;
   overflow: hidden;
   font: inherit;
+  text-align: left;
 }
 
 .building-visual {
-  width: 78px;
-  height: 72px;
+  width: 100%;
+  height: 100%;
   position: relative;
   display: grid;
-  flex: 0 0 auto;
   place-items: center;
   overflow: hidden;
   background: #fff;
+  border-right: 1px solid rgba(143, 183, 172, .24);
 }
 
 .building-visual img {
-  width: 94px;
-  height: 94px;
+  width: 98%;
+  height: 98%;
   position: relative;
   display: block;
   object-fit: contain;
   filter: none;
   transform: translate3d(0, 0, 0) scale(1);
-  transform-origin: 50% 65%;
+  transform-origin: 50% 54%;
   transition: transform .42s cubic-bezier(.2, .82, .25, 1), filter .42s ease;
   user-select: none;
 }
@@ -1418,75 +1415,85 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   filter: none !important;
   border-color: rgba(39, 155, 125, .72);
   box-shadow: 0 16px 34px rgba(36, 105, 85, .16), 0 0 0 3px rgba(43, 167, 133, .08);
-  transform: translate(-50%, -50%) translateY(-4px) scale(1.035);
+  transform: translate(-50%, -50%) translateY(-4px) scale(1.025);
 }
-.building-node.opened { border-color: rgba(72, 169, 140, .58); }
+.building-node.opened {
+  background: #f2faf7;
+  border: 1.5px solid rgba(38, 157, 125, .78);
+  box-shadow: 0 12px 30px rgba(31, 126, 99, .14), 0 0 0 3px rgba(49, 174, 139, .07);
+  animation: opened-card-breathe 3.4s ease-in-out infinite;
+}
 .building-node.opened::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto;
-  z-index: 2;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #37b994 32%, #8ad6c0 68%, transparent);
-  background-size: 180% 100%;
-  animation: opened-card-shimmer 3.6s linear infinite;
+  inset: 0 auto 0 0;
+  z-index: 5;
+  width: 4px;
+  background: #27aa82;
+  box-shadow: 2px 0 10px rgba(39, 170, 130, .28);
   pointer-events: none;
 }
+.building-node.opened .building-card-main { background: #f2faf7; }
+.building-node.opened .building-visual { background: #fff; border-right-color: rgba(48, 157, 128, .3); }
 .building-node:hover .building-visual img,
 .building-node.hovered .building-visual img {
   filter: none;
-  transform: translate3d(0, -3px, 0) scale(1.13);
+  transform: translate3d(0, -2px, 0) scale(1.1);
 }
 
 .building-copy {
   min-width: 0;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  line-height: 1.25;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 11px 13px 31px 14px;
+  line-height: 1.28;
 }
 .building-eyebrow {
-  margin-bottom: 2px;
-  color: #6e8880;
-  font-size: 8px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: #4f8e7c;
+  font-size: 8.5px;
+  font-weight: 560;
+  letter-spacing: .045em;
 }
 .building-copy strong {
   color: #183f36;
-  font-size: 14px;
-  font-weight: 680;
+  font-size: 15px;
+  font-weight: 700;
   letter-spacing: -.012em;
   white-space: nowrap;
 }
 .building-summary {
   max-width: 100%;
-  margin-top: 3px;
-  overflow: hidden;
-  color: #698079;
-  font-size: 8.5px;
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-top: 5px;
+  color: #617870;
+  font-size: 9px;
+  line-height: 1.42;
+  white-space: normal;
 }
 
-.building-status-bar {
-  width: 100%;
-  min-height: 34px;
-  display: inline-flex;
+.building-card-state {
+  position: absolute;
+  left: 42%;
+  right: 0;
+  bottom: 9px;
+  z-index: 6;
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding: 0 10px;
-  background: #f8fbfa;
-  border-top: 1px solid rgba(146, 185, 174, .28);
+  gap: 7px;
+  padding: 0 12px 0 14px;
+  pointer-events: none;
 }
 .card-product-status {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   color: #798b86;
-  font-size: 8.5px;
+  font-size: 9px;
+  font-weight: 560;
   white-space: nowrap;
 }
 .card-product-status i {
@@ -1496,14 +1503,21 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   background: #a6b4b0;
   border-radius: 50%;
 }
-.card-product-status.active { color: #218b70; }
+.card-product-status.active {
+  min-height: 23px;
+  padding: 0 9px;
+  color: #fff;
+  background: #15916f;
+  border-radius: 99px;
+  box-shadow: 0 5px 13px rgba(21, 145, 111, .2);
+}
 .card-product-status.active i {
-  background: #22ad86;
-  box-shadow: 0 0 0 3px rgba(34, 173, 134, .1);
+  background: #c8f4e5;
+  box-shadow: 0 0 0 3px rgba(205, 248, 233, .13);
 }
 .card-status-action {
   min-width: 0;
-  height: 22px;
+  height: 23px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1513,9 +1527,10 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   background: transparent;
   border: 0;
   border-radius: 7px;
-  font-size: 8.5px;
+  font-size: 9px;
   font-weight: 600;
   cursor: pointer;
+  pointer-events: auto;
   transition: color .2s ease, background .2s ease, transform .2s ease;
 }
 .card-status-action:hover { background: #e9f5f1; transform: translateX(1px); }
@@ -1538,8 +1553,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   pointer-events: none;
 }
 .caption-geo { left: 31%; top: 39%; }
-.caption-aigc { left: 32%; top: 66%; }
-.caption-operation { left: 67%; top: 55%; }
+.caption-aigc { left: 32%; top: 67%; }
+.caption-operation { left: 67%; top: 53%; }
 
 .harbor-map-legend {
   position: absolute;
@@ -1571,7 +1586,10 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .drawer-building-preview strong { display: block; margin-bottom: 5px; color: #21463c; font-size: 14px; }
 
 @keyframes harbor-route-flow { to { stroke-dashoffset: -34; } }
-@keyframes opened-card-shimmer { to { background-position: -180% 0; } }
+@keyframes opened-card-breathe {
+  0%, 100% { box-shadow: 0 12px 30px rgba(31, 126, 99, .13), 0 0 0 3px rgba(49, 174, 139, .06); }
+  50% { box-shadow: 0 14px 34px rgba(31, 126, 99, .18), 0 0 0 4px rgba(49, 174, 139, .1); }
+}
 @keyframes harbor-ripple {
   0% { opacity: 0; transform: scale(.7); }
   18% { opacity: .62; }
@@ -1596,7 +1614,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 
 @media (prefers-reduced-motion: reduce) {
   .harbor-route-flow,
-  .building-node.opened::before,
+  .building-node.opened,
   .building-node:hover .building-ripple,
   .building-node.hovered .building-ripple,
   .building-node:hover .building-spark,
