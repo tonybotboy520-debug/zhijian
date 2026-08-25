@@ -69,6 +69,10 @@ const PRODUCT_CATALOG = {
 
 const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
+const HARBOR_SCENERY = Object.fromEntries(VISIBLE_PRODUCT_KEYS.map((key) => [
+  key,
+  `/product-backgrounds/source/${key}-harbor.avif`,
+]));
 
 const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 268 309 C 365 310 428 350 493 380", duration: 2.8 },
@@ -219,6 +223,42 @@ function HarborEnvironment({ hoveredProduct, onHover }) {
   </svg>;
 }
 
+function HarborScenery({ hoveredProduct, onHover }) {
+  return <div className="harbor-scenery-layer" aria-label="港湾风景背景分区">
+    {VISIBLE_PRODUCT_KEYS.map((productKey) => <figure
+      className={`harbor-scenery-zone scenery-${productKey} ${hoveredProduct === productKey ? "highlighted" : ""}`}
+      key={`scenery-${productKey}`}
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 1254 1254" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <radialGradient id={`scenery-fade-${productKey}`}>
+            <stop offset="0" stopColor="white" />
+            <stop offset=".68" stopColor="white" />
+            <stop offset=".86" stopColor="white" stopOpacity=".68" />
+            <stop offset="1" stopColor="black" />
+          </radialGradient>
+          <mask id={`scenery-mask-${productKey}`}>
+            <rect width="1254" height="1254" fill={`url(#scenery-fade-${productKey})`} />
+          </mask>
+        </defs>
+        <image href={HARBOR_SCENERY[productKey]} width="1254" height="1254" preserveAspectRatio="xMidYMid slice" mask={`url(#scenery-mask-${productKey})`} />
+      </svg>
+      <i />
+    </figure>)}
+    {VISIBLE_PRODUCT_KEYS.map((productKey) => <button
+      className={`harbor-scenery-hit hit-${productKey}`}
+      key={`hit-${productKey}`}
+      type="button"
+      aria-label={`查看${PRODUCT_CATALOG[productKey].name}港湾风景`}
+      onPointerEnter={() => onHover(productKey)}
+      onPointerLeave={() => onHover(null)}
+      onFocus={() => onHover(productKey)}
+      onBlur={() => onHover(null)}
+    />)}
+  </div>;
+}
+
 function FlowNetwork({ hoveredProduct }) {
   const renderRoute = (route, type, index) => {
     const highlighted = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
@@ -324,7 +364,7 @@ export function HomePage({ notify, onNavigate }) {
 
       <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
         <div className="harbor-map-summary"><span><i />{openedCount}/{VISIBLE_PRODUCT_KEYS.length} 个产品已激活</span><strong>{progress}%</strong></div>
-        <HarborEnvironment hoveredProduct={hoveredProduct} onHover={setHoveredProduct} />
+        <HarborScenery hoveredProduct={hoveredProduct} onHover={setHoveredProduct} />
         <FlowNetwork hoveredProduct={hoveredProduct} />
         {VISIBLE_PRODUCT_KEYS.map((productKey) => <BuildingNode
           key={productKey}
