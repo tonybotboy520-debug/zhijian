@@ -94,6 +94,131 @@ function HeaderActions({ notify }) {
   </div>;
 }
 
+function HarborEnvironment({ hoveredProduct, onHover }) {
+  const regionProps = (productKey) => ({
+    className: `harbor-background-region region-${productKey} ${hoveredProduct === productKey ? "highlighted" : ""}`,
+    onPointerEnter: () => onHover(productKey),
+    onPointerLeave: () => onHover(null),
+    onFocus: () => onHover(productKey),
+    onBlur: () => onHover(null),
+    tabIndex: 0,
+    role: "img",
+    "aria-label": `${PRODUCT_CATALOG[productKey].name}背景分区`,
+  });
+
+  return <svg className="harbor-environment" viewBox="0 0 1180 700" preserveAspectRatio="none">
+    <defs>
+      <radialGradient id="harbor-environment-fade" cx="50%" cy="52%" r="63%">
+        <stop offset="0" stopColor="white" />
+        <stop offset=".7" stopColor="white" stopOpacity=".96" />
+        <stop offset=".88" stopColor="white" stopOpacity=".48" />
+        <stop offset="1" stopColor="black" />
+      </radialGradient>
+      <radialGradient id="harbor-water-field" cx="51%" cy="48%" r="58%">
+        <stop offset="0" stopColor="#b8eee1" stopOpacity=".58" />
+        <stop offset=".48" stopColor="#cdeee7" stopOpacity=".33" />
+        <stop offset="1" stopColor="#edf8f4" stopOpacity="0" />
+      </radialGradient>
+      <linearGradient id="harbor-land-wash" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#f8fcfa" stopOpacity=".92" />
+        <stop offset=".52" stopColor="#d8eee7" stopOpacity=".56" />
+        <stop offset="1" stopColor="#bbded3" stopOpacity=".18" />
+      </linearGradient>
+      <radialGradient id="harbor-hover-glow">
+        <stop offset="0" stopColor="#b7f6e4" stopOpacity=".86" />
+        <stop offset=".55" stopColor="#8de5cf" stopOpacity=".34" />
+        <stop offset="1" stopColor="#c8f2e8" stopOpacity="0" />
+      </radialGradient>
+      <filter id="harbor-soften" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="7" />
+      </filter>
+      <filter id="harbor-region-glow" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+        <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.12  0 0 0 0 0.72  0 0 0 0 0.56  0 0 0 .46 0" result="glow" />
+        <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
+      </filter>
+      <mask id="harbor-edge-mask"><rect width="1180" height="700" fill="url(#harbor-environment-fade)" /></mask>
+    </defs>
+
+    <g mask="url(#harbor-edge-mask)">
+      <ellipse className="harbor-environment-water" cx="598" cy="377" rx="570" ry="318" />
+      <path className="harbor-environment-channel broad" d="M 80 330 C 250 270 352 366 497 363 C 655 360 773 286 1100 335" />
+      <path className="harbor-environment-channel" d="M 162 554 C 320 455 452 461 590 518 C 727 574 865 541 1040 420" />
+      <path className="harbor-environment-channel fine" d="M 226 172 C 378 224 425 263 593 250 C 752 238 870 189 1030 252" />
+
+      <g {...regionProps("diagnosis")}>
+        <ellipse className="harbor-region-glow" cx="610" cy="118" rx="195" ry="108" />
+        <path className="harbor-region-wash" d="M 435 78 C 483 28 565 26 642 42 C 730 26 802 65 790 132 C 782 191 704 214 622 198 C 552 217 457 190 427 140 C 410 112 417 94 435 78 Z" />
+        <path className="harbor-region-land" d="M 474 121 C 527 84 567 100 610 87 C 662 72 732 95 742 135 C 750 168 687 178 631 169 C 570 187 506 170 474 145 C 463 137 465 127 474 121 Z" />
+        <path className="harbor-region-contour" d="M 462 138 C 521 102 562 119 610 104 C 672 85 746 117 751 148" />
+        <path className="harbor-region-contour secondary" d="M 493 165 C 548 147 583 158 630 143 C 680 127 707 144 727 158" />
+        <circle className="harbor-region-scan" cx="610" cy="126" r="54" />
+        <circle className="harbor-region-scan delay" cx="610" cy="126" r="86" />
+        <path className="harbor-region-hit" d="M 414 47 H 804 V 219 H 414 Z" />
+      </g>
+
+      <g {...regionProps("geo")}>
+        <ellipse className="harbor-region-glow" cx="145" cy="295" rx="185" ry="142" />
+        <path className="harbor-region-wash" d="M 7 204 C 58 155 163 152 230 190 C 298 225 332 293 300 355 C 271 411 179 435 95 399 C 24 369 -11 295 7 204 Z" />
+        <path className="harbor-region-land" d="M 35 265 C 72 220 116 208 161 220 C 216 211 270 251 265 302 C 262 345 210 368 163 355 C 114 376 48 344 35 301 C 30 284 29 275 35 265 Z" />
+        <path className="harbor-region-contour" d="M 26 318 C 72 273 104 268 149 276 C 199 256 245 281 273 319" />
+        <path className="harbor-region-contour secondary" d="M 46 346 C 91 317 120 323 159 325 C 202 315 229 331 248 347" />
+        <path className="harbor-coast-dots" d="M 50 238 C 96 189 174 185 231 220" />
+        <path className="harbor-region-hit" d="M 0 154 H 330 V 432 H 0 Z" />
+      </g>
+
+      <g {...regionProps("aigc")}>
+        <ellipse className="harbor-region-glow" cx="176" cy="527" rx="210" ry="148" />
+        <path className="harbor-region-wash" d="M 0 430 C 68 380 166 381 237 416 C 320 412 375 471 355 548 C 338 615 255 663 167 650 C 76 674 1 614 -8 539 C -14 493 -12 456 0 430 Z" />
+        <path className="harbor-region-land" d="M 25 504 C 74 458 125 463 170 444 C 218 425 294 460 310 506 C 327 554 268 583 213 579 C 165 602 92 584 43 551 C 19 535 14 516 25 504 Z" />
+        <path className="harbor-region-contour" d="M 29 542 C 92 502 133 510 183 493 C 237 476 279 500 307 529" />
+        <path className="harbor-region-contour secondary" d="M 55 575 C 113 552 159 557 202 540 C 246 527 267 542 286 555" />
+        <path className="harbor-dock-line" d="M 72 461 L 72 507 M 104 450 L 104 494 M 136 441 L 136 486" />
+        <path className="harbor-region-hit" d="M 0 382 H 386 V 694 H 0 Z" />
+      </g>
+
+      <g {...regionProps("website")}>
+        <ellipse className="harbor-region-glow" cx="612" cy="388" rx="248" ry="182" />
+        <path className="harbor-region-wash" d="M 369 295 C 438 226 526 226 595 247 C 681 212 788 247 834 317 C 884 392 827 483 758 518 C 682 557 565 527 502 505 C 416 506 342 442 347 369 C 349 337 357 310 369 295 Z" />
+        <path className="harbor-region-land" d="M 441 366 C 487 306 550 310 606 290 C 673 266 759 312 775 372 C 790 427 733 460 679 457 C 622 486 536 466 486 438 C 447 418 421 392 441 366 Z" />
+        <ellipse className="harbor-basin-ring outer" cx="612" cy="392" rx="177" ry="105" />
+        <ellipse className="harbor-basin-ring" cx="612" cy="392" rx="138" ry="80" />
+        <ellipse className="harbor-basin-ring inner" cx="612" cy="392" rx="102" ry="57" />
+        <path className="harbor-region-contour" d="M 414 428 C 485 385 521 394 586 368 C 658 339 741 369 801 414" />
+        <path className="harbor-region-hit" d="M 347 224 H 864 V 564 H 347 Z" />
+      </g>
+
+      <g {...regionProps("operation")}>
+        <ellipse className="harbor-region-glow" cx="990" cy="405" rx="208" ry="167" />
+        <path className="harbor-region-wash" d="M 818 285 C 891 239 997 242 1060 282 C 1141 312 1197 385 1172 468 C 1150 540 1063 584 972 558 C 900 577 818 527 790 459 C 766 401 776 327 818 285 Z" />
+        <path className="harbor-region-land" d="M 842 375 C 889 326 940 334 989 310 C 1045 282 1122 322 1137 380 C 1151 433 1102 476 1042 469 C 987 500 907 474 867 445 C 831 420 818 399 842 375 Z" />
+        <path className="harbor-region-contour" d="M 830 442 C 888 402 927 410 981 386 C 1035 363 1094 382 1135 417" />
+        <path className="harbor-region-contour secondary" d="M 858 472 C 918 447 955 454 1005 432 C 1053 413 1087 431 1113 451" />
+        <circle className="harbor-courtyard-dot" cx="1090" cy="350" r="8" />
+        <circle className="harbor-courtyard-dot" cx="1115" cy="367" r="6" />
+        <circle className="harbor-courtyard-dot" cx="1071" cy="371" r="5" />
+        <path className="harbor-region-hit" d="M 775 235 H 1180 V 598 H 775 Z" />
+      </g>
+
+      <g {...regionProps("knowledge")}>
+        <ellipse className="harbor-region-glow" cx="620" cy="620" rx="260" ry="132" />
+        <path className="harbor-region-wash" d="M 353 547 C 426 505 522 515 595 535 C 673 509 779 522 847 571 C 890 603 866 661 817 680 C 751 705 670 686 615 680 C 538 705 438 691 381 658 C 333 630 318 574 353 547 Z" />
+        <path className="harbor-region-land" d="M 418 596 C 477 561 531 572 588 560 C 653 546 735 563 787 604 C 818 628 788 654 751 657 C 690 674 645 655 607 653 C 548 674 474 657 434 637 C 410 625 398 608 418 596 Z" />
+        <path className="harbor-region-contour" d="M 397 638 C 475 604 528 618 589 600 C 656 581 744 603 801 637" />
+        <path className="harbor-region-contour secondary" d="M 451 663 C 510 643 553 650 607 635 C 670 619 722 635 760 651" />
+        <path className="harbor-archive-grid" d="M 491 586 H 741 M 520 570 V 649 M 567 560 V 658 M 666 559 V 658 M 713 572 V 650" />
+        <path className="harbor-region-hit" d="M 328 498 H 884 V 700 H 328 Z" />
+      </g>
+
+      <path className="harbor-land-bridge" d="M 260 328 C 357 340 397 364 444 380" />
+      <path className="harbor-land-bridge" d="M 307 519 C 393 505 429 476 468 444" />
+      <path className="harbor-land-bridge" d="M 760 405 C 831 395 859 393 891 397" />
+      <path className="harbor-land-bridge" d="M 623 497 C 623 535 622 552 622 575" />
+      <path className="harbor-land-bridge fine" d="M 618 190 C 617 231 616 258 614 294" />
+    </g>
+  </svg>;
+}
+
 function FlowNetwork({ hoveredProduct }) {
   const renderRoute = (route, type, index) => {
     const highlighted = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
@@ -199,6 +324,7 @@ export function HomePage({ notify, onNavigate }) {
 
       <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
         <div className="harbor-map-summary"><span><i />{openedCount}/{VISIBLE_PRODUCT_KEYS.length} 个产品已激活</span><strong>{progress}%</strong></div>
+        <HarborEnvironment hoveredProduct={hoveredProduct} onHover={setHoveredProduct} />
         <FlowNetwork hoveredProduct={hoveredProduct} />
         {VISIBLE_PRODUCT_KEYS.map((productKey) => <BuildingNode
           key={productKey}

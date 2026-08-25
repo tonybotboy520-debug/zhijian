@@ -1250,16 +1250,152 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .harbor-map::after {
-  content: "";
+  display: none;
+}
+
+.harbor-environment {
+  width: 100%;
+  height: 100%;
   position: absolute;
-  inset: 13% 12% 9%;
-  z-index: -2;
-  border: 1px solid rgba(117, 177, 159, .12);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 22px rgba(120, 181, 161, .025),
-    0 0 0 58px rgba(120, 181, 161, .018);
-  transform: rotate(-5deg);
+  inset: 0;
+  z-index: 0;
+  overflow: visible;
+}
+.harbor-environment path,
+.harbor-environment ellipse,
+.harbor-environment circle {
+  vector-effect: non-scaling-stroke;
+}
+.harbor-environment-water {
+  fill: url(#harbor-water-field);
+  opacity: .76;
+  filter: url(#harbor-soften);
+  pointer-events: none;
+}
+.harbor-environment-channel {
+  fill: none;
+  stroke: #7dd5c0;
+  stroke-width: 28;
+  stroke-linecap: round;
+  opacity: .1;
+  filter: blur(10px);
+  pointer-events: none;
+}
+.harbor-environment-channel.broad { stroke-width: 58; opacity: .075; filter: blur(17px); }
+.harbor-environment-channel.fine { stroke-width: 14; opacity: .085; filter: blur(7px); }
+
+.harbor-background-region {
+  opacity: .7;
+  outline: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity .32s ease, filter .38s ease;
+}
+.harbor-map.has-hover .harbor-background-region:not(.highlighted) { opacity: .34; }
+.harbor-background-region.highlighted,
+.harbor-background-region:focus-visible {
+  opacity: 1;
+  filter: url(#harbor-region-glow);
+}
+.harbor-region-glow {
+  fill: url(#harbor-hover-glow);
+  opacity: 0;
+  filter: url(#harbor-soften);
+  transition: opacity .34s ease;
+  pointer-events: none;
+}
+.harbor-background-region.highlighted .harbor-region-glow,
+.harbor-background-region:focus-visible .harbor-region-glow {
+  opacity: .78;
+  animation: harbor-region-breathe 2.8s ease-in-out infinite;
+}
+.harbor-region-wash {
+  fill: url(#harbor-land-wash);
+  opacity: .4;
+  filter: url(#harbor-soften);
+  transition: opacity .34s ease;
+  pointer-events: none;
+}
+.harbor-background-region.highlighted .harbor-region-wash,
+.harbor-background-region:focus-visible .harbor-region-wash { opacity: .68; }
+.harbor-region-land {
+  fill: rgba(224, 241, 235, .46);
+  stroke: rgba(107, 168, 151, .17);
+  stroke-width: 1;
+  opacity: .6;
+  filter: blur(.25px);
+  transition: fill .34s ease, stroke .34s ease, opacity .34s ease;
+  pointer-events: none;
+}
+.harbor-background-region.highlighted .harbor-region-land,
+.harbor-background-region:focus-visible .harbor-region-land {
+  fill: rgba(218, 245, 237, .77);
+  stroke: rgba(54, 168, 137, .36);
+  opacity: .82;
+}
+.harbor-region-contour,
+.harbor-land-bridge,
+.harbor-coast-dots,
+.harbor-dock-line,
+.harbor-archive-grid {
+  fill: none;
+  stroke: rgba(91, 153, 136, .24);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .6;
+  pointer-events: none;
+  transition: stroke .32s ease, opacity .32s ease;
+}
+.harbor-region-contour.secondary { stroke-dasharray: 2.5 7; opacity: .35; }
+.harbor-coast-dots { stroke-dasharray: 1 9; stroke-width: 1.8; }
+.harbor-dock-line,
+.harbor-archive-grid { opacity: .22; }
+.harbor-land-bridge {
+  stroke: rgba(119, 179, 162, .18);
+  stroke-width: 16;
+  opacity: .16;
+  filter: blur(5px);
+}
+.harbor-land-bridge.fine { stroke-width: 8; opacity: .12; filter: blur(3px); }
+.harbor-background-region.highlighted .harbor-region-contour,
+.harbor-background-region.highlighted .harbor-coast-dots,
+.harbor-background-region.highlighted .harbor-dock-line,
+.harbor-background-region.highlighted .harbor-archive-grid {
+  stroke: rgba(47, 160, 130, .46);
+  opacity: .75;
+}
+.harbor-basin-ring,
+.harbor-region-scan {
+  fill: none;
+  stroke: rgba(84, 181, 153, .24);
+  stroke-width: 1;
+  opacity: .38;
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.harbor-basin-ring.outer { opacity: .22; }
+.harbor-basin-ring.inner { opacity: .3; stroke-dasharray: 3 6; }
+.harbor-region-scan { opacity: .2; stroke-dasharray: 2 6; }
+.harbor-region-scan.delay { opacity: .12; }
+.harbor-background-region.highlighted .harbor-basin-ring,
+.harbor-background-region.highlighted .harbor-region-scan {
+  stroke: rgba(40, 179, 143, .63);
+  opacity: .78;
+  animation: harbor-background-ripple 2.4s ease-out infinite;
+}
+.harbor-background-region.highlighted .harbor-region-scan.delay { animation-delay: -1.2s; }
+.harbor-courtyard-dot {
+  fill: rgba(90, 174, 150, .34);
+  opacity: .42;
+  pointer-events: none;
+}
+.harbor-region-hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+  cursor: default;
 }
 
 .harbor-map-summary {
@@ -1619,6 +1755,15 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .drawer-building-preview strong { display: block; margin-bottom: 5px; color: #21463c; font-size: 14px; }
 
 @keyframes harbor-route-flow { to { stroke-dashoffset: -34; } }
+@keyframes harbor-region-breathe {
+  0%, 100% { opacity: .58; }
+  50% { opacity: .9; }
+}
+@keyframes harbor-background-ripple {
+  0% { opacity: .18; transform: scale(.78); }
+  28% { opacity: .82; }
+  100% { opacity: 0; transform: scale(1.18); }
+}
 @keyframes harbor-activation-ring {
   0% { opacity: 0; transform: scale(.72); }
   20% { opacity: .62; }
@@ -1649,6 +1794,9 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 
 @media (prefers-reduced-motion: reduce) {
   .harbor-route-flow,
+  .harbor-background-region.highlighted .harbor-region-glow,
+  .harbor-background-region.highlighted .harbor-basin-ring,
+  .harbor-background-region.highlighted .harbor-region-scan,
   .building-activation-ring::before,
   .building-activation-ring::after,
   .building-activation-ring i,
