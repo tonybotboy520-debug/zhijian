@@ -1344,6 +1344,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-map.has-hover .harbor-route.highlighted .harbor-route-flow { stroke-width: 3; animation-duration: .7s; }
 
 .building-node {
+  --building-scale: 1;
+  --building-hover-scale: 1.1;
   position: absolute;
   z-index: 4;
   display: grid;
@@ -1358,10 +1360,10 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-map.has-hover .building-node:not(.hovered) { opacity: .68; filter: saturate(.74); }
 .node-diagnosis { left: 51.7%; top: 14.4%; width: 17.2%; aspect-ratio: 1; }
 .node-geo { left: 12%; top: 35.8%; width: 20.5%; aspect-ratio: 1; }
-.node-aigc { left: 15%; top: 73.7%; width: 24%; aspect-ratio: 1; }
-.node-website { left: 52%; top: 51.8%; width: 32%; aspect-ratio: 1; }
-.node-operation { left: 84%; top: 52.8%; width: 24%; aspect-ratio: 1; }
-.node-knowledge { left: 52.5%; top: 90.5%; width: 26%; aspect-ratio: 1; }
+.node-aigc { --building-scale: .8; --building-hover-scale: .88; left: 15%; top: 73.7%; width: 24%; aspect-ratio: 1; }
+.node-website { --building-scale: .6; --building-hover-scale: .66; left: 52%; top: 51.8%; width: 32%; aspect-ratio: 1; }
+.node-operation { --building-scale: .8; --building-hover-scale: .88; left: 84%; top: 52.8%; width: 24%; aspect-ratio: 1; }
+.node-knowledge { --building-scale: .8; --building-hover-scale: .88; left: 52.5%; top: 90.5%; width: 26%; aspect-ratio: 1; }
 
 .building-visual {
   width: 100%;
@@ -1385,7 +1387,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   display: block;
   object-fit: contain;
   filter: drop-shadow(0 12px 11px rgba(44, 85, 73, .105));
-  transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(var(--building-scale));
   transform-origin: 50% 68%;
   transition: transform .42s cubic-bezier(.2, .82, .25, 1), filter .42s ease;
   user-select: none;
@@ -1401,7 +1403,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .building-node:hover .building-visual img,
 .building-node.hovered .building-visual img {
   filter: drop-shadow(0 17px 14px rgba(34, 102, 81, .16));
-  transform: translate3d(0, -4px, 0) scale(1.1);
+  transform: translate3d(0, -4px, 0) scale(var(--building-hover-scale));
 }
 
 .building-activation-ring {
@@ -1414,7 +1416,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   border: 1.5px solid rgba(46, 184, 145, .48);
   border-radius: 50%;
   box-shadow: 0 0 16px rgba(56, 190, 153, .14), inset 0 0 14px rgba(65, 199, 161, .06);
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(var(--building-scale));
   pointer-events: none;
 }
 .building-activation-ring::before,
