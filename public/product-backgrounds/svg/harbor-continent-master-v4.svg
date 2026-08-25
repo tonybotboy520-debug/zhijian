@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 912" preserveAspectRatio="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" preserveAspectRatio="none">
   <defs>
     <radialGradient id="edge-fade" cx="50%" cy="49%" r="64%">
       <stop offset="0" stop-color="white"/>
@@ -7,8 +7,8 @@
       <stop offset="1" stop-color="black"/>
     </radialGradient>
     <mask id="edge-mask">
-      <rect width="1536" height="912" fill="url(#edge-fade)"/>
+      <rect width="1536" height="1024" fill="url(#edge-fade)"/>
     </mask>
   </defs>
-  <image href="../source/harbor-master-v1.avif" width="1536" height="912" preserveAspectRatio="none" mask="url(#edge-mask)"/>
+  <image href="../source/harbor-continent-master-v4.avif" width="1536" height="1024" preserveAspectRatio="none" mask="url(#edge-mask)"/>
 </svg>

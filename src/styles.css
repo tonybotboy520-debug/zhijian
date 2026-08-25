@@ -1280,8 +1280,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .harbor-master-base {
-  opacity: .27;
-  filter: blur(1.8px) saturate(.52) contrast(.84) brightness(1.13);
+  opacity: .31;
+  filter: blur(1.1px) saturate(.58) contrast(.88) brightness(1.1);
   transition: opacity .45s ease, filter .5s ease;
 }
 
@@ -1292,8 +1292,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .harbor-map.has-hover .harbor-master-base {
-  opacity: .2;
-  filter: blur(2.3px) saturate(.44) contrast(.84) brightness(1.15);
+  opacity: .18;
+  filter: blur(2.1px) saturate(.44) contrast(.84) brightness(1.15);
 }
 
 .harbor-master-region.highlighted {
