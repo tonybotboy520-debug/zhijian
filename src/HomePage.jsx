@@ -69,22 +69,22 @@ const PRODUCT_CATALOG = {
 
 const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
-const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-forest-roads-master-v5.avif";
+const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-city-islands-master-v10.avif";
 
 const PRIMARY_ROUTES = [
-  { id: "geo-website", from: "geo", to: "website", d: "M 268 309 C 365 310 428 350 493 380", duration: 2.8 },
-  { id: "aigc-website", from: "aigc", to: "website", d: "M 333 525 C 405 523 458 466 501 431", duration: 3.1 },
-  { id: "website-operation", from: "website", to: "operation", d: "M 741 405 C 790 405 829 408 867 413", duration: 2.5 },
+  { id: "geo-website", from: "geo", to: "website", d: "M 315 300 C 390 300 440 345 500 365", duration: 2.8 },
+  { id: "aigc-website", from: "aigc", to: "website", d: "M 340 500 C 410 490 450 420 500 385", duration: 3.1 },
+  { id: "website-operation", from: "website", to: "operation", d: "M 700 385 C 780 385 830 390 875 392", duration: 2.5 },
 ];
 
 const SUPPORT_ROUTES = [
-  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 540 142 C 425 156 335 211 287 256", duration: 4.4 },
-  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 187 C 610 218 610 248 610 280", duration: 3.7 },
-  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 684 146 C 787 175 872 246 914 321", duration: 4.8 },
-  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 533 585 C 427 548 341 447 286 390", duration: 5.2 },
-  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 519 625 C 438 625 371 587 326 562", duration: 4.7 },
-  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 620 548 C 620 526 620 510 620 494", duration: 4.1 },
-  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 708 588 C 798 559 859 511 901 475", duration: 5 },
+  { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 545 145 C 430 155 330 210 285 260", duration: 4.4 },
+  { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 185 C 610 230 605 280 600 320", duration: 3.7 },
+  { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 675 150 C 780 180 865 250 910 330", duration: 4.8 },
+  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 545 565 C 435 540 340 445 285 350", duration: 5.2 },
+  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 525 610 C 440 600 370 550 320 520", duration: 4.7 },
+  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 610 550 C 610 515 610 470 610 425", duration: 4.1 },
+  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 705 570 C 800 540 860 485 905 430", duration: 5 },
 ];
 
 function HeaderActions({ notify }) {
@@ -233,10 +233,10 @@ function HarborScenery({ hoveredProduct, onHover }) {
   return <div className="harbor-scenery-layer" aria-label="同一张港湾母图的产品背景分区">
     <svg className="harbor-master-scenery" viewBox="0 0 1180 700" preserveAspectRatio="none" aria-hidden="true">
       <defs>
-        <radialGradient id="harbor-master-edge-fade" cx="50%" cy="49%" r="64%">
+        <radialGradient id="harbor-master-edge-fade" cx="50%" cy="49%" r="60%">
           <stop offset="0" stopColor="white" />
-          <stop offset=".62" stopColor="white" stopOpacity=".98" />
-          <stop offset=".84" stopColor="white" stopOpacity=".58" />
+          <stop offset=".66" stopColor="white" stopOpacity=".98" />
+          <stop offset=".82" stopColor="white" stopOpacity=".5" />
           <stop offset="1" stopColor="black" />
         </radialGradient>
         <mask id="harbor-master-edge-mask">
