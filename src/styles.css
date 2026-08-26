@@ -1617,6 +1617,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   transform-origin: 50% 68%;
   transition: transform .42s cubic-bezier(.2, .82, .25, 1), filter .42s ease;
   user-select: none;
+  will-change: transform, filter;
 }
 
 .building-node:hover,
@@ -1628,8 +1629,13 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 .building-node:hover .building-visual img,
 .building-node.hovered .building-visual img {
-  filter: drop-shadow(0 17px 14px rgba(34, 102, 81, .16));
+  filter:
+    drop-shadow(0 0 1.5px rgba(241, 255, 251, .98))
+    drop-shadow(0 0 7px rgba(80, 224, 184, .78))
+    drop-shadow(0 0 18px rgba(45, 185, 147, .42))
+    drop-shadow(0 17px 14px rgba(34, 102, 81, .18));
   transform: translate3d(0, -4px, 0) scale(var(--building-hover-scale));
+  animation: harbor-icon-glow 1.8s ease-in-out infinite;
 }
 
 .building-activation-ring {
@@ -1873,6 +1879,22 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   0%, 100% { opacity: 0; transform: translateY(4px) scale(.7); }
   45% { opacity: 1; transform: translateY(-4px) scale(1.1); }
 }
+@keyframes harbor-icon-glow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 1.5px rgba(241, 255, 251, .94))
+      drop-shadow(0 0 6px rgba(80, 224, 184, .68))
+      drop-shadow(0 0 15px rgba(45, 185, 147, .34))
+      drop-shadow(0 17px 14px rgba(34, 102, 81, .18));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 2px rgba(247, 255, 253, 1))
+      drop-shadow(0 0 10px rgba(97, 237, 197, .88))
+      drop-shadow(0 0 24px rgba(45, 185, 147, .5))
+      drop-shadow(0 18px 15px rgba(34, 102, 81, .2));
+  }
+}
 
 @media (max-width: 1220px) {
   .harbor-map { width: 1080px; height: 640px; min-height: 640px; }
@@ -1898,7 +1920,9 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   .building-node:hover .building-ripple,
   .building-node.hovered .building-ripple,
   .building-node:hover .building-spark,
-  .building-node.hovered .building-spark { animation: none; }
+  .building-node.hovered .building-spark,
+  .building-node:hover .building-visual img,
+  .building-node.hovered .building-visual img { animation: none; }
   .harbor-route-particle { display: none; }
   .building-visual img,
   .building-node { transition: none; }

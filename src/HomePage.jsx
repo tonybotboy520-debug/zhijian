@@ -69,7 +69,7 @@ const PRODUCT_CATALOG = {
 
 const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
-const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-continent-master-v4.avif";
+const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-forest-roads-master-v5.avif";
 
 const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 268 309 C 365 310 428 350 493 380", duration: 2.8 },
