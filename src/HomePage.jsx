@@ -317,6 +317,7 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
     <button className="building-visual" aria-label={`查看${product.name}详情`} onClick={() => onOpen(productKey)}>
       <img src={product.building} alt={`${product.name}：${product.visualSummary}`} draggable="false" />
     </button>
+    {!opened ? <img className="building-lock" src="/product-buildings/product-lock-v2.png" alt="" aria-hidden="true" draggable="false" /> : null}
     <div className="building-info-panel">
       <button className="building-info-open" onClick={() => onOpen(productKey)} aria-label={`打开${product.name}产品介绍`}>
         <span className="building-info-title"><strong>{product.name}</strong><span className={`card-product-status ${opened ? "active" : "inactive"}`}><i />{opened ? "已开通" : "未开通"}</span></span>

@@ -1741,6 +1741,51 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 .node-website .building-info-panel,
 .node-website .building-capability-chip { pointer-events: auto; }
+
+.building-node.closed .building-visual img {
+  filter:
+    grayscale(1)
+    saturate(0)
+    contrast(.9)
+    brightness(.98)
+    opacity(.82)
+    drop-shadow(0 12px 11px rgba(69, 77, 75, .11));
+}
+.building-node.closed:hover .building-visual img,
+.building-node.closed.hovered .building-visual img {
+  animation: none;
+  filter:
+    grayscale(1)
+    saturate(0)
+    contrast(.94)
+    brightness(1.02)
+    opacity(.88)
+    drop-shadow(0 0 2px rgba(255, 255, 255, .96))
+    drop-shadow(0 0 11px rgba(102, 111, 108, .25))
+    drop-shadow(0 16px 13px rgba(66, 76, 73, .15));
+}
+.building-lock {
+  width: 19%;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 53%;
+  z-index: 6;
+  object-fit: contain;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 0 2px rgba(255, 255, 255, .96))
+    drop-shadow(0 5px 7px rgba(55, 64, 62, .27));
+  transform: translate(-50%, -50%);
+  transition: transform .34s cubic-bezier(.2, .82, .25, 1), filter .34s ease;
+}
+.building-node.closed:hover .building-lock,
+.building-node.closed.hovered .building-lock {
+  filter:
+    drop-shadow(0 0 2px rgba(255, 255, 255, 1))
+    drop-shadow(0 7px 9px rgba(47, 56, 53, .33));
+  transform: translate(-50%, -50%) translateY(-3px) scale(1.08);
+}
 .building-node:hover .building-info-panel,
 .building-node.hovered .building-info-panel {
   border-color: rgba(54, 158, 129, .55);
