@@ -1739,8 +1739,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .node-website.hovered .building-visual img {
   transform: translate3d(0, -4px, 0) scale(.943);
 }
-.node-website .building-info-panel,
-.node-website .building-capability-chip { pointer-events: auto; }
+.node-website .building-info-panel { pointer-events: auto; }
 
 .building-node.closed .building-visual img {
   filter:
@@ -1867,27 +1866,6 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   box-shadow: none;
 }
 .card-status-action.activate:hover { color: #fff; background: #158f72; }
-
-.building-capability-chip {
-  min-height: 25px;
-  position: absolute;
-  left: 50%;
-  top: 96%;
-  z-index: 7;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  color: #3f7465;
-  background: rgba(255, 255, 255, .86);
-  border: 1px solid rgba(116, 177, 159, .35);
-  border-radius: 99px;
-  box-shadow: 0 5px 14px rgba(39, 87, 73, .055);
-  backdrop-filter: blur(8px);
-  font-size: 8.5px;
-  white-space: nowrap;
-  transform: translateX(-50%);
-}
 
 .harbor-route-caption {
   position: absolute;

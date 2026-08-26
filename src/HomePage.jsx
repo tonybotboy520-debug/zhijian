@@ -325,7 +325,6 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
       </button>
       {!opened ? <button className="card-status-action activate" onClick={() => onActivate(productKey)}>开通</button> : null}
     </div>
-    {productKey === "website" ? <span className="building-capability-chip">承接流量 · 建立信任 · 促进转化</span> : null}
   </article>;
 }
 
