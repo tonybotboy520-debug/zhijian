@@ -1569,6 +1569,9 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .building-node {
   --building-scale: .6;
   --building-hover-scale: .66;
+  --platform-ring-width: 55%;
+  --platform-ring-height: 16%;
+  --platform-ring-top: 76%;
   position: absolute;
   z-index: 4;
   display: grid;
@@ -1583,10 +1586,10 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-map.has-hover .building-node:not(.hovered) { opacity: .68; filter: saturate(.74); }
 .node-diagnosis { left: 52%; top: 12%; width: 17.2%; aspect-ratio: 1; }
 .node-geo { left: 20%; top: 32%; width: 20.5%; aspect-ratio: 1; }
-.node-aigc { --building-scale: .48; --building-hover-scale: .528; left: 20%; top: 63.5%; width: 24%; aspect-ratio: 1; }
-.node-website { --building-scale: .36; --building-hover-scale: .396; left: 50%; top: 45.5%; width: 32%; aspect-ratio: 1; }
-.node-operation { --building-scale: .48; --building-hover-scale: .528; left: 80%; top: 47%; width: 24%; aspect-ratio: 1; }
-.node-knowledge { --building-scale: .48; --building-hover-scale: .528; left: 52%; top: 79%; width: 26%; aspect-ratio: 1; }
+.node-aigc { --building-scale: .48; --building-hover-scale: .528; --platform-ring-width: 54%; --platform-ring-height: 17%; --platform-ring-top: 68%; left: 20%; top: 63.5%; width: 24%; aspect-ratio: 1; }
+.node-website { --building-scale: .36; --building-hover-scale: .396; --platform-ring-width: 34%; --platform-ring-height: 11%; --platform-ring-top: 59%; left: 50%; top: 45.5%; width: 32%; aspect-ratio: 1; }
+.node-operation { --building-scale: .48; --building-hover-scale: .528; --platform-ring-width: 54%; --platform-ring-height: 17%; --platform-ring-top: 70%; left: 80%; top: 47%; width: 24%; aspect-ratio: 1; }
+.node-knowledge { --building-scale: .48; --building-hover-scale: .528; --platform-ring-width: 55%; --platform-ring-height: 15%; --platform-ring-top: 67%; left: 52%; top: 79%; width: 26%; aspect-ratio: 1; }
 
 .building-visual {
   width: 100%;
@@ -1635,31 +1638,53 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .building-activation-ring {
-  width: 92%;
-  height: 34%;
+  width: var(--platform-ring-width);
+  height: var(--platform-ring-height);
   position: absolute;
   left: 50%;
-  bottom: 9%;
+  top: var(--platform-ring-top);
   z-index: 1;
-  border: 1.5px solid rgba(46, 184, 145, .48);
+  border: 1.25px solid rgba(46, 184, 145, .42);
   border-radius: 50%;
-  box-shadow: 0 0 16px rgba(56, 190, 153, .14), inset 0 0 14px rgba(65, 199, 161, .06);
-  transform: translateX(-50%) scale(var(--building-scale));
+  background: radial-gradient(ellipse, rgba(97, 215, 180, .08), rgba(97, 215, 180, 0) 67%);
+  box-shadow: 0 0 13px rgba(56, 190, 153, .1), inset 0 0 10px rgba(65, 199, 161, .05);
+  transform: translate(-50%, -50%);
+  transition: border-color .3s ease, background .3s ease, box-shadow .3s ease, opacity .3s ease;
   pointer-events: none;
+}
+.building-activation-ring.inactive {
+  opacity: .44;
+  border-color: rgba(111, 134, 128, .34);
+  background: radial-gradient(ellipse, rgba(132, 148, 143, .06), rgba(132, 148, 143, 0) 67%);
+  box-shadow: 0 0 10px rgba(91, 112, 106, .07);
+}
+.building-node.hovered .building-activation-ring {
+  opacity: 1;
+  border-color: rgba(46, 184, 145, .56);
+  background: radial-gradient(ellipse, rgba(97, 227, 190, .13), rgba(97, 215, 180, 0) 69%);
+  box-shadow: 0 0 19px rgba(46, 184, 145, .18), inset 0 0 12px rgba(65, 199, 161, .08);
 }
 .building-activation-ring::before,
 .building-activation-ring::after,
 .building-activation-ring i {
   content: "";
   position: absolute;
-  inset: -10%;
-  border: 1px solid rgba(49, 183, 146, .28);
+  inset: 0;
+  opacity: 0;
+  border: 1.15px solid rgba(46, 184, 145, .54);
   border-radius: 50%;
-  animation: harbor-activation-ring 3.2s ease-out infinite;
+  transform: scale(.12);
+  transform-origin: center;
+  will-change: transform, opacity;
 }
-.building-activation-ring::after { animation-delay: -1.55s; }
-.building-activation-ring i:first-child { inset: 18%; border-color: rgba(44, 169, 135, .3); animation-delay: -.8s; }
-.building-activation-ring i:last-child { inset: -26%; border-color: rgba(63, 183, 151, .13); animation-delay: -2.25s; }
+.building-node.hovered .building-activation-ring::before,
+.building-node.hovered .building-activation-ring::after,
+.building-node.hovered .building-activation-ring i {
+  animation: harbor-platform-ripple 2.35s cubic-bezier(.18, .7, .25, 1) infinite;
+}
+.building-node.hovered .building-activation-ring::after { animation-delay: .42s; }
+.building-node.hovered .building-activation-ring i:first-child { animation-delay: .84s; }
+.building-node.hovered .building-activation-ring i:last-child { animation-delay: 1.26s; }
 
 .building-info-panel {
   min-width: 132px;
@@ -1892,11 +1917,11 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   28% { opacity: .82; }
   100% { opacity: 0; transform: scale(1.18); }
 }
-@keyframes harbor-activation-ring {
-  0% { opacity: 0; transform: scale(.72); }
-  20% { opacity: .62; }
-  76% { opacity: .18; }
-  100% { opacity: 0; transform: scale(1.32); }
+@keyframes harbor-platform-ripple {
+  0% { opacity: 0; transform: scale(.12); }
+  14% { opacity: .7; }
+  58% { opacity: .28; }
+  100% { opacity: 0; transform: scale(1.72); }
 }
 @keyframes harbor-ripple {
   0% { opacity: 0; transform: scale(.7); }

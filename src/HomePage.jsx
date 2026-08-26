@@ -294,7 +294,7 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
   return <article
     className={`building-node node-${productKey} ${opened ? "opened" : "closed"} ${hovered ? "hovered" : ""}`}
   >
-    {opened ? <span className="building-activation-ring" aria-hidden="true"><i /><i /></span> : null}
+    <span className={`building-activation-ring ${opened ? "active" : "inactive"}`} aria-hidden="true"><i /><i /></span>
     <button
       className="building-visual"
       aria-label={`查看${product.name}详情`}
