@@ -1316,8 +1316,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .harbor-master-region.highlighted {
-  opacity: .86;
-  filter: saturate(.9) contrast(1.025) brightness(1.015);
+  opacity: .6;
+  filter: saturate(.78) contrast(1) brightness(1.025);
 }
 
 .harbor-scenery-focus {
