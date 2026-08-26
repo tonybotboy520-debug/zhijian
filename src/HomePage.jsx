@@ -95,14 +95,9 @@ function HeaderActions({ notify }) {
   </div>;
 }
 
-function HarborEnvironment({ hoveredProduct, onHover }) {
+function HarborEnvironment({ hoveredProduct }) {
   const regionProps = (productKey) => ({
     className: `harbor-background-region region-${productKey} ${hoveredProduct === productKey ? "highlighted" : ""}`,
-    onPointerEnter: () => onHover(productKey),
-    onPointerLeave: () => onHover(null),
-    onFocus: () => onHover(productKey),
-    onBlur: () => onHover(null),
-    tabIndex: 0,
     role: "img",
     "aria-label": `${PRODUCT_CATALOG[productKey].name}背景分区`,
   });
@@ -220,7 +215,7 @@ function HarborEnvironment({ hoveredProduct, onHover }) {
   </svg>;
 }
 
-function HarborScenery({ hoveredProduct, onHover }) {
+function HarborScenery({ hoveredProduct }) {
   const regionShapes = {
     diagnosis: <path d="M 318 -18 H 932 L 884 236 C 802 284 704 278 615 248 C 519 285 401 263 325 215 Z" />,
     geo: <path d="M -35 -18 H 391 L 440 203 C 423 325 349 421 223 458 L -35 409 Z" />,
@@ -262,16 +257,6 @@ function HarborScenery({ hoveredProduct, onHover }) {
       </g>
     </svg>
     <span className={`harbor-scenery-focus ${hoveredProduct ? `focus-${hoveredProduct}` : ""}`} aria-hidden="true" />
-    {VISIBLE_PRODUCT_KEYS.map((productKey) => <button
-      className={`harbor-scenery-hit hit-${productKey}`}
-      key={`hit-${productKey}`}
-      type="button"
-      aria-label={`查看${PRODUCT_CATALOG[productKey].name}港湾风景`}
-      onPointerEnter={() => onHover(productKey)}
-      onPointerLeave={() => onHover(null)}
-      onFocus={() => onHover(productKey)}
-      onBlur={() => onHover(null)}
-    />)}
   </div>;
 }
 
@@ -308,14 +293,22 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
   const product = PRODUCT_CATALOG[productKey];
   return <article
     className={`building-node node-${productKey} ${opened ? "opened" : "closed"} ${hovered ? "hovered" : ""}`}
-    onMouseEnter={() => onHover(productKey)}
-    onMouseLeave={() => onHover(null)}
-    onFocus={() => onHover(productKey)}
-    onBlur={() => onHover(null)}
   >
     {opened ? <span className="building-activation-ring" aria-hidden="true"><i /><i /></span> : null}
-    <button className="building-visual" aria-label={`查看${product.name}详情`} onClick={() => onOpen(productKey)}>
-      <img src={product.building} alt={`${product.name}：${product.visualSummary}`} draggable="false" />
+    <button
+      className="building-visual"
+      aria-label={`查看${product.name}详情`}
+      onClick={() => onOpen(productKey)}
+      onFocus={() => onHover(productKey)}
+      onBlur={() => onHover(null)}
+    >
+      <img
+        src={product.building}
+        alt={`${product.name}：${product.visualSummary}`}
+        draggable="false"
+        onMouseEnter={() => onHover(productKey)}
+        onMouseLeave={() => onHover(null)}
+      />
     </button>
     {!opened ? <img className="building-lock" src="/product-buildings/product-lock-v2.png" alt="" aria-hidden="true" draggable="false" /> : null}
     <div className="building-info-panel">
@@ -380,7 +373,7 @@ export function HomePage({ notify, onNavigate }) {
 
       <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
         <div className="harbor-map-summary"><span><i />{openedCount}/{VISIBLE_PRODUCT_KEYS.length} 个产品已激活</span><strong>{progress}%</strong></div>
-        <HarborScenery hoveredProduct={hoveredProduct} onHover={setHoveredProduct} />
+        <HarborScenery hoveredProduct={hoveredProduct} />
         <FlowNetwork hoveredProduct={hoveredProduct} />
         {VISIBLE_PRODUCT_KEYS.map((productKey) => <BuildingNode
           key={productKey}

@@ -1348,28 +1348,6 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-scenery-focus.focus-operation { left: 80%; top: 54%; }
 .harbor-scenery-focus.focus-knowledge { left: 52%; top: 84%; }
 
-.harbor-scenery-hit {
-  position: absolute;
-  z-index: 2;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  border-radius: 50%;
-  outline: none;
-  cursor: default;
-}
-
-.harbor-scenery-hit:focus-visible {
-  box-shadow: 0 0 0 2px rgba(34, 160, 126, .32), 0 0 0 6px rgba(34, 160, 126, .08);
-}
-
-.hit-diagnosis { left: 30%; top: 1%; width: 43%; height: 31%; }
-.hit-geo { left: 0; top: 20%; width: 37%; height: 38%; }
-.hit-aigc { left: 0; top: 52%; width: 37%; height: 48%; }
-.hit-website { left: 41%; top: 36%; width: 18%; height: 31%; }
-.hit-operation { left: 68%; top: 22%; width: 32%; height: 56%; }
-.hit-knowledge { left: 31%; top: 70%; width: 42%; height: 30%; }
-
 .harbor-environment path,
 .harbor-environment ellipse,
 .harbor-environment circle {
@@ -1621,6 +1599,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   border: 0;
   cursor: pointer;
   overflow: visible;
+  pointer-events: none;
 }
 
 .building-visual img {
@@ -1635,18 +1614,16 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   transform: translate3d(0, 0, 0) scale(var(--building-scale));
   transform-origin: 50% 68%;
   transition: transform .42s cubic-bezier(.2, .82, .25, 1), filter .42s ease;
+  pointer-events: auto;
   user-select: none;
   will-change: transform, filter;
 }
 
-.building-node:hover,
 .building-node.hovered {
   z-index: 8;
   opacity: 1 !important;
   filter: none !important;
-  transform: translate(-50%, -50%) translateY(-5px);
 }
-.building-node:hover .building-visual img,
 .building-node.hovered .building-visual img {
   filter:
     drop-shadow(0 0 1.5px rgba(241, 255, 251, .98))
@@ -1735,7 +1712,6 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   pointer-events: auto;
   transform: translate3d(0, 0, 0) scale(.857);
 }
-.node-website:hover .building-visual img,
 .node-website.hovered .building-visual img {
   transform: translate3d(0, -4px, 0) scale(.943);
 }
@@ -1750,7 +1726,6 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
     opacity(.82)
     drop-shadow(0 12px 11px rgba(69, 77, 75, .11));
 }
-.building-node.closed:hover .building-visual img,
 .building-node.closed.hovered .building-visual img {
   animation: none;
   filter:
@@ -1778,20 +1753,12 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   transform: translate(-50%, -50%);
   transition: transform .34s cubic-bezier(.2, .82, .25, 1), filter .34s ease;
 }
-.building-node.closed:hover .building-lock,
 .building-node.closed.hovered .building-lock {
   filter:
     drop-shadow(0 0 2px rgba(255, 255, 255, 1))
     drop-shadow(0 7px 9px rgba(47, 56, 53, .33));
   transform: translate(-50%, -50%) translateY(-3px) scale(1.08);
 }
-.building-node:hover .building-info-panel,
-.building-node.hovered .building-info-panel {
-  border-color: rgba(54, 158, 129, .55);
-  box-shadow: 0 12px 26px rgba(35, 100, 81, .12);
-  transform: translateY(-2px);
-}
-
 .building-info-open {
   min-width: 0;
   flex: 1;
@@ -1978,11 +1945,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   .building-activation-ring::before,
   .building-activation-ring::after,
   .building-activation-ring i,
-  .building-node:hover .building-ripple,
   .building-node.hovered .building-ripple,
-  .building-node:hover .building-spark,
   .building-node.hovered .building-spark,
-  .building-node:hover .building-visual img,
   .building-node.hovered .building-visual img { animation: none; }
   .harbor-route-particle { display: none; }
   .building-visual img,
