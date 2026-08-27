@@ -1553,7 +1553,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   filter: url(#harbor-primary-route-glow);
 }
 .harbor-route.primary .harbor-route-base {
-  stroke: rgba(241, 255, 251, .96);
+  stroke: #67f5c9;
   stroke-width: 4;
   filter: url(#harbor-primary-route-glow);
 }

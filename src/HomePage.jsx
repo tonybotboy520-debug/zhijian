@@ -438,7 +438,7 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
         <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
       </filter>
       <marker id="harbor-primary-arrow" viewBox="0 0 30 30" refX="27" refY="15" markerWidth="34" markerHeight="34" orient="auto" markerUnits="userSpaceOnUse" overflow="visible">
-        <path d="M 4 3 L 27 15 L 4 27" fill="none" stroke="#67f5c9" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M 4 3 L 27 15 L 4 27" fill="none" stroke="#f1fffb" strokeOpacity=".96" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
       </marker>
       <marker id="harbor-support-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
         <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#6eaa98" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
