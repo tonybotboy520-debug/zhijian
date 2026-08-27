@@ -75,7 +75,7 @@ const PRODUCT_CATALOG = {
 
 const DEFAULT_OPENED = ["diagnosis", "geo", "website", "knowledge"];
 const VISIBLE_PRODUCT_KEYS = ["diagnosis", "geo", "aigc", "website", "operation", "knowledge"];
-const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-city-islands-master-v11.avif";
+const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-city-islands-master-v12-clearings.avif";
 
 const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 315 300 C 390 300 440 345 500 365", duration: 2.8 },
