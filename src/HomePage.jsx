@@ -493,7 +493,9 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
       onFocus={() => onHover(productKey)}
       onBlur={() => onHover(null)}
     >
+      <img className="building-white-fill" src={product.building} alt="" aria-hidden="true" draggable="false" />
       <img
+        className="building-art"
         src={product.building}
         alt={`${product.name}：${product.visualSummary}`}
         draggable="false"
@@ -566,6 +568,13 @@ export function HomePage({ notify, onNavigate }) {
   };
 
   return <section className="home-shell light only-light harbor-home">
+    <svg className="building-filter-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="harbor-building-white-fill" x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
+          <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 12 -0.35" />
+        </filter>
+      </defs>
+    </svg>
     <header className="home-topbar"><div className="home-crumb"><Sparkle size={15} weight="fill" />AI 营销全景</div><HeaderActions notify={notify} /></header>
     <div className="home-scroll">
       <div className="home-hero harbor-hero">

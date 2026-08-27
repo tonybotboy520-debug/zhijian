@@ -1657,21 +1657,31 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   pointer-events: none;
 }
 
-.building-visual img {
+.building-visual .building-art,
+.building-visual .building-white-fill {
   width: 100%;
   height: 100%;
   position: absolute;
   inset: 0;
-  z-index: 2;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 12px 11px rgba(44, 85, 73, .105));
   transform: translate3d(0, 0, 0) scale(var(--building-scale));
   transform-origin: 50% 68%;
   transition: transform .42s cubic-bezier(.2, .82, .25, 1), filter .42s ease;
-  pointer-events: auto;
   user-select: none;
   will-change: transform, filter;
+}
+
+.building-visual .building-white-fill {
+  z-index: 1;
+  filter: url(#harbor-building-white-fill);
+  pointer-events: none;
+}
+
+.building-visual .building-art {
+  z-index: 2;
+  filter: drop-shadow(0 12px 11px rgba(44, 85, 73, .105));
+  pointer-events: auto;
 }
 
 .building-node.hovered {
@@ -1679,15 +1689,19 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   opacity: 1 !important;
   filter: none !important;
 }
-.building-node.hovered .building-visual img {
+.building-node.hovered .building-visual .building-art,
+.building-node.hovered .building-visual .building-white-fill {
+  transform: translate3d(0, -4px, 0) scale(var(--building-hover-scale));
+}
+.building-node.hovered .building-visual .building-art {
   filter:
     drop-shadow(0 0 1.5px rgba(241, 255, 251, .98))
     drop-shadow(0 0 7px rgba(80, 224, 184, .78))
     drop-shadow(0 0 18px rgba(45, 185, 147, .42))
     drop-shadow(0 17px 14px rgba(34, 102, 81, .18));
-  transform: translate3d(0, -4px, 0) scale(var(--building-hover-scale));
   animation: harbor-icon-glow 1.8s ease-in-out infinite;
 }
+.building-node.hovered .building-visual .building-white-fill { filter: url(#harbor-building-white-fill); }
 
 .building-activation-ring {
   width: var(--platform-ring-width);
@@ -1774,19 +1788,21 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 
 .node-website { pointer-events: none; }
 .node-website .building-visual { pointer-events: none; }
-.node-website .building-visual img {
+.node-website .building-visual .building-art,
+.node-website .building-visual .building-white-fill {
   width: 42%;
   height: 42%;
   inset: 29%;
   pointer-events: auto;
   transform: translate3d(0, 0, 0) scale(.857);
 }
-.node-website.hovered .building-visual img {
+.node-website.hovered .building-visual .building-art,
+.node-website.hovered .building-visual .building-white-fill {
   transform: translate3d(0, -4px, 0) scale(.943);
 }
 .node-website .building-info-panel { pointer-events: auto; }
 
-.building-node.closed .building-visual img {
+.building-node.closed .building-visual .building-art {
   filter:
     grayscale(1)
     saturate(0)
@@ -1795,7 +1811,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
     opacity(.82)
     drop-shadow(0 12px 11px rgba(69, 77, 75, .11));
 }
-.building-node.closed.hovered .building-visual img {
+.building-node.closed.hovered .building-visual .building-art {
   animation: none;
   filter:
     grayscale(1)
@@ -1812,21 +1828,25 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   height: auto;
   position: absolute;
   left: 50%;
-  top: 53%;
+  top: 59%;
   z-index: 6;
   object-fit: contain;
   pointer-events: none;
   filter:
-    drop-shadow(0 0 2px rgba(255, 255, 255, .96))
+    drop-shadow(0 0 1px rgba(255, 255, 255, 1))
+    drop-shadow(0 0 5px rgba(255, 255, 255, .88))
+    drop-shadow(0 0 10px rgba(255, 255, 255, .42))
     drop-shadow(0 5px 7px rgba(55, 64, 62, .27));
   transform: translate(-50%, -50%);
   transition: transform .34s cubic-bezier(.2, .82, .25, 1), filter .34s ease;
 }
 .building-node.closed.hovered .building-lock {
   filter:
-    drop-shadow(0 0 2px rgba(255, 255, 255, 1))
+    drop-shadow(0 0 1px rgba(255, 255, 255, 1))
+    drop-shadow(0 0 6px rgba(255, 255, 255, .96))
+    drop-shadow(0 0 12px rgba(255, 255, 255, .5))
     drop-shadow(0 7px 9px rgba(47, 56, 53, .33));
-  transform: translate(-50%, -50%) translateY(-3px) scale(1.08);
+  transform: translate(-50%, -50%) translateY(-1px) scale(1.08);
 }
 .building-info-open {
   min-width: 0;
@@ -2212,12 +2232,13 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   .building-activation-ring i,
   .building-node.hovered .building-ripple,
   .building-node.hovered .building-spark,
-  .building-node.hovered .building-visual img { animation: none; }
+  .building-node.hovered .building-visual .building-art { animation: none; }
   .route-hover-card,
   .route-name-label,
   .typewriter-caret { animation: none; }
   .harbor-route-particle,
   .harbor-traffic-person { display: none; }
-  .building-visual img,
+  .building-visual .building-art,
+  .building-visual .building-white-fill,
   .building-node { transition: none; }
 }
