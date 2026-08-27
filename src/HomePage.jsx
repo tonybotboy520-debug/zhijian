@@ -75,6 +75,8 @@ const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 315 300 C 390 300 440 345 500 365", duration: 2.8 },
   { id: "aigc-website", from: "aigc", to: "website", d: "M 340 500 C 410 490 450 420 500 385", duration: 3.1 },
   { id: "website-operation", from: "website", to: "operation", d: "M 700 385 C 780 385 830 390 875 392", duration: 2.5 },
+  { id: "geo-operation", from: "geo", to: "operation", d: "M 315 280 C 470 220 745 245 885 350", duration: 3.7 },
+  { id: "aigc-operation", from: "aigc", to: "operation", d: "M 340 510 C 500 545 735 535 885 420", duration: 3.9 },
 ];
 
 const SUPPORT_ROUTES = [
