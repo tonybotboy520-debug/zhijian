@@ -1741,7 +1741,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .node-diagnosis .building-info-panel { left: 87%; top: 29%; min-width: 190px; }
 .node-geo .building-info-panel { left: auto; right: 75%; top: 40%; }
 .node-aigc .building-info-panel { left: 12%; top: 85%; }
-.node-website .building-info-panel { left: 68%; top: 28%; min-width: 158px; }
+.node-website .building-info-panel { left: 68%; top: 35%; min-width: 158px; }
 .node-operation .building-info-panel { left: 57%; top: 78%; }
 .node-knowledge .building-info-panel { left: 82%; top: 55%; min-width: 178px; }
 .building-node.closed .building-info-panel { min-width: 190px; }
