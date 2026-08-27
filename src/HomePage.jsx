@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight, Bell, Brain, Buildings, CaretDown, Check, Database,
   GlobeHemisphereWest, HouseLine, Megaphone, Pulse, Sparkle, User, UsersThree, X,
@@ -553,8 +553,6 @@ export function HomePage({ notify, onNavigate }) {
   const [detailProduct, setDetailProduct] = useState(null);
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [hoveredRoute, setHoveredRoute] = useState(null);
-  const openedCount = openedProducts.size;
-  const progress = useMemo(() => Math.round(openedCount / VISIBLE_PRODUCT_KEYS.length * 100), [openedCount]);
 
   const activate = (productKey, enter = false) => {
     if (enter) {
@@ -576,7 +574,6 @@ export function HomePage({ notify, onNavigate }) {
       </div>
 
       <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""} ${hoveredRoute ? "has-route-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
-        <div className="harbor-map-summary"><span><i />{openedCount}/{VISIBLE_PRODUCT_KEYS.length} 个产品已激活</span><strong>{progress}%</strong></div>
         <HarborScenery hoveredProduct={hoveredProduct} />
         <FlowNetwork hoveredProduct={hoveredProduct} hoveredRoute={hoveredRoute} onRouteHover={setHoveredRoute} />
         <RouteNameLabels hoveredProduct={hoveredProduct} />
@@ -590,7 +587,6 @@ export function HomePage({ notify, onNavigate }) {
           onOpen={setDetailProduct}
           onActivate={activate}
         />)}
-        <div className="harbor-map-legend"><span><i className="main" />主要转化路径</span><span><i className="support" />知识与诊断支持</span></div>
       </div>
     </div>
     <DetailDrawer productKey={detailProduct} opened={detailProduct ? openedProducts.has(detailProduct) : false} onClose={() => setDetailProduct(null)} onActivate={activate} />
