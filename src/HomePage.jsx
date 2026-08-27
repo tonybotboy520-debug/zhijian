@@ -263,17 +263,25 @@ function HarborScenery({ hoveredProduct }) {
 }
 
 function FlowNetwork({ hoveredProduct }) {
+  const renderTrafficPerson = (route, begin, className = "") => <g className={`harbor-traffic-person ${className}`}>
+    <g className="harbor-traffic-person-glyph">
+      <circle className="harbor-traffic-person-head" cx="0" cy="-2.7" r="2.05" />
+      <path className="harbor-traffic-person-body" d="M -4.15 4.65 C -4.02 1.82 -2.4 .15 0 .15 C 2.4 .15 4.02 1.82 4.15 4.65 Z" />
+    </g>
+    <animateMotion dur={`${route.duration}s`} begin={`${begin}s`} repeatCount="indefinite" path={route.d} />
+  </g>;
+
   const renderRoute = (route, type, index) => {
     const highlighted = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
     return <g className={`harbor-route ${type} ${highlighted ? "highlighted" : ""}`} key={route.id}>
       <path className="harbor-route-base" d={route.d} markerEnd={`url(#harbor-${type}-arrow)`} />
       <path className="harbor-route-flow" d={route.d} pathLength="100" />
-      <circle className="harbor-route-particle" r={type === "primary" ? 4 : 2.6}>
+      {type === "primary" ? <>
+        {renderTrafficPerson(route, index * -.72)}
+        {renderTrafficPerson(route, index * -.72 - 1.35, "second")}
+      </> : <circle className="harbor-route-particle" r="2.6">
         <animateMotion dur={`${route.duration}s`} begin={`${index * -.72}s`} repeatCount="indefinite" path={route.d} />
-      </circle>
-      {type === "primary" ? <circle className="harbor-route-particle second" r="3">
-        <animateMotion dur={`${route.duration}s`} begin={`${index * -.72 - 1.35}s`} repeatCount="indefinite" path={route.d} />
-      </circle> : null}
+      </circle>}
     </g>;
   };
 
@@ -370,7 +378,6 @@ export function HomePage({ notify, onNavigate }) {
       <div className="home-hero harbor-hero">
         <h1>从全域触达，到持续转化</h1>
         <p>连接 AI 认知、内容获客、官网承接与公私域长期运营</p>
-        <button onClick={() => setDetailProduct("diagnosis")}><Pulse size={20} weight="duotone" />开始 AI 诊断</button>
       </div>
 
       <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
