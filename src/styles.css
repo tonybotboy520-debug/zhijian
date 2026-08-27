@@ -1610,13 +1610,20 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .harbor-route-hit {
   fill: none;
   stroke: transparent;
-  stroke-width: 14;
+  stroke-width: 22;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
   pointer-events: stroke;
   cursor: pointer;
   outline: none;
 }
-.harbor-route.primary .harbor-route-hit { stroke-width: 18; }
+.harbor-route.primary .harbor-route-hit { stroke-width: 30; }
+.harbor-route-end-hit {
+  fill: transparent;
+  pointer-events: fill;
+  cursor: pointer;
+}
 .harbor-route-hit:focus-visible { stroke: rgba(21, 143, 114, .13); }
 
 .harbor-map.has-hover .harbor-route:not(.highlighted) { opacity: .2; }

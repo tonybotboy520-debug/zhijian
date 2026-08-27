@@ -81,8 +81,8 @@ const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 315 300 C 390 300 440 345 500 365", duration: 2.8 },
   { id: "aigc-website", from: "aigc", to: "website", d: "M 340 500 C 410 490 450 420 500 385", duration: 3.1 },
   { id: "website-operation", from: "website", to: "operation", d: "M 700 385 C 780 385 830 390 875 392", duration: 2.5 },
-  { id: "geo-operation", from: "geo", to: "operation", d: "M 315 280 C 470 185 745 205 885 345", duration: 8.65 },
-  { id: "aigc-operation", from: "aigc", to: "operation", d: "M 340 510 C 500 545 735 535 885 420", duration: 8.8 },
+  { id: "geo-operation", from: "geo", to: "operation", d: "M 315 280 C 470 185 745 205 885 345", duration: 8.65, trafficGap: 2.7 },
+  { id: "aigc-operation", from: "aigc", to: "operation", d: "M 340 510 C 500 545 735 535 885 420", duration: 8.8, trafficGap: 2.7 },
 ];
 const TRAFFIC_PERSON_SPEED_FACTOR = 1.25;
 
@@ -407,7 +407,14 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
   const renderRoute = (route, type, index) => {
     const highlighted = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
     const routeHovered = hoveredRoute === route.id;
-    return <g className={`harbor-route ${type} ${highlighted ? "highlighted" : ""} ${routeHovered ? "route-hovered" : ""}`} key={route.id}>
+    const pathNumbers = route.d.match(/-?\d+(?:\.\d+)?/g).map(Number);
+    const [endX, endY] = pathNumbers.slice(-2);
+    return <g
+      className={`harbor-route ${type} ${highlighted ? "highlighted" : ""} ${routeHovered ? "route-hovered" : ""}`}
+      key={route.id}
+      onMouseEnter={() => onRouteHover(route.id)}
+      onMouseLeave={() => onRouteHover(null)}
+    >
       {type === "primary" ? <>
         <path className="harbor-route-aura" d={route.d} />
         <path className="harbor-route-halo" d={route.d} />
@@ -416,18 +423,17 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
       <path className="harbor-route-flow" d={route.d} pathLength="100" />
       {type === "primary" ? <>
         {renderTrafficPerson(route, index * -.72)}
-        {renderTrafficPerson(route, index * -.72 - 1.35, "second")}
+        {renderTrafficPerson(route, index * -.72 - (route.trafficGap ?? 1.35), "second")}
       </> : <circle className="harbor-route-particle" r="2.6">
         <animateMotion dur={`${route.duration}s`} begin={`${index * -.72}s`} repeatCount="indefinite" path={route.d} />
       </circle>}
+      <circle className="harbor-route-end-hit" cx={endX} cy={endY} r={type === "primary" ? 24 : 18} aria-hidden="true" />
       <path
         className="harbor-route-hit"
         d={route.d}
         tabIndex="0"
         role="img"
         aria-label={`${PRODUCT_CATALOG[route.from].name}到${PRODUCT_CATALOG[route.to].name}：${ROUTE_DETAILS[route.id].description}`}
-        onMouseEnter={() => onRouteHover(route.id)}
-        onMouseLeave={() => onRouteHover(null)}
         onFocus={() => onRouteHover(route.id)}
         onBlur={() => onRouteHover(null)}
       />
