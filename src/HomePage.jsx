@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight, Bell, Brain, Buildings, CaretDown, Check, Database,
-  GlobeHemisphereWest, HouseLine, Megaphone, Pulse, Sparkle, UsersThree, X,
+  GlobeHemisphereWest, HouseLine, Megaphone, Pulse, Sparkle, User, UsersThree, X,
 } from "@phosphor-icons/react";
 
 const PRODUCT_CATALOG = {
@@ -391,9 +391,9 @@ function RouteHoverCard({ route }) {
 function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
   const renderTrafficPerson = (route, begin, className = "") => <g className={`harbor-traffic-person ${className}`}>
     <g className="harbor-traffic-person-glyph">
-      <circle className="harbor-traffic-person-badge" cx="0" cy="0" r="8.2" />
-      <circle className="harbor-traffic-person-head" cx="0" cy="-2.85" r="1.9" />
-      <path className="harbor-traffic-person-body" d="M -4.15 5.2 C -4 1.92 -2.35 .08 0 .08 C 2.35 .08 4 1.92 4.15 5.2 Z" />
+      <circle className="harbor-traffic-person-glow" cx="0" cy="0" r="13" />
+      <circle className="harbor-traffic-person-badge" cx="0" cy="0" r="9.6" />
+      <User className="harbor-traffic-person-icon" x="-5.75" y="-5.75" size={11.5} weight="fill" aria-hidden="true" />
     </g>
     <animateMotion dur={`${route.duration}s`} begin={`${begin}s`} repeatCount="indefinite" path={route.d} />
   </g>;
@@ -402,6 +402,10 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
     const highlighted = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
     const routeHovered = hoveredRoute === route.id;
     return <g className={`harbor-route ${type} ${highlighted ? "highlighted" : ""} ${routeHovered ? "route-hovered" : ""}`} key={route.id}>
+      {type === "primary" ? <>
+        <path className="harbor-route-aura" d={route.d} />
+        <path className="harbor-route-halo" d={route.d} />
+      </> : null}
       <path className="harbor-route-base" d={route.d} markerEnd={`url(#harbor-${type}-arrow)`} />
       <path className="harbor-route-flow" d={route.d} pathLength="100" />
       {type === "primary" ? <>
@@ -426,8 +430,15 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
 
   return <svg className="harbor-flow-network" viewBox="0 0 1180 700" preserveAspectRatio="none" aria-hidden="true">
     <defs>
-      <marker id="harbor-primary-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-        <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#158f72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <filter id="harbor-primary-route-soft-glow" x="-30%" y="-70%" width="160%" height="240%">
+        <feGaussianBlur stdDeviation="7" />
+      </filter>
+      <filter id="harbor-primary-route-glow" x="-30%" y="-80%" width="160%" height="260%">
+        <feGaussianBlur stdDeviation="3.4" result="blur" />
+        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+      </filter>
+      <marker id="harbor-primary-arrow" viewBox="0 0 30 30" refX="27" refY="15" markerWidth="34" markerHeight="34" orient="auto" markerUnits="userSpaceOnUse" overflow="visible">
+        <path d="M 4 3 L 27 15 L 4 27" fill="none" stroke="#67f5c9" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
       </marker>
       <marker id="harbor-support-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
         <path d="M 1 1 L 10 6 L 1 11" fill="none" stroke="#6eaa98" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />

@@ -1529,6 +1529,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .harbor-route { transition: opacity .22s ease, filter .22s ease; }
+.harbor-route-aura,
+.harbor-route-halo,
 .harbor-route-base,
 .harbor-route-flow {
   fill: none;
@@ -1538,18 +1540,32 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 
 .harbor-route.primary { color: var(--harbor-primary); }
+.harbor-route.primary .harbor-route-aura {
+  stroke: #67f5c9;
+  stroke-width: 28;
+  opacity: .1;
+  filter: url(#harbor-primary-route-soft-glow);
+}
+.harbor-route.primary .harbor-route-halo {
+  stroke: #67f5c9;
+  stroke-width: 11;
+  opacity: .2;
+  filter: url(#harbor-primary-route-glow);
+}
 .harbor-route.primary .harbor-route-base {
-  stroke: rgba(21, 143, 114, .68);
-  stroke-width: 3.1;
+  stroke: #67f5c9;
+  stroke-width: 4;
+  filter: url(#harbor-primary-route-glow);
 }
 .harbor-route.primary .harbor-route-flow {
-  stroke: #35b996;
-  stroke-width: 2.8;
-  stroke-dasharray: 7 14;
-  animation: harbor-route-flow 1.05s linear infinite;
+  stroke: rgba(241, 255, 251, .96);
+  stroke-width: 5.5;
+  stroke-dasharray: 14 86;
+  filter: url(#harbor-primary-route-glow);
+  animation: harbor-primary-route-flow 4.4s linear infinite;
 }
 .harbor-traffic-person {
-  filter: drop-shadow(0 0 4px rgba(21, 143, 114, .48));
+  filter: drop-shadow(0 0 5px rgba(103, 245, 201, .52));
 }
 .harbor-traffic-person-glyph {
   transform-box: fill-box;
@@ -1559,16 +1575,19 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   opacity: .9;
   transform: scale(.88);
 }
+.harbor-traffic-person-glow {
+  fill: rgba(103, 245, 201, .34);
+  filter: blur(3px);
+}
 .harbor-traffic-person-badge {
-  fill: #158f72;
-  stroke: rgba(255, 255, 255, .9);
-  stroke-width: .65;
+  fill: rgba(255, 255, 255, .98);
+  stroke: rgba(103, 245, 201, .78);
+  stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
-.harbor-traffic-person-head,
-.harbor-traffic-person-body {
-  fill: #fff;
-  stroke: none;
+.harbor-traffic-person-icon {
+  color: #149675;
+  overflow: visible;
 }
 
 .harbor-route.support { color: var(--harbor-support); }
@@ -1602,12 +1621,16 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 
 .harbor-map.has-hover .harbor-route:not(.highlighted) { opacity: .2; }
 .harbor-map.has-hover .harbor-route.highlighted { opacity: 1; filter: drop-shadow(0 0 5px rgba(27, 155, 122, .25)); }
-.harbor-map.has-hover .harbor-route.highlighted .harbor-route-base { stroke-opacity: .92; }
-.harbor-map.has-hover .harbor-route.highlighted .harbor-route-flow { stroke-width: 3; animation-duration: .7s; }
+.harbor-map.has-hover .harbor-route.highlighted .harbor-route-aura { opacity: .18; }
+.harbor-map.has-hover .harbor-route.highlighted .harbor-route-halo { opacity: .3; }
+.harbor-map.has-hover .harbor-route.highlighted .harbor-route-base { stroke-opacity: 1; }
+.harbor-map.has-hover .harbor-route.highlighted .harbor-route-flow { stroke-width: 6.4; animation-duration: 3.4s; }
 .harbor-map.has-route-hover .harbor-route:not(.route-hovered) { opacity: .28; }
 .harbor-map.has-route-hover .harbor-route.route-hovered { opacity: 1; filter: drop-shadow(0 0 6px rgba(27, 155, 122, .3)); }
 .harbor-route.route-hovered .harbor-route-base { stroke-opacity: 1; }
-.harbor-route.primary.route-hovered .harbor-route-flow { stroke-width: 3.6; }
+.harbor-route.primary.route-hovered .harbor-route-aura { opacity: .2; }
+.harbor-route.primary.route-hovered .harbor-route-halo { opacity: .34; }
+.harbor-route.primary.route-hovered .harbor-route-flow { stroke-width: 6.8; }
 .harbor-route.support.route-hovered .harbor-route-flow { stroke-width: 2.2; }
 
 .building-node {
@@ -2079,6 +2102,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .drawer-building-preview strong { display: block; margin-bottom: 5px; color: #21463c; font-size: 14px; }
 
 @keyframes harbor-route-flow { to { stroke-dashoffset: -34; } }
+@keyframes harbor-primary-route-flow { to { stroke-dashoffset: -100; } }
 @keyframes route-hover-card-in {
   from { opacity: 0; transform: translate(-50%, calc(-100% - 7px)) scale(.96); }
   to { opacity: 1; transform: translate(-50%, calc(-100% - 15px)) scale(1); }
