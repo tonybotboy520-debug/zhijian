@@ -1715,12 +1715,13 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(97, 215, 180, .08), rgba(97, 215, 180, 0) 67%);
   box-shadow: 0 0 13px rgba(56, 190, 153, .1), inset 0 0 10px rgba(65, 199, 161, .05);
-  transform: translate(-50%, -50%);
-  transition: border-color .3s ease, background .3s ease, box-shadow .3s ease, opacity .3s ease;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.84);
+  transition: border-color .3s ease, background .3s ease, box-shadow .3s ease, opacity .24s ease, transform .34s cubic-bezier(.2, .82, .25, 1);
   pointer-events: none;
 }
 .building-activation-ring.inactive {
-  opacity: .44;
+  opacity: 0;
   border-color: rgba(111, 134, 128, .34);
   background: radial-gradient(ellipse, rgba(132, 148, 143, .06), rgba(132, 148, 143, 0) 67%);
   box-shadow: 0 0 10px rgba(91, 112, 106, .07);
@@ -1730,6 +1731,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   border-color: rgba(46, 184, 145, .56);
   background: radial-gradient(ellipse, rgba(97, 227, 190, .13), rgba(97, 215, 180, 0) 69%);
   box-shadow: 0 0 19px rgba(46, 184, 145, .18), inset 0 0 12px rgba(65, 199, 161, .08);
+  transform: translate(-50%, -50%) scale(1);
 }
 .building-activation-ring::before,
 .building-activation-ring::after,

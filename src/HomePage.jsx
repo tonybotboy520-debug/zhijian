@@ -84,6 +84,7 @@ const PRIMARY_ROUTES = [
   { id: "geo-operation", from: "geo", to: "operation", d: "M 315 280 C 470 185 745 205 885 345", duration: 8.65 },
   { id: "aigc-operation", from: "aigc", to: "operation", d: "M 340 510 C 500 545 735 535 885 420", duration: 8.8 },
 ];
+const TRAFFIC_PERSON_SPEED_FACTOR = 1.25;
 
 const SUPPORT_ROUTES = [
   { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 545 145 C 430 155 330 210 285 260", duration: 4.4 },
@@ -395,7 +396,12 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
       <circle className="harbor-traffic-person-badge" cx="0" cy="0" r="9.6" />
       <User className="harbor-traffic-person-icon" x="-5.75" y="-5.75" size={11.5} weight="fill" aria-hidden="true" />
     </g>
-    <animateMotion dur={`${route.duration}s`} begin={`${begin}s`} repeatCount="indefinite" path={route.d} />
+    <animateMotion
+      dur={`${(route.duration * TRAFFIC_PERSON_SPEED_FACTOR).toFixed(2)}s`}
+      begin={`${(begin * TRAFFIC_PERSON_SPEED_FACTOR).toFixed(2)}s`}
+      repeatCount="indefinite"
+      path={route.d}
+    />
   </g>;
 
   const renderRoute = (route, type, index) => {
