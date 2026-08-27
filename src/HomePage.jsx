@@ -75,8 +75,8 @@ const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 315 300 C 390 300 440 345 500 365", duration: 2.8 },
   { id: "aigc-website", from: "aigc", to: "website", d: "M 340 500 C 410 490 450 420 500 385", duration: 3.1 },
   { id: "website-operation", from: "website", to: "operation", d: "M 700 385 C 780 385 830 390 875 392", duration: 2.5 },
-  { id: "geo-operation", from: "geo", to: "operation", d: "M 315 280 C 470 220 745 245 885 350", duration: 3.7 },
-  { id: "aigc-operation", from: "aigc", to: "operation", d: "M 340 510 C 500 545 735 535 885 420", duration: 3.9 },
+  { id: "geo-operation", from: "geo", to: "operation", d: "M 315 280 C 470 220 745 245 885 350", duration: 8.4 },
+  { id: "aigc-operation", from: "aigc", to: "operation", d: "M 340 510 C 500 545 735 535 885 420", duration: 8.8 },
 ];
 
 const SUPPORT_ROUTES = [
@@ -265,8 +265,9 @@ function HarborScenery({ hoveredProduct }) {
 function FlowNetwork({ hoveredProduct }) {
   const renderTrafficPerson = (route, begin, className = "") => <g className={`harbor-traffic-person ${className}`}>
     <g className="harbor-traffic-person-glyph">
-      <circle className="harbor-traffic-person-head" cx="0" cy="-2.7" r="2.05" />
-      <path className="harbor-traffic-person-body" d="M -4.15 4.65 C -4.02 1.82 -2.4 .15 0 .15 C 2.4 .15 4.02 1.82 4.15 4.65 Z" />
+      <circle className="harbor-traffic-person-badge" cx="0" cy="0" r="5.45" />
+      <circle className="harbor-traffic-person-head" cx="0" cy="-1.9" r="1.25" />
+      <path className="harbor-traffic-person-body" d="M -2.75 3.45 C -2.66 1.28 -1.56 .05 0 .05 C 1.56 .05 2.66 1.28 2.75 3.45 Z" />
     </g>
     <animateMotion dur={`${route.duration}s`} begin={`${begin}s`} repeatCount="indefinite" path={route.d} />
   </g>;

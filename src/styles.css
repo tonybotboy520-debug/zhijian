@@ -1549,22 +1549,26 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   animation: harbor-route-flow 1.05s linear infinite;
 }
 .harbor-traffic-person {
-  filter: drop-shadow(0 0 4px rgba(34, 160, 126, .62));
+  filter: drop-shadow(0 0 4px rgba(21, 143, 114, .48));
 }
 .harbor-traffic-person-glyph {
   transform-box: fill-box;
   transform-origin: center;
 }
 .harbor-traffic-person.second .harbor-traffic-person-glyph {
-  opacity: .86;
-  transform: scale(.84);
+  opacity: .9;
+  transform: scale(.88);
+}
+.harbor-traffic-person-badge {
+  fill: #158f72;
+  stroke: rgba(255, 255, 255, .9);
+  stroke-width: .65;
+  vector-effect: non-scaling-stroke;
 }
 .harbor-traffic-person-head,
 .harbor-traffic-person-body {
-  fill: #fbfffd;
-  stroke: #168f72;
-  stroke-width: 1.25;
-  vector-effect: non-scaling-stroke;
+  fill: #fff;
+  stroke: none;
 }
 
 .harbor-route.support { color: var(--harbor-support); }
