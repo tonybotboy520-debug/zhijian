@@ -90,10 +90,10 @@ const SUPPORT_ROUTES = [
   { id: "diagnosis-geo", from: "diagnosis", to: "geo", d: "M 545 145 C 430 155 330 210 285 260", duration: 4.4 },
   { id: "diagnosis-website", from: "diagnosis", to: "website", d: "M 610 185 C 610 230 605 280 600 320", duration: 3.7 },
   { id: "diagnosis-operation", from: "diagnosis", to: "operation", d: "M 675 150 C 780 180 865 250 910 330", duration: 4.8 },
-  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 545 565 C 435 540 340 445 285 350", duration: 5.2 },
-  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 525 610 C 440 600 370 550 320 520", duration: 4.7 },
-  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 610 550 C 610 515 610 470 610 425", duration: 4.1 },
-  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 705 570 C 800 540 860 485 905 430", duration: 5 },
+  { id: "knowledge-geo", from: "knowledge", to: "geo", d: "M 515 565 C 410 535 325 425 275 335", duration: 5.2 },
+  { id: "knowledge-aigc", from: "knowledge", to: "aigc", d: "M 495 610 C 415 600 350 550 320 520", duration: 4.7 },
+  { id: "knowledge-website", from: "knowledge", to: "website", d: "M 580 550 C 590 515 605 470 610 425", duration: 4.1 },
+  { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 675 570 C 775 540 850 485 905 430", duration: 5 },
 ];
 const ALL_ROUTES = [...PRIMARY_ROUTES, ...SUPPORT_ROUTES];
 

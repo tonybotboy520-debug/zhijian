@@ -1663,7 +1663,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .node-aigc { --building-scale: .48; --building-hover-scale: .528; --platform-ring-width: 54%; --platform-ring-height: 17%; --platform-ring-top: 68%; left: 20%; top: 63.5%; width: 24%; aspect-ratio: 1; }
 .node-website { --building-scale: .36; --building-hover-scale: .396; --platform-ring-width: 34%; --platform-ring-height: 11%; --platform-ring-top: 59%; left: 50%; top: 50%; width: 32%; aspect-ratio: 1; }
 .node-operation { --building-scale: .48; --building-hover-scale: .528; --platform-ring-width: 54%; --platform-ring-height: 17%; --platform-ring-top: 70%; left: 80%; top: 47%; width: 24%; aspect-ratio: 1; }
-.node-knowledge { --building-scale: .48; --building-hover-scale: .528; --platform-ring-width: 55%; --platform-ring-height: 15%; --platform-ring-top: 67%; left: 52%; top: 79%; width: 26%; aspect-ratio: 1; }
+.node-knowledge { --building-scale: .48; --building-hover-scale: .528; --platform-ring-width: 55%; --platform-ring-height: 15%; --platform-ring-top: 67%; left: 49.5%; top: 79%; width: 26%; aspect-ratio: 1; }
 
 .building-visual {
   width: 100%;
