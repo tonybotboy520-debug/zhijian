@@ -1594,7 +1594,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   stroke-width: 14;
   vector-effect: non-scaling-stroke;
   pointer-events: stroke;
-  cursor: help;
+  cursor: pointer;
   outline: none;
 }
 .harbor-route.primary .harbor-route-hit { stroke-width: 18; }
