@@ -1785,7 +1785,14 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .node-website .building-info-panel { left: 68%; top: 35%; min-width: 158px; }
 .node-operation .building-info-panel { left: 57%; top: 78%; }
 .node-knowledge .building-info-panel { left: 82%; top: 55%; min-width: 178px; }
-.building-node.closed .building-info-panel { min-width: 190px; }
+.building-node.closed .building-info-panel {
+  min-width: 190px;
+  color: #53645f;
+  background: rgba(241, 246, 244, .88);
+  border-color: rgba(148, 171, 164, .32);
+  box-shadow: 0 5px 14px rgba(57, 78, 72, .035);
+  backdrop-filter: blur(7px) saturate(.72);
+}
 
 .node-website { pointer-events: none; }
 .node-website .building-visual { pointer-events: none; }
@@ -1900,6 +1907,18 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   border-color: rgba(59, 158, 131, .5);
   box-shadow: 0 13px 30px rgba(35, 100, 81, .12);
 }
+.building-node.closed .building-info-title strong { color: #53645f; }
+.building-node.closed .building-summary { color: #6f7f7a; }
+.building-node.closed .building-hover-detail { color: #687a74; }
+.building-node.closed .building-hover-detail em {
+  color: #69827a;
+  background: rgba(225, 234, 231, .72);
+}
+.building-node.closed.hovered .building-info-panel {
+  background: rgba(243, 247, 245, .94);
+  border-color: rgba(118, 156, 145, .42);
+  box-shadow: 0 8px 18px rgba(47, 77, 68, .07);
+}
 
 .typewriter-text { display: inline; }
 .typewriter-caret {
@@ -1968,6 +1987,26 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   box-shadow: none;
 }
 .card-status-action.activate:hover { color: #fff; background: #158f72; }
+.building-node.closed .card-product-status {
+  color: #798481;
+  background: rgba(247, 249, 248, .72);
+  border-color: rgba(177, 191, 187, .55);
+  box-shadow: none;
+}
+.building-node.closed .card-product-status i {
+  background: #a9b1ae;
+  box-shadow: none;
+}
+.building-node.closed .card-status-action.activate {
+  color: #49796a;
+  background: rgba(248, 250, 249, .7);
+  border-color: rgba(94, 143, 128, .42);
+}
+.building-node.closed .card-status-action.activate:hover {
+  color: #3f6f61;
+  background: #edf3f0;
+  border-color: rgba(82, 132, 117, .52);
+}
 
 .route-hover-card {
   width: 232px;
