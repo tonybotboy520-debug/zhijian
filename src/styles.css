@@ -1588,10 +1588,27 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   opacity: .86;
 }
 
+.harbor-route-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  vector-effect: non-scaling-stroke;
+  pointer-events: stroke;
+  cursor: help;
+  outline: none;
+}
+.harbor-route.primary .harbor-route-hit { stroke-width: 18; }
+.harbor-route-hit:focus-visible { stroke: rgba(21, 143, 114, .13); }
+
 .harbor-map.has-hover .harbor-route:not(.highlighted) { opacity: .2; }
 .harbor-map.has-hover .harbor-route.highlighted { opacity: 1; filter: drop-shadow(0 0 5px rgba(27, 155, 122, .25)); }
 .harbor-map.has-hover .harbor-route.highlighted .harbor-route-base { stroke-opacity: .92; }
 .harbor-map.has-hover .harbor-route.highlighted .harbor-route-flow { stroke-width: 3; animation-duration: .7s; }
+.harbor-map.has-route-hover .harbor-route:not(.route-hovered) { opacity: .28; }
+.harbor-map.has-route-hover .harbor-route.route-hovered { opacity: 1; filter: drop-shadow(0 0 6px rgba(27, 155, 122, .3)); }
+.harbor-route.route-hovered .harbor-route-base { stroke-opacity: 1; }
+.harbor-route.primary.route-hovered .harbor-route-flow { stroke-width: 3.6; }
+.harbor-route.support.route-hovered .harbor-route-flow { stroke-width: 2.2; }
 
 .building-node {
   --building-scale: .6;
@@ -1828,6 +1845,57 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .building-info-title { width: 100%; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 .building-info-title strong { color: #173d36; font-size: 14px; line-height: 1.1; letter-spacing: -.012em; }
 .building-summary { max-width: 150px; color: #657a74; font-size: 9px; line-height: 1.38; white-space: nowrap; }
+.building-hover-detail {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-top: -4px;
+  color: #45685f;
+  font-size: 9px;
+  line-height: 1.55;
+  white-space: normal;
+  transition: grid-template-rows .36s cubic-bezier(.2, .82, .25, 1), opacity .2s ease, margin-top .36s ease;
+}
+.building-hover-detail > span {
+  min-height: 0;
+  display: block;
+  overflow: hidden;
+}
+.building-hover-detail em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 16px;
+  margin: 0 5px 2px 0;
+  padding: 0 5px;
+  color: #118066;
+  background: rgba(218, 244, 235, .72);
+  border-radius: 99px;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 650;
+  vertical-align: 1px;
+}
+.building-node.hovered .building-hover-detail {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 2px;
+}
+.building-node.hovered .building-info-panel {
+  border-color: rgba(59, 158, 131, .5);
+  box-shadow: 0 13px 30px rgba(35, 100, 81, .12);
+}
+
+.typewriter-text { display: inline; }
+.typewriter-caret {
+  width: 1px;
+  height: 1em;
+  display: inline-block;
+  margin-left: 1px;
+  background: currentColor;
+  vertical-align: -.12em;
+  animation: typewriter-caret-blink .72s steps(1, end) infinite;
+}
 
 .card-product-status {
   display: inline-flex;
@@ -1886,6 +1954,86 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 }
 .card-status-action.activate:hover { color: #fff; background: #158f72; }
 
+.route-hover-card {
+  width: 232px;
+  min-height: 112px;
+  position: absolute;
+  z-index: 12;
+  padding: 12px 13px 11px;
+  color: #23493f;
+  background: rgba(255, 255, 255, .96);
+  border: 1px solid rgba(91, 166, 145, .38);
+  border-radius: 13px;
+  box-shadow: 0 15px 36px rgba(29, 86, 70, .15), 0 2px 7px rgba(29, 86, 70, .07);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 15px));
+  transform-origin: 50% 100%;
+  animation: route-hover-card-in .24s cubic-bezier(.2, .82, .25, 1) both;
+}
+.route-hover-card::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  background: rgba(255, 255, 255, .96);
+  border-right: 1px solid rgba(91, 166, 145, .34);
+  border-bottom: 1px solid rgba(91, 166, 145, .34);
+  transform: translateX(-50%) rotate(45deg);
+}
+.route-hover-card header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #153f35;
+  font-size: 12px;
+}
+.route-hover-card header span { font-weight: 700; }
+.route-hover-card header svg { color: #1b9677; }
+.route-hover-card header em {
+  margin-left: auto;
+  padding: 3px 6px;
+  color: #168369;
+  background: #e7f6f0;
+  border-radius: 99px;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.route-hover-card p {
+  min-height: 34px;
+  margin: 8px 0 9px;
+  color: #58736b;
+  font-size: 10px;
+  line-height: 1.65;
+}
+.route-hover-card footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 7px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(125, 174, 160, .2);
+}
+.route-hover-card footer > span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  color: #315e52;
+  font-size: 9px;
+  font-weight: 620;
+}
+.route-hover-card footer > span:last-child { text-align: right; }
+.route-hover-card footer small {
+  color: #8aa098;
+  font-size: 7px;
+  font-weight: 500;
+}
+.route-hover-card footer svg { color: #279a7d; }
+
 .harbor-route-caption {
   position: absolute;
   z-index: 3;
@@ -1931,6 +2079,14 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 .drawer-building-preview strong { display: block; margin-bottom: 5px; color: #21463c; font-size: 14px; }
 
 @keyframes harbor-route-flow { to { stroke-dashoffset: -34; } }
+@keyframes route-hover-card-in {
+  from { opacity: 0; transform: translate(-50%, calc(-100% - 7px)) scale(.96); }
+  to { opacity: 1; transform: translate(-50%, calc(-100% - 15px)) scale(1); }
+}
+@keyframes typewriter-caret-blink {
+  0%, 48% { opacity: 1; }
+  49%, 100% { opacity: 0; }
+}
 @keyframes harbor-scenery-glow {
   0%, 100% { opacity: .48; transform: scale(.94); }
   50% { opacity: .86; transform: scale(1.08); }
@@ -2000,6 +2156,8 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   .building-node.hovered .building-ripple,
   .building-node.hovered .building-spark,
   .building-node.hovered .building-visual img { animation: none; }
+  .route-hover-card,
+  .typewriter-caret { animation: none; }
   .harbor-route-particle,
   .harbor-traffic-person { display: none; }
   .building-visual img,

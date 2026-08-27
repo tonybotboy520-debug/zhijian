@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight, Bell, Brain, Buildings, CaretDown, Check, Database,
   GlobeHemisphereWest, HouseLine, Megaphone, Pulse, Sparkle, UsersThree, X,
@@ -10,6 +10,7 @@ const PRODUCT_CATALOG = {
     building: "/product-buildings/ai-diagnosis-tower-v6.png",
     visualSummary: "港口观察塔",
     cardSummary: "持续发现问题，给出行动建议",
+    hoverDescription: "持续发现获客与转化问题，并给出下一步行动建议。",
     summary: "持续发现问题，给出下一步建议",
     description: "以轻量方式持续监控企业在 GEO、AIGC、AI 官网与运营链路中的表现，定位问题、判断优先级，并给出可执行的产品建议。",
     capabilities: ["跨产品健康度监测", "机会与问题自动识别", "按优先级输出行动建议"],
@@ -20,6 +21,7 @@ const PRODUCT_CATALOG = {
     building: "/product-buildings/geo-lighthouse-v6.png",
     visualSummary: "AI认知灯塔",
     cardSummary: "在 AI 世界中被发现与理解",
+    hoverDescription: "提升品牌在 AI 回答中的可见与推荐，抢占用户认知入口。",
     summary: "在 AI 世界中被发现与理解",
     description: "帮助企业进入豆包、DeepSeek 等 AI 平台的答案与推荐，在用户产生需求和建立品牌认知时被看见、被理解。",
     capabilities: ["AI 平台品牌可见度优化", "高意图问题与关键词策略", "权威内容与信源建设"],
@@ -30,6 +32,7 @@ const PRODUCT_CATALOG = {
     building: "/product-buildings/aigc-workshop-v6.png",
     visualSummary: "内容传播工坊",
     cardSummary: "全媒体内容与广告获客",
+    hoverDescription: "批量生成可传播的内容与素材，持续获取公域流量。",
     summary: "全媒体内容与广告获客",
     description: "生成面向真实用户的文章、图片和视频内容，并投放到搜索引擎、社交媒体与第三方媒体，持续扩大触达。",
     capabilities: ["多媒体内容批量生产", "多渠道分发与投放", "围绕客群与场景持续迭代"],
@@ -40,6 +43,7 @@ const PRODUCT_CATALOG = {
     building: "/product-buildings/ai-website-terminal-v6.png",
     visualSummary: "客户抵达港",
     cardSummary: "承接流量，理解客户并推动转化",
+    hoverDescription: "承接渠道流量，理解访客需求并推动咨询与留资。",
     summary: "承接流量、建立信任、理解需求",
     description: "重塑企业官网：既为 GEO 提供更清晰的品牌与知识表达，也主动理解访客需求，通过内容与对话建立信任。",
     capabilities: ["GEO 友好的官网结构", "访客意图识别与内容匹配", "线索承接与私域导入"],
@@ -50,6 +54,7 @@ const PRODUCT_CATALOG = {
     building: "/product-buildings/ai-operation-clubhouse-v6.png",
     visualSummary: "客户经营会馆",
     cardSummary: "持续培育客户并推动转化",
+    hoverDescription: "统一承接公私域客户，持续跟进、培育并促进转化。",
     summary: "持续培育客户并推动转化",
     description: "托管企业在公域和私域中的用户运营，承接广告与官网线索，按用户阶段持续触达、培育和分层。",
     capabilities: ["公私域用户统一承接", "自动化分层与培育", "运营任务持续托管"],
@@ -60,6 +65,7 @@ const PRODUCT_CATALOG = {
     building: "/product-buildings/ai-knowledge-vault-v6.png",
     visualSummary: "企业知识与策略底座",
     cardSummary: "统一企业知识与策略底座",
+    hoverDescription: "沉淀企业知识与营销策略，让所有产品共享可信底座。",
     summary: "让所有产品理解企业、客群与需求",
     description: "沉淀企业上传和提炼的信息，并进一步推演客群、场景、需求、关键词和问题，形成面向营销决策的知识图谱。",
     capabilities: ["企业知识统一沉淀", "客群与需求知识图谱", "前置策略推演与共用数据"],
@@ -88,6 +94,70 @@ const SUPPORT_ROUTES = [
   { id: "knowledge-website", from: "knowledge", to: "website", d: "M 610 550 C 610 515 610 470 610 425", duration: 4.1 },
   { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 705 570 C 800 540 860 485 905 430", duration: 5 },
 ];
+const ALL_ROUTES = [...PRIMARY_ROUTES, ...SUPPORT_ROUTES];
+
+const ROUTE_DETAILS = {
+  "geo-website": {
+    kind: "主要转化", tip: [410, 325],
+    description: "把 AI 推荐形成的品牌兴趣带入官网，继续建立信任并转化。",
+    input: "AI 认知流量", output: "官网访问",
+  },
+  "aigc-website": {
+    kind: "主要转化", tip: [425, 455],
+    description: "把内容与广告点击送入官网，由官网承接需求并促进转化。",
+    input: "内容广告流量", output: "官网访问",
+  },
+  "website-operation": {
+    kind: "主要转化", tip: [785, 372],
+    description: "把官网访客与销售线索交给 AI运营持续跟进和培育。",
+    input: "官网访客与线索", output: "持续运营",
+  },
+  "geo-operation": {
+    kind: "直接承接", tip: [650, 190],
+    description: "把 AI 平台内直接咨询或下单的用户交给 AI运营承接。",
+    input: "AI 平台意向客户", output: "运营跟进",
+  },
+  "aigc-operation": {
+    kind: "直接承接", tip: [650, 535],
+    description: "把广告或内容触达后的用户直接交给 AI运营持续转化。",
+    input: "内容广告用户", output: "运营承接",
+  },
+  "diagnosis-geo": {
+    kind: "诊断驱动", tip: [405, 175],
+    description: "将发现的 AI 认知问题转化为 GEO 优化任务。",
+    input: "认知问题", output: "GEO 优化任务",
+  },
+  "diagnosis-website": {
+    kind: "诊断驱动", tip: [625, 245],
+    description: "将官网体验与转化问题转化为站点改造建议。",
+    input: "官网问题", output: "改造建议",
+  },
+  "diagnosis-operation": {
+    kind: "诊断驱动", tip: [810, 225],
+    description: "将客户流失与跟进问题转化为运营优化任务。",
+    input: "运营问题", output: "优化任务",
+  },
+  "knowledge-geo": {
+    kind: "知识支撑", tip: [390, 455],
+    description: "提供品牌事实与问答策略，让 AI 推荐更准确可信。",
+    input: "企业知识与策略", output: "可信 AI 表达",
+  },
+  "knowledge-aigc": {
+    kind: "知识支撑", tip: [430, 575],
+    description: "提供客群、场景与内容策略，指导传播素材生成。",
+    input: "客群与内容策略", output: "传播素材",
+  },
+  "knowledge-website": {
+    kind: "知识支撑", tip: [635, 495],
+    description: "提供品牌知识与客户洞察，支撑官网智能交互。",
+    input: "品牌与客户知识", output: "智能官网体验",
+  },
+  "knowledge-operation": {
+    kind: "知识支撑", tip: [825, 500],
+    description: "提供客户画像与策略规则，支撑持续运营动作。",
+    input: "客户画像与规则", output: "运营动作",
+  },
+};
 
 function HeaderActions({ notify }) {
   return <div className="home-header-actions">
@@ -262,7 +332,63 @@ function HarborScenery({ hoveredProduct }) {
   </div>;
 }
 
-function FlowNetwork({ hoveredProduct }) {
+function TypewriterText({ text, active, className = "" }) {
+  const [visibleText, setVisibleText] = useState("");
+
+  useEffect(() => {
+    if (!active) {
+      setVisibleText("");
+      return undefined;
+    }
+
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setVisibleText(text);
+      return undefined;
+    }
+
+    let characterIndex = 0;
+    setVisibleText("");
+    const timer = window.setInterval(() => {
+      characterIndex += 1;
+      setVisibleText(text.slice(0, characterIndex));
+      if (characterIndex >= text.length) window.clearInterval(timer);
+    }, 28);
+
+    return () => window.clearInterval(timer);
+  }, [active, text]);
+
+  return <span className={`typewriter-text ${className}`} aria-label={text}>
+    <span aria-hidden="true">{visibleText}</span>
+    {active && visibleText.length < text.length ? <i className="typewriter-caret" aria-hidden="true" /> : null}
+  </span>;
+}
+
+function RouteHoverCard({ route }) {
+  if (!route) return null;
+  const detail = ROUTE_DETAILS[route.id];
+  const from = PRODUCT_CATALOG[route.from].name;
+  const to = PRODUCT_CATALOG[route.to].name;
+  const [tipX, tipY] = detail.tip;
+
+  return <aside
+    className="route-hover-card"
+    style={{ left: `${tipX / 11.8}%`, top: `${tipY / 7}%` }}
+    aria-live="polite"
+  >
+    <header>
+      <span>{from}</span><ArrowRight size={13} weight="bold" /><span>{to}</span>
+      <em>{detail.kind}</em>
+    </header>
+    <p><TypewriterText text={detail.description} active /></p>
+    <footer>
+      <span><small>输入</small>{detail.input}</span>
+      <ArrowRight size={12} />
+      <span><small>输出</small>{detail.output}</span>
+    </footer>
+  </aside>;
+}
+
+function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
   const renderTrafficPerson = (route, begin, className = "") => <g className={`harbor-traffic-person ${className}`}>
     <g className="harbor-traffic-person-glyph">
       <circle className="harbor-traffic-person-badge" cx="0" cy="0" r="8.2" />
@@ -274,7 +400,8 @@ function FlowNetwork({ hoveredProduct }) {
 
   const renderRoute = (route, type, index) => {
     const highlighted = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
-    return <g className={`harbor-route ${type} ${highlighted ? "highlighted" : ""}`} key={route.id}>
+    const routeHovered = hoveredRoute === route.id;
+    return <g className={`harbor-route ${type} ${highlighted ? "highlighted" : ""} ${routeHovered ? "route-hovered" : ""}`} key={route.id}>
       <path className="harbor-route-base" d={route.d} markerEnd={`url(#harbor-${type}-arrow)`} />
       <path className="harbor-route-flow" d={route.d} pathLength="100" />
       {type === "primary" ? <>
@@ -283,6 +410,17 @@ function FlowNetwork({ hoveredProduct }) {
       </> : <circle className="harbor-route-particle" r="2.6">
         <animateMotion dur={`${route.duration}s`} begin={`${index * -.72}s`} repeatCount="indefinite" path={route.d} />
       </circle>}
+      <path
+        className="harbor-route-hit"
+        d={route.d}
+        tabIndex="0"
+        role="img"
+        aria-label={`${PRODUCT_CATALOG[route.from].name}到${PRODUCT_CATALOG[route.to].name}：${ROUTE_DETAILS[route.id].description}`}
+        onMouseEnter={() => onRouteHover(route.id)}
+        onMouseLeave={() => onRouteHover(null)}
+        onFocus={() => onRouteHover(route.id)}
+        onBlur={() => onRouteHover(null)}
+      />
     </g>;
   };
 
@@ -326,6 +464,9 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
       <button className="building-info-open" onClick={() => onOpen(productKey)} aria-label={`打开${product.name}产品介绍`}>
         <span className="building-info-title"><strong>{product.name}</strong><span className={`card-product-status ${opened ? "active" : "inactive"}`}><i />{opened ? "已开通" : "未开通"}</span></span>
         <span className="building-summary">{productKey === "diagnosis" ? product.cardSummary : product.visualSummary}</span>
+        <span className="building-hover-detail" aria-hidden={!hovered}>
+          <span><em>解决</em><TypewriterText text={product.hoverDescription} active={hovered} /></span>
+        </span>
       </button>
       {!opened ? <button className="card-status-action activate" onClick={() => onActivate(productKey)}>开通</button> : null}
     </div>
@@ -359,6 +500,7 @@ export function HomePage({ notify, onNavigate }) {
   const [openedProducts, setOpenedProducts] = useState(() => new Set(DEFAULT_OPENED));
   const [detailProduct, setDetailProduct] = useState(null);
   const [hoveredProduct, setHoveredProduct] = useState(null);
+  const [hoveredRoute, setHoveredRoute] = useState(null);
   const openedCount = openedProducts.size;
   const progress = useMemo(() => Math.round(openedCount / VISIBLE_PRODUCT_KEYS.length * 100), [openedCount]);
 
@@ -381,10 +523,11 @@ export function HomePage({ notify, onNavigate }) {
         <p>连接 AI 认知、内容获客、官网承接与公私域长期运营</p>
       </div>
 
-      <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
+      <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""} ${hoveredRoute ? "has-route-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
         <div className="harbor-map-summary"><span><i />{openedCount}/{VISIBLE_PRODUCT_KEYS.length} 个产品已激活</span><strong>{progress}%</strong></div>
         <HarborScenery hoveredProduct={hoveredProduct} />
-        <FlowNetwork hoveredProduct={hoveredProduct} />
+        <FlowNetwork hoveredProduct={hoveredProduct} hoveredRoute={hoveredRoute} onRouteHover={setHoveredRoute} />
+        <RouteHoverCard route={hoveredRoute ? ALL_ROUTES.find((route) => route.id === hoveredRoute) : null} />
         {VISIBLE_PRODUCT_KEYS.map((productKey) => <BuildingNode
           key={productKey}
           productKey={productKey}
