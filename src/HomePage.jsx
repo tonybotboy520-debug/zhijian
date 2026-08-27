@@ -8,8 +8,8 @@ const PRODUCT_CATALOG = {
   diagnosis: {
     name: "AI诊断", eyebrow: "持续监测", icon: Pulse,
     building: "/product-buildings/ai-diagnosis-tower-v6.png",
-    visualSummary: "港口观察塔",
-    cardSummary: "持续发现问题，给出行动建议",
+    visualSummary: "AI体检中心",
+    cardSummary: "AI体检中心",
     hoverDescription: "持续发现获客与转化问题，并给出下一步行动建议。",
     summary: "持续发现问题，给出下一步建议",
     description: "以轻量方式持续监控企业在 GEO、AIGC、AI 官网与运营链路中的表现，定位问题、判断优先级，并给出可执行的产品建议。",
@@ -41,7 +41,7 @@ const PRODUCT_CATALOG = {
   website: {
     name: "AI官网", eyebrow: "承接与转化", icon: HouseLine,
     building: "/product-buildings/ai-website-terminal-v6.png",
-    visualSummary: "客户抵达港",
+    visualSummary: "企业营销阵地",
     cardSummary: "承接流量，理解客户并推动转化",
     hoverDescription: "承接渠道流量，理解访客需求并推动咨询与留资。",
     summary: "承接流量、建立信任、理解需求",
@@ -63,8 +63,8 @@ const PRODUCT_CATALOG = {
   knowledge: {
     name: "AI知识库", eyebrow: "数据与策略底座", icon: Database,
     building: "/product-buildings/ai-knowledge-vault-v6.png",
-    visualSummary: "企业知识与策略底座",
-    cardSummary: "统一企业知识与策略底座",
+    visualSummary: "企业智慧中枢",
+    cardSummary: "企业智慧中枢",
     hoverDescription: "沉淀企业知识与营销策略，让所有产品共享可信底座。",
     summary: "让所有产品理解企业、客群与需求",
     description: "沉淀企业上传和提炼的信息，并进一步推演客群、场景、需求、关键词和问题，形成面向营销决策的知识图谱。",
