@@ -52,7 +52,7 @@ const PRODUCT_CATALOG = {
   operation: {
     name: "AI运营", eyebrow: "公私域运营", icon: UsersThree,
     building: "/product-buildings/ai-operation-clubhouse-v6.png",
-    visualSummary: "客户经营会馆",
+    visualSummary: "客户经营中心",
     cardSummary: "持续培育客户并推动转化",
     hoverDescription: "统一承接公私域客户，持续跟进、培育并促进转化。",
     summary: "持续培育客户并推动转化",
