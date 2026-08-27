@@ -96,65 +96,66 @@ const SUPPORT_ROUTES = [
   { id: "knowledge-operation", from: "knowledge", to: "operation", d: "M 675 570 C 775 540 850 485 905 430", duration: 5 },
 ];
 const ALL_ROUTES = [...PRIMARY_ROUTES, ...SUPPORT_ROUTES];
+const PRIMARY_ROUTE_IDS = new Set(PRIMARY_ROUTES.map((route) => route.id));
 
 const ROUTE_DETAILS = {
   "geo-website": {
-    kind: "主要转化", tip: [410, 325],
+    label: "AI认知获客", kind: "主要转化", tip: [410, 325],
     description: "把 AI 推荐形成的品牌兴趣带入官网，继续建立信任并转化。",
     input: "AI 认知流量", output: "官网访问",
   },
   "aigc-website": {
-    kind: "主要转化", tip: [425, 455],
+    label: "内容与广告获客", kind: "主要转化", tip: [425, 455],
     description: "把内容与广告点击送入官网，由官网承接需求并促进转化。",
     input: "内容广告流量", output: "官网访问",
   },
   "website-operation": {
-    kind: "主要转化", tip: [785, 372],
+    label: "流量承接后转化", kind: "主要转化", tip: [785, 372], labelAt: [890, 365],
     description: "把官网访客与销售线索交给 AI运营持续跟进和培育。",
     input: "官网访客与线索", output: "持续运营",
   },
   "geo-operation": {
-    kind: "直接承接", tip: [650, 190],
+    label: "AI意向客户直达", kind: "直接承接", tip: [650, 190],
     description: "把 AI 平台内直接咨询或下单的用户交给 AI运营承接。",
     input: "AI 平台意向客户", output: "运营跟进",
   },
   "aigc-operation": {
-    kind: "直接承接", tip: [650, 535],
+    label: "内容线索直接承接", kind: "直接承接", tip: [650, 535],
     description: "把广告或内容触达后的用户直接交给 AI运营持续转化。",
     input: "内容广告用户", output: "运营承接",
   },
   "diagnosis-geo": {
-    kind: "诊断驱动", tip: [405, 175],
+    label: "AI认知诊断报告", kind: "诊断驱动", tip: [405, 175],
     description: "将发现的 AI 认知问题转化为 GEO 优化任务。",
     input: "认知问题", output: "GEO 优化任务",
   },
   "diagnosis-website": {
-    kind: "诊断驱动", tip: [625, 245],
+    label: "官网转化诊断报告", kind: "诊断驱动", tip: [625, 245],
     description: "将官网体验与转化问题转化为站点改造建议。",
     input: "官网问题", output: "改造建议",
   },
   "diagnosis-operation": {
-    kind: "诊断驱动", tip: [810, 225],
+    label: "客户运营诊断报告", kind: "诊断驱动", tip: [810, 225],
     description: "将客户流失与跟进问题转化为运营优化任务。",
     input: "运营问题", output: "优化任务",
   },
   "knowledge-geo": {
-    kind: "知识支撑", tip: [390, 455],
+    label: "客群与提问策略", kind: "知识支撑", tip: [390, 455],
     description: "提供品牌事实与问答策略，让 AI 推荐更准确可信。",
     input: "企业知识与策略", output: "可信 AI 表达",
   },
   "knowledge-aigc": {
-    kind: "知识支撑", tip: [430, 575],
+    label: "客群与内容策略", kind: "知识支撑", tip: [430, 575],
     description: "提供客群、场景与内容策略，指导传播素材生成。",
     input: "客群与内容策略", output: "传播素材",
   },
   "knowledge-website": {
-    kind: "知识支撑", tip: [635, 495],
+    label: "企业知识与客户洞察", kind: "知识支撑", tip: [635, 495],
     description: "提供品牌知识与客户洞察，支撑官网智能交互。",
     input: "品牌与客户知识", output: "智能官网体验",
   },
   "knowledge-operation": {
-    kind: "知识支撑", tip: [825, 500],
+    label: "客户画像与运营策略", kind: "知识支撑", tip: [825, 500],
     description: "提供客户画像与策略规则，支撑持续运营动作。",
     input: "客户画像与规则", output: "运营动作",
   },
@@ -389,6 +390,24 @@ function RouteHoverCard({ route }) {
   </aside>;
 }
 
+function RouteNameLabels({ hoveredProduct }) {
+  return <div className="route-name-labels" aria-hidden="true">
+    {ALL_ROUTES.map((route) => {
+      const detail = ROUTE_DETAILS[route.id];
+      const [tipX, tipY] = detail.labelAt ?? detail.tip;
+      const visible = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
+      return <div
+        className={`route-name-label ${PRIMARY_ROUTE_IDS.has(route.id) ? "primary" : "support"} ${visible ? "visible" : ""}`}
+        style={{ left: `${tipX / 11.8}%`, top: `${tipY / 7}%` }}
+        key={route.id}
+      >
+        <i />
+        <span>{detail.label}</span>
+      </div>;
+    })}
+  </div>;
+}
+
 function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
   const renderTrafficPerson = (route, begin, className = "") => <g className={`harbor-traffic-person ${className}`}>
     <g className="harbor-traffic-person-glyph">
@@ -488,7 +507,13 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
       onMouseEnter={() => onHover(productKey)}
       onMouseLeave={() => onHover(null)}
     >
-      <button className="building-info-open" onClick={() => onOpen(productKey)} aria-label={`打开${product.name}产品介绍`}>
+      <button
+        className="building-info-open"
+        onClick={() => onOpen(productKey)}
+        onFocus={() => onHover(productKey)}
+        onBlur={() => onHover(null)}
+        aria-label={`打开${product.name}产品介绍`}
+      >
         <span className="building-info-title"><strong>{product.name}</strong><span className={`card-product-status ${opened ? "active" : "inactive"}`}><i />{opened ? "已开通" : "未开通"}</span></span>
         <span className="building-summary">{productKey === "diagnosis" ? product.cardSummary : product.visualSummary}</span>
         <span className="building-hover-detail" aria-hidden={!hovered}>
@@ -554,6 +579,7 @@ export function HomePage({ notify, onNavigate }) {
         <div className="harbor-map-summary"><span><i />{openedCount}/{VISIBLE_PRODUCT_KEYS.length} 个产品已激活</span><strong>{progress}%</strong></div>
         <HarborScenery hoveredProduct={hoveredProduct} />
         <FlowNetwork hoveredProduct={hoveredProduct} hoveredRoute={hoveredRoute} onRouteHover={setHoveredRoute} />
+        <RouteNameLabels hoveredProduct={hoveredProduct} />
         <RouteHoverCard route={hoveredRoute ? ALL_ROUTES.find((route) => route.id === hoveredRoute) : null} />
         {VISIBLE_PRODUCT_KEYS.map((productKey) => <BuildingNode
           key={productKey}
@@ -564,9 +590,6 @@ export function HomePage({ notify, onNavigate }) {
           onOpen={setDetailProduct}
           onActivate={activate}
         />)}
-        <div className="harbor-route-caption caption-geo">AI 认知获客</div>
-        <div className="harbor-route-caption caption-aigc">内容与广告获客</div>
-        <div className="harbor-route-caption caption-operation">流量承接后转化</div>
         <div className="harbor-map-legend"><span><i className="main" />主要转化路径</span><span><i className="support" />知识与诊断支持</span></div>
       </div>
     </div>
