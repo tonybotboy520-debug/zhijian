@@ -1542,6 +1542,25 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   filter: url(#harbor-primary-route-glow);
   animation: harbor-primary-route-flow 4.4s linear infinite;
 }
+.harbor-route-standalone-arrow-glow,
+.harbor-route-standalone-arrow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+.harbor-route-standalone-arrow-glow {
+  stroke: rgba(103, 245, 201, .5);
+  stroke-width: 11;
+  opacity: .48;
+  filter: url(#harbor-primary-route-glow);
+}
+.harbor-route-standalone-arrow {
+  stroke: #f1fffb;
+  stroke-width: 4.2;
+  filter: url(#harbor-primary-route-glow);
+}
 .harbor-traffic-person {
   filter: drop-shadow(0 0 5px rgba(103, 245, 201, .52));
 }
@@ -1657,31 +1676,37 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   pointer-events: none;
 }
 
-.building-visual .building-art,
-.building-visual .building-white-fill {
+.building-visual img {
   width: 100%;
   height: 100%;
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: block;
   object-fit: contain;
+  filter: drop-shadow(0 12px 11px rgba(44, 85, 73, .105));
   transform: translate3d(0, 0, 0) scale(var(--building-scale));
   transform-origin: 50% 68%;
   transition: transform .42s cubic-bezier(.2, .82, .25, 1), filter .42s ease;
+  pointer-events: auto;
   user-select: none;
   will-change: transform, filter;
 }
 
-.building-visual .building-white-fill {
+.geo-opaque-body-fill {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  filter: url(#harbor-building-white-fill);
+  display: block;
+  overflow: visible;
+  fill: #fff;
+  transform: translate3d(0, 0, 0) scale(var(--building-scale));
+  transform-origin: 50% 68%;
+  transition: transform .42s cubic-bezier(.2, .82, .25, 1);
   pointer-events: none;
-}
-
-.building-visual .building-art {
-  z-index: 2;
-  filter: drop-shadow(0 12px 11px rgba(44, 85, 73, .105));
-  pointer-events: auto;
+  will-change: transform;
 }
 
 .building-node.hovered {
@@ -1689,19 +1714,18 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   opacity: 1 !important;
   filter: none !important;
 }
-.building-node.hovered .building-visual .building-art,
-.building-node.hovered .building-visual .building-white-fill {
-  transform: translate3d(0, -4px, 0) scale(var(--building-hover-scale));
-}
-.building-node.hovered .building-visual .building-art {
+.building-node.hovered .building-visual img {
   filter:
     drop-shadow(0 0 1.5px rgba(241, 255, 251, .98))
     drop-shadow(0 0 7px rgba(80, 224, 184, .78))
     drop-shadow(0 0 18px rgba(45, 185, 147, .42))
     drop-shadow(0 17px 14px rgba(34, 102, 81, .18));
+  transform: translate3d(0, -4px, 0) scale(var(--building-hover-scale));
   animation: harbor-icon-glow 1.8s ease-in-out infinite;
 }
-.building-node.hovered .building-visual .building-white-fill { filter: url(#harbor-building-white-fill); }
+.building-node.hovered .geo-opaque-body-fill {
+  transform: translate3d(0, -4px, 0) scale(var(--building-hover-scale));
+}
 
 .building-activation-ring {
   width: var(--platform-ring-width);
@@ -1788,21 +1812,19 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
 
 .node-website { pointer-events: none; }
 .node-website .building-visual { pointer-events: none; }
-.node-website .building-visual .building-art,
-.node-website .building-visual .building-white-fill {
+.node-website .building-visual img {
   width: 42%;
   height: 42%;
   inset: 29%;
   pointer-events: auto;
   transform: translate3d(0, 0, 0) scale(.857);
 }
-.node-website.hovered .building-visual .building-art,
-.node-website.hovered .building-visual .building-white-fill {
+.node-website.hovered .building-visual img {
   transform: translate3d(0, -4px, 0) scale(.943);
 }
 .node-website .building-info-panel { pointer-events: auto; }
 
-.building-node.closed .building-visual .building-art {
+.building-node.closed .building-visual img {
   filter:
     grayscale(1)
     saturate(0)
@@ -1811,7 +1833,7 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
     opacity(.82)
     drop-shadow(0 12px 11px rgba(69, 77, 75, .11));
 }
-.building-node.closed.hovered .building-visual .building-art {
+.building-node.closed.hovered .building-visual img {
   animation: none;
   filter:
     grayscale(1)
@@ -2232,13 +2254,13 @@ button.relation-card.relation-empty-card:hover { color: #536a63; background: #ee
   .building-activation-ring i,
   .building-node.hovered .building-ripple,
   .building-node.hovered .building-spark,
-  .building-node.hovered .building-visual .building-art { animation: none; }
+  .building-node.hovered .building-visual img { animation: none; }
   .route-hover-card,
   .route-name-label,
   .typewriter-caret { animation: none; }
   .harbor-route-particle,
   .harbor-traffic-person { display: none; }
-  .building-visual .building-art,
-  .building-visual .building-white-fill,
+  .building-visual img,
+  .geo-opaque-body-fill,
   .building-node { transition: none; }
 }

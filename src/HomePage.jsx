@@ -80,7 +80,7 @@ const HARBOR_MASTER_SCENERY = "/product-backgrounds/source/harbor-city-islands-m
 const PRIMARY_ROUTES = [
   { id: "geo-website", from: "geo", to: "website", d: "M 315 300 C 390 300 440 345 500 365", duration: 2.8 },
   { id: "aigc-website", from: "aigc", to: "website", d: "M 340 500 C 410 490 450 420 500 385", duration: 3.1 },
-  { id: "website-operation", from: "website", to: "operation", d: "M 700 385 C 780 385 830 390 875 392", duration: 2.5 },
+  { id: "website-operation", from: "website", to: "operation", d: "M 680 385 C 745 385 800 389 845 392", duration: 2.5 },
   { id: "geo-operation", from: "geo", to: "operation", d: "M 315 280 C 470 185 745 205 885 345", duration: 8.65, trafficGap: 2.7 },
   { id: "aigc-operation", from: "aigc", to: "operation", d: "M 340 510 C 500 545 735 535 885 420", duration: 8.8, trafficGap: 2.7 },
 ];
@@ -110,7 +110,7 @@ const ROUTE_DETAILS = {
     input: "内容与广告流量", output: "官网访问与线索",
   },
   "website-operation": {
-    label: "官网线索持续转化", kind: "主要转化", tip: [785, 372], labelAt: [890, 365],
+    label: "官网线索持续转化", kind: "主要转化", tip: [785, 372], labelAt: [770, 425],
     description: "将官网识别的访客需求、咨询与留资线索交给AI运营，持续跟进、培育并促进转化。",
     input: "访客需求与销售线索", output: "跟进培育与转化",
   },
@@ -426,6 +426,7 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
   const renderRoute = (route, type, index) => {
     const highlighted = hoveredProduct && (route.from === hoveredProduct || route.to === hoveredProduct);
     const routeHovered = hoveredRoute === route.id;
+    const hasStandaloneArrow = type === "primary" && route.id === "website-operation";
     const pathNumbers = route.d.match(/-?\d+(?:\.\d+)?/g).map(Number);
     const [endX, endY] = pathNumbers.slice(-2);
     return <g
@@ -438,8 +439,12 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
         <path className="harbor-route-aura" d={route.d} />
         <path className="harbor-route-halo" d={route.d} />
       </> : null}
-      <path className="harbor-route-base" d={route.d} markerEnd={`url(#harbor-${type}-arrow)`} />
+      <path className="harbor-route-base" d={route.d} markerEnd={hasStandaloneArrow ? undefined : `url(#harbor-${type}-arrow)`} />
       <path className="harbor-route-flow" d={route.d} pathLength="100" />
+      {hasStandaloneArrow ? <>
+        <path className="harbor-route-standalone-arrow-glow" d="M 817 376 L 845 392 L 817 408" />
+        <path className="harbor-route-standalone-arrow" d="M 817 376 L 845 392 L 817 408" />
+      </> : null}
       {type === "primary" ? <>
         {renderTrafficPerson(route, index * -.72)}
         {renderTrafficPerson(route, index * -.72 - (route.trafficGap ?? 1.35), "second")}
@@ -476,7 +481,8 @@ function FlowNetwork({ hoveredProduct, hoveredRoute, onRouteHover }) {
       </marker>
     </defs>
     {SUPPORT_ROUTES.map((route, index) => renderRoute(route, "support", index))}
-    {PRIMARY_ROUTES.map((route, index) => renderRoute(route, "primary", index))}
+    {PRIMARY_ROUTES.filter((route) => route.id !== "website-operation").map((route, index) => renderRoute(route, "primary", index))}
+    {PRIMARY_ROUTES.filter((route) => route.id === "website-operation").map((route, index) => renderRoute(route, "primary", PRIMARY_ROUTES.length - 1 + index))}
   </svg>;
 }
 
@@ -493,9 +499,11 @@ function BuildingNode({ productKey, opened, hovered, onHover, onOpen, onActivate
       onFocus={() => onHover(productKey)}
       onBlur={() => onHover(null)}
     >
-      <img className="building-white-fill" src={product.building} alt="" aria-hidden="true" draggable="false" />
+      {productKey === "geo" ? <svg className="geo-opaque-body-fill" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">
+        <path d="M420 308 C420 398 417 498 413 585 C410 638 405 686 407 706 C410 734 439 750 501 751 C562 749 593 734 598 706 C598 684 594 637 591 585 C587 498 584 398 582 308 Z" />
+        <path d="M316 708 L419 689 L459 708 L459 804 L336 824 L316 808 Z" />
+      </svg> : null}
       <img
-        className="building-art"
         src={product.building}
         alt={`${product.name}：${product.visualSummary}`}
         draggable="false"
@@ -568,18 +576,11 @@ export function HomePage({ notify, onNavigate }) {
   };
 
   return <section className="home-shell light only-light harbor-home">
-    <svg className="building-filter-defs" width="0" height="0" aria-hidden="true" focusable="false">
-      <defs>
-        <filter id="harbor-building-white-fill" x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
-          <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 12 -0.35" />
-        </filter>
-      </defs>
-    </svg>
     <header className="home-topbar"><div className="home-crumb"><Sparkle size={15} weight="fill" />AI 营销全景</div><HeaderActions notify={notify} /></header>
     <div className="home-scroll">
       <div className="home-hero harbor-hero">
-        <h1>从全域触达，到持续转化</h1>
-        <p>连接 AI 认知、内容获客、官网承接与公私域长期运营</p>
+        <h1>让AI营销产品矩阵协同运转，驱动完整增长链路</h1>
+        <p>以企业知识库为统一底座，由AI诊断发现增长机会，协同GEO、AIGC、AI官网与AI运营，推动企业从品牌认知走向持续转化</p>
       </div>
 
       <div className={`harbor-map ${hoveredProduct ? "has-hover" : ""} ${hoveredRoute ? "has-route-hover" : ""}`} aria-label="智见 AI 营销海港产品地图">
