@@ -161,10 +161,10 @@ const ROUTE_DETAILS = {
   },
 };
 
-function HeaderActions({ notify }) {
+export function HeaderActions({ notify }) {
   return <div className="home-header-actions">
     <button className="home-icon-button" aria-label="通知" onClick={() => notify("暂无新的通知")}><Bell size={18} /><i /></button>
-    <button className="home-account" onClick={() => notify("已打开个人账户菜单")}><span>ZJ</span><strong>张景</strong><CaretDown size={12} /></button>
+    <button className="home-account" onClick={() => notify("已打开个人账户菜单")}><span>景</span><strong>张景</strong><CaretDown size={12} /></button>
     <button className="home-team" onClick={() => notify("已打开团队切换器")}><Buildings size={17} />运营团队<CaretDown size={12} /></button>
   </div>;
 }
@@ -558,7 +558,7 @@ function DetailDrawer({ productKey, opened, onClose, onActivate }) {
   </div>;
 }
 
-export function HomePage({ notify, onNavigate }) {
+export function ProductMatrixPage({ notify, onNavigate }) {
   const [openedProducts, setOpenedProducts] = useState(() => new Set(DEFAULT_OPENED));
   const [detailProduct, setDetailProduct] = useState(null);
   const [hoveredProduct, setHoveredProduct] = useState(null);
@@ -575,9 +575,8 @@ export function HomePage({ notify, onNavigate }) {
     notify(`${PRODUCT_CATALOG[productKey].name} 已开通，建筑节点正在启用`);
   };
 
-  return <section className="home-shell light only-light harbor-home">
-    <header className="home-topbar"><div className="home-crumb"><Sparkle size={15} weight="fill" />AI 营销全景</div><HeaderActions notify={notify} /></header>
-    <div className="home-scroll">
+  return <>
+    <div className="home-scroll portal-page-scroll matrix-page-scroll">
       <div className="home-hero harbor-hero">
         <h1>让AI营销产品矩阵协同运转，驱动完整增长链路</h1>
         <p>以企业知识库为统一底座，由AI诊断发现增长机会，协同GEO、AIGC、AI官网与AI运营，推动企业从品牌认知走向持续转化</p>
@@ -600,5 +599,5 @@ export function HomePage({ notify, onNavigate }) {
       </div>
     </div>
     <DetailDrawer productKey={detailProduct} opened={detailProduct ? openedProducts.has(detailProduct) : false} onClose={() => setDetailProduct(null)} onActivate={activate} />
-  </section>;
+  </>;
 }

@@ -7,7 +7,7 @@ import {
   Newspaper, PaperPlaneTilt, PencilLine, Plus, Pulse, Robot, SelectionAll,
   Sparkle, Target, TrendUp, VideoCamera, X, UsersThree,
 } from "@phosphor-icons/react";
-import { HomePage } from "./HomePage.jsx";
+import { HomePortal as HomePage } from "./HomePortal.jsx";
 
 const PRIMARY_NAV = [
   ["首页", House], ["知识库", Database], ["AI诊断", Pulse],
