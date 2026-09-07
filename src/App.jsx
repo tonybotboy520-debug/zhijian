@@ -26,13 +26,14 @@ const TERTIARY_NAV = {
   统计: ["项目概览", "关键词表现", "内容表现", "媒体表现"],
 };
 
-const STAGES = ["诊断", "选词", "创作", "发布", "统计"];
+const STAGES = ["选词", "诊断", "提案", "信源", "创作", "统计"];
 
 const STAGE_DETAILS = [
-  { title: "GEO 现状诊断", description: "分析品牌、内容、信源与 AI 平台表现，明确优化机会。", output: "GEO 诊断报告" },
   { title: "关键词策略与选词", description: "基于业务、用户需求和搜索意图生成项目关键词方案。", output: "选词策略报告" },
+  { title: "GEO 现状诊断", description: "围绕已选关键词分析品牌、内容与 AI 平台表现，明确优化机会。", output: "GEO 诊断报告" },
+  { title: "项目策略提案", description: "结合选词与诊断结论，形成内容方向、执行节奏和验收口径。", output: "GEO 项目提案" },
+  { title: "可信信源规划", description: "筛选并确认与项目主题匹配的权威信源、媒体和引用依据。", output: "信源策略报告" },
   { title: "内容策略与创作", description: "围绕关键词和诊断结论生成、审核并管理项目内容。", output: "内容创作报告" },
-  { title: "媒体发布执行", description: "按客户确认的计划向目标媒体发布并记录结果。", output: "媒体发布报告" },
   { title: "GEO 数据统计", description: "汇总 AI 收录、品牌提及、引用和关键词表现。", output: "GEO 统计分析报告" },
 ];
 
@@ -48,7 +49,7 @@ const PROJECTS = [
     id: 1, name: "智服云 · 智能客服系统优化", order: "DD202608130001",
     keyword: "智能客服系统", keywordCount: 10, content: [30, 30], media: [20, 20],
     strategyCounts: { keywords: 10, media: 20, articles: 30 },
-    phase: 2, updated: "08-13 10:23",
+    phase: 4, updated: "08-13 10:23",
     articles: [
       { title: "智能客服系统核心功能解析与应用场景", status: "已完成", time: "2026-08-12 15:30", media: ["知乎", "百家号"] },
       { title: "如何选择适合企业的智能客服系统？7个关键指标", status: "生成中", time: "2026-08-13 09:45", media: ["今日头条", "搜狐号"] },
@@ -66,7 +67,7 @@ const PROJECTS = [
   {
     id: 3, name: "智学教育 · AI课程推广项目", order: "DD202608110015",
     keyword: "AI课程推荐", keywordCount: 3, content: [8, 8], media: [6, 6],
-    phase: 4, updated: "08-11 21:17",
+    phase: 5, updated: "08-11 21:17",
     articles: [
       { title: "零基础学习AI课程的路径建议", status: "已完成", time: "2026-08-10 13:10", media: ["知乎", "百家号", "今日头条"] },
       { title: "企业AI培训课程怎么选", status: "已完成", time: "2026-08-10 17:30", media: ["搜狐号", "知乎"] },
@@ -75,7 +76,7 @@ const PROJECTS = [
   {
     id: 4, name: "美妆优选 · 新品种草计划", order: "DD202608100023",
     keyword: "护肤新品推荐", keywordCount: 5, content: [10, 10], media: [6, 6],
-    phase: 4, completed: true, updated: "08-10 17:09",
+    phase: 5, completed: true, updated: "08-10 17:09",
     articles: [
       { title: "换季护肤新品成分与肤质匹配指南", status: "已完成", time: "2026-08-09 14:00", media: ["小红书", "知乎"] },
       { title: "敏感肌新品选购的五个关键点", status: "已完成", time: "2026-08-09 15:40", media: ["百家号", "搜狐号"] },
@@ -134,6 +135,18 @@ const PLATFORM_STATS = [
   ["DeepSeek", 78, 12, "2.4"], ["豆包", 72, 10, "2.8"], ["千问", 65, 9, "3.1"],
   ["文心一言", 59, 8, "3.4"], ["Kimi", 54, 7, "3.7"], ["智谱", 48, 6, "4.0"],
 ];
+
+const AI_PLATFORM_OPTIONS = [
+  { id: "doubao", name: "豆包", mark: "豆" },
+  { id: "deepseek", name: "DeepSeek", mark: "DS" },
+  { id: "qwen", name: "千问", mark: "千" },
+  { id: "yuanbao", name: "腾讯元宝", mark: "元" },
+  { id: "kimi", name: "Kimi", mark: "K" },
+  { id: "wenxin", name: "文心一言", mark: "文" },
+  { id: "chatglm", name: "智谱清言", mark: "智" },
+];
+
+const CONTENT_TYPE_OPTIONS = ["对比测评", "深度分析", "客户案例", "分析报告", "选型指南", "实操教程"];
 
 const cx = (...names) => names.filter(Boolean).join(" ");
 
@@ -194,8 +207,8 @@ function getProjectStageLabel(project) {
 
 function ProjectCardTimeline({ phase, completed }) {
   const stageLabel = completed ? "已完成" : STAGES[phase];
-  return <div className="project-card-timeline" aria-label={completed ? "项目五个环节已全部完成" : `项目当前位于第 ${phase + 1} 个环节：${stageLabel}`}>
-    <div className="card-timeline-heading"><span>项目进展</span><strong>{stageLabel}</strong><small>{completed ? "5/5 环节已完成" : `第 ${phase + 1}/${STAGES.length} 环节`}</small></div>
+  return <div className="project-card-timeline" aria-label={completed ? `项目${STAGES.length}个环节已全部完成` : `项目当前位于第 ${phase + 1} 个环节：${stageLabel}`}>
+    <div className="card-timeline-heading"><span>项目进展</span><strong>{stageLabel}</strong><small>{completed ? `${STAGES.length}/${STAGES.length} 环节已完成` : `第 ${phase + 1}/${STAGES.length} 环节`}</small></div>
     <div className="card-timeline-track">{STAGES.map((stage, index) => {
       const done = completed || index < phase;
       return <div className={cx("card-timeline-step", done && "done", index === phase && "current")} key={stage}><span>{done ? <Check size={10} weight="bold" /> : index + 1}</span><small>{stage}</small></div>;
@@ -225,7 +238,7 @@ function ProjectCard({ project, onOpenDetail, onViewStats }) {
 
 function ProjectTableTimeline({ project }) {
   const stageLabel = getProjectStageLabel(project);
-  return <div className="project-table-timeline" aria-label={project.completed ? "项目五个环节已全部完成" : `项目当前位于第 ${project.phase + 1} 个环节：${stageLabel}`}>
+  return <div className="project-table-timeline" aria-label={project.completed ? `项目${STAGES.length}个环节已全部完成` : `项目当前位于第 ${project.phase + 1} 个环节：${stageLabel}`}>
     <div className="table-timeline-track">{STAGES.map((stage, index) => {
       const done = project.completed || index < project.phase;
       return <div className={cx("table-timeline-step", done && "done", !project.completed && index === project.phase && "current")} key={stage}><span>{done ? <Check size={9} weight="bold" /> : index + 1}</span><small>{stage}</small></div>;
@@ -264,7 +277,11 @@ function ProjectList({ onOpenDetail, notify }) {
 }
 
 function buildProjectRelations(project) {
+  const mockNow = Date.now();
+  const articleUpdateAgeHours = [3, 7, 28, 72, 160, 360, 720, 1080, 1500, 2200, 3500, 5200, 8000, 10000, 14000, 32, 120, 480, 1680, 2880, 6000, 9000, 12000, 18000, 36, 240, 960, 4320, 9600, 16000];
+  const mediaUpdateAgeHours = [2, 5, 8, 16, 26, 32, 72, 120, 240, 480, 800, 1080, 1440, 1680, 2160, 2880, 4320, 9600, 12000, 16000];
   const keywordIntents = ["产品选型", "方案对比", "场景了解", "价格评估", "应用研究", "服务商筛选", "功能验证", "采购决策", "部署评估", "案例参考"];
+  const keywordPlatformCounts = [6, 5, 4, 7, 3, 6, 5, 4, 7, 3];
   const keywords = getProjectKeywords(project)
     .map((label, index) => ({
       id: `k${index + 1}`,
@@ -272,6 +289,8 @@ function buildProjectRelations(project) {
       intent: keywordIntents[index] || "需求研究",
       aiSearch: Math.round(12800 * Math.pow(.84, index)),
       pcSearch: Math.round(8600 * Math.pow(.82, index)),
+      platforms: Array.from({ length: keywordPlatformCounts[index % keywordPlatformCounts.length] }, (_, offset) => AI_PLATFORM_OPTIONS[(index + offset) % AI_PLATFORM_OPTIONS.length]),
+      updatedAt: Date.UTC(2026, 7, 13, 10) - index * 5 * 60 * 60 * 1000,
       type: "keyword",
     }));
   if (!project.completed && project.phase < STAGES.indexOf("创作")) {
@@ -310,13 +329,18 @@ function buildProjectRelations(project) {
     `${project.keyword}上线后持续优化的方法`,
   ];
   const articleCount = project.strategyCounts?.articles || Math.max(4, project.articles.length);
-  const articleSeeds = articleFallbacks.slice(0, articleCount).map((title, index) => ({
-    id: `a${index + 1}`,
-    title: project.articles[index]?.title || title,
-    time: project.articles[index]?.time || `2026-08-${String(Math.max(1, 30 - index)).padStart(2, "0")} ${String(9 + (index % 9)).padStart(2, "0")}:${index % 2 ? "45" : "20"}`,
-    status: project.articles[index]?.status || (index < Math.ceil(articleCount * .72) ? "已完成" : "生成中"),
-    type: "article",
-  }));
+  const articleSeeds = articleFallbacks.slice(0, articleCount).map((title, index) => {
+    const time = project.articles[index]?.time || `2026-08-${String(Math.max(1, 30 - index)).padStart(2, "0")} ${String(9 + (index % 9)).padStart(2, "0")}:${index % 2 ? "45" : "20"}`;
+    return {
+      id: `a${index + 1}`,
+      title: project.articles[index]?.title || title,
+      time,
+      updatedAt: mockNow - articleUpdateAgeHours[index % articleUpdateAgeHours.length] * 60 * 60 * 1000,
+      status: project.articles[index]?.status || (index < Math.ceil(articleCount * .72) ? "已完成" : "生成中"),
+      contentType: CONTENT_TYPE_OPTIONS[index % CONTENT_TYPE_OPTIONS.length],
+      type: "article",
+    };
+  });
   const mediaCatalog = [
     ["官网", "自有阵地", "/media-logos/official-site.png"], ["微信公众号", "自有阵地", "/media-logos/wechat.svg"], ["百家号", "综合资讯", "/media-logos/baijiahao.png"], ["今日头条", "综合资讯", "/media-logos/toutiao.png"],
     ["搜狐号", "新闻媒体", "/media-logos/sohu.png"], ["网易号", "新闻媒体", "/media-logos/netease.png"], ["知乎", "知识社区", "/media-logos/zhihu.svg"], ["小红书", "生活社区", "/media-logos/xiaohongshu.svg"],
@@ -330,16 +354,21 @@ function buildProjectRelations(project) {
     name,
     category,
     logo,
+    updatedAt: mockNow - mediaUpdateAgeHours[index % mediaUpdateAgeHours.length] * 60 * 60 * 1000,
     keywordIds: Array.from({ length: Math.min(3, keywords.length) }, (_, offset) => `k${((index * 2 + offset * 3) % keywords.length) + 1}`),
     articleIds: Array.from({ length: Math.min(3, articleSeeds.length) }, (_, offset) => `a${((index + offset * 10) % articleSeeds.length) + 1}`),
   }));
-  const media = mediaBlueprints.map((medium, index) => ({
-    ...medium,
-    keywordIds: medium.keywordIds.filter((id) => keywords.some((item) => item.id === id)),
-    articleIds: medium.articleIds.filter((id) => articleSeeds.some((item) => item.id === id)),
-    published: index < project.media[0],
-    type: "media",
-  }));
+  const media = mediaBlueprints.map((medium, index) => {
+    const pendingContentCount = ["百家号", "网易号", "小红书"].includes(medium.name) ? 1 : index < project.media[0] ? 0 : 1;
+    return {
+      ...medium,
+      keywordIds: medium.keywordIds.filter((id) => keywords.some((item) => item.id === id)),
+      articleIds: medium.articleIds.filter((id) => articleSeeds.some((item) => item.id === id)),
+      pendingContentCount,
+      published: pendingContentCount === 0,
+      type: "media",
+    };
+  });
   const articles = articleSeeds.map((article) => {
     const linkedMedia = media.filter((medium) => medium.articleIds.includes(article.id));
     return {
@@ -532,6 +561,92 @@ function DataSortControls({ type, sort, onChange }) {
   </div>;
 }
 
+function StrategyTimeSort({ type, direction, onChange }) {
+  const DirectionIcon = direction === "asc" ? ArrowUp : ArrowDown;
+  const directionLabel = direction === "asc" ? "正序" : "倒序";
+  return <button className="data-sort-button active strategy-time-sort" type="button" aria-label={`${type === "keyword" ? "关键词" : type === "media" ? "媒体信源" : "文章视频"}按更新时间${directionLabel}，点击切换为${direction === "asc" ? "倒序" : "正序"}`} title={`更新时间 · ${directionLabel}`} onClick={onChange}>
+    <ClockCountdown size={14} weight="bold" /><span>更新时间</span><DirectionIcon className="data-sort-direction" size={12} weight="bold" />
+  </button>;
+}
+
+function CanvasMultiFilter({ label, options, selected, onToggle, onClear }) {
+  const [open, setOpen] = useState(false);
+  const filterRef = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const close = (event) => { if (!filterRef.current?.contains(event.target)) setOpen(false); };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, [open]);
+  return <div className={cx("strategy-filter", open && "open", selected.size && "filtered")} ref={filterRef}>
+    <button className="data-sort-button strategy-filter-trigger" type="button" aria-label={`${label}筛选${selected.size ? `，已选择${selected.size}项` : "，当前显示全部"}`} aria-expanded={open} title={`${label}筛选`} onClick={() => setOpen((current) => !current)}>
+      <FunnelSimple size={14} weight={selected.size ? "fill" : "regular"} />
+      {selected.size ? <span className="strategy-filter-count">{selected.size}</span> : null}
+    </button>
+    {open ? <div className="strategy-filter-menu" role="group" aria-label={`${label}多选筛选`}>
+      <div className="strategy-filter-menu-head"><strong>{label}</strong><span>可多选</span></div>
+      <button className={cx("strategy-filter-option", !selected.size && "selected")} type="button" onClick={onClear}><span className="strategy-filter-check">{!selected.size ? <Check size={11} weight="bold" /> : null}</span><span>全部</span></button>
+      {options.map((option) => <button className={cx("strategy-filter-option", selected.has(option.id) && "selected")} type="button" role="checkbox" aria-checked={selected.has(option.id)} onClick={() => onToggle(option.id)} key={option.id}><span className="strategy-filter-check">{selected.has(option.id) ? <Check size={11} weight="bold" /> : null}</span><span>{option.label}</span></button>)}
+    </div> : null}
+  </div>;
+}
+
+function formatFullUpdatedAt(timestamp) {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return "更新时间未知";
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function formatRelativeUpdatedAt(timestamp, now = Date.now()) {
+  const elapsed = Math.max(0, now - timestamp);
+  const minutes = Math.floor(elapsed / 60000);
+  const hours = Math.floor(elapsed / 3600000);
+  const days = Math.floor(elapsed / 86400000);
+  if (minutes < 1) return "刚刚更新";
+  if (hours < 1) return `${minutes}分钟前更新`;
+  if (hours < 24) return `${hours}小时前更新`;
+  if (days < 2) return "1天前更新";
+  if (days < 60) return `${days}天前更新`;
+  if (days < 365) return `${Math.floor(days / 30)}个月前更新`;
+  return `${(days / 365).toFixed(1)}年前更新`;
+}
+
+function StrategyRelativeTime({ timestamp }) {
+  const fullTime = formatFullUpdatedAt(timestamp);
+  return <time dateTime={new Date(timestamp).toISOString()} title={`最后更新：${fullTime}`}>{formatRelativeUpdatedAt(timestamp)}</time>;
+}
+
+function KeywordPlatformSummary({ platforms, mediaCount }) {
+  const platformNames = platforms.map((platform) => platform.name).join("、");
+  return <small className="keyword-platform-summary" aria-label={`已选择 ${platforms.length} 个平台：${platformNames}；${mediaCount} 家发布媒体`} title={`${platformNames} · ${mediaCount} 家发布媒体`}>
+    <span className="keyword-platform-icons" aria-hidden="true">
+      {platforms.slice(0, 4).map((platform) => <span className={`keyword-platform-icon ${platform.id}`} title={platform.name} key={platform.id}>{platform.mark}</span>)}
+    </span>
+    <span className="keyword-platform-count">共{platforms.length}个平台</span>
+    <span className="keyword-publish-count">{mediaCount}家发布媒体</span>
+  </small>;
+}
+
+function sortRelationIdsByUpdatedAt(ids, items, direction = "desc") {
+  const itemsById = new Map(items.map((item) => [item.id, item]));
+  const factor = direction === "asc" ? 1 : -1;
+  return [...ids].sort((firstId, secondId) => {
+    const firstTime = itemsById.get(firstId)?.updatedAt || 0;
+    const secondTime = itemsById.get(secondId)?.updatedAt || 0;
+    if (firstTime === secondTime) return firstId.localeCompare(secondId);
+    return (firstTime - secondTime) * factor;
+  });
+}
+
+function createStrategyOrder(relationData) {
+  return {
+    keyword: sortRelationIdsByUpdatedAt(relationData.keywords.map((item) => item.id), relationData.keywords, "desc"),
+    media: sortRelationIdsByUpdatedAt(relationData.media.map((item) => item.id), relationData.media, "desc"),
+    article: sortRelationIdsByUpdatedAt(relationData.articles.map((item) => item.id), relationData.articles, "desc"),
+  };
+}
+
 function getKeywordContext(relationData, activeKeywordId) {
   const media = relationData.media.filter((medium) => medium.keywordIds.includes(activeKeywordId));
   const mediaIds = new Set(media.map((medium) => medium.id));
@@ -565,7 +680,7 @@ const CREATE_MEDIA_NODE_ID = "create-media-source";
 const CREATE_ARTICLE_NODE_ID = "create-article-content";
 const RELATION_REORDER_DURATION = 440;
 
-function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, onAddMedia, onManage, onInspect }) {
+function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, onAddMedia, onInspect }) {
   const relationData = useMemo(() => buildProjectRelations(project), [project]);
   const rangeDays = getRangeDays(timeRange, customRange);
   const [activeKeywordId, setActiveKeywordId] = useState("k1");
@@ -575,12 +690,10 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
     media: { key: "citationRate", direction: "desc" },
     article: { key: "citationRate", direction: "desc" },
   });
+  const [strategySort, setStrategySort] = useState({ keyword: "desc", media: "desc", article: "desc" });
+  const [canvasFilters, setCanvasFilters] = useState({ keyword: new Set(), media: new Set(), article: new Set() });
   const [isReordering, setIsReordering] = useState(false);
-  const [strategyOrder, setStrategyOrder] = useState(() => ({
-    keyword: relationData.keywords.map((item) => item.id),
-    media: relationData.media.map((item) => item.id),
-    article: relationData.articles.map((item) => item.id),
-  }));
+  const [strategyOrder, setStrategyOrder] = useState(() => createStrategyOrder(relationData));
   const [dataOrder, setDataOrder] = useState(() => ({
     keyword: relationData.keywords.map((item) => item.id),
     media: relationData.media.map((item) => item.id),
@@ -588,6 +701,7 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
   }));
   const [paths, setPaths] = useState([]);
   const canvasRef = useRef(null);
+  const linesRef = useRef(null);
   const nodeRefs = useRef(new Map());
   const previousNodeRectsRef = useRef(null);
   const reorderTimerRef = useRef(null);
@@ -596,30 +710,32 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
 
   const keywordContext = useMemo(() => getKeywordContext(relationData, activeKeywordId), [activeKeywordId, relationData]);
   const activeNetwork = useMemo(() => buildActiveNetwork(activeNode, relationData, activeKeywordId), [activeKeywordId, activeNode, relationData]);
+  const canvasFilterOptions = useMemo(() => ({
+    keyword: AI_PLATFORM_OPTIONS.map((platform) => ({ id: platform.id, label: platform.name })),
+    media: [...new Set(relationData.media.map((medium) => medium.category))].map((category) => ({ id: category, label: category })),
+    article: CONTENT_TYPE_OPTIONS.map((contentType) => ({ id: contentType, label: contentType })),
+  }), [relationData.media]);
   const creationEdges = useMemo(() => {
     if (activeNode.type === "keyword") return [{ id: `${activeNode.id}-${CREATE_MEDIA_NODE_ID}`, from: activeNode.id, to: CREATE_MEDIA_NODE_ID, creation: true }];
     if (activeNode.type === "media") return [{ id: `${activeNode.id}-${CREATE_ARTICLE_NODE_ID}`, from: activeNode.id, to: CREATE_ARTICLE_NODE_ID, creation: true }];
     return [{ id: `${CREATE_MEDIA_NODE_ID}-${activeNode.id}`, from: CREATE_MEDIA_NODE_ID, to: activeNode.id, creation: true }];
   }, [activeNode]);
-
   const strategyData = useMemo(() => {
     const applyOrder = (type, items) => {
       const itemsById = new Map(items.map((item) => [item.id, item]));
       return strategyOrder[type].map((id) => itemsById.get(id)).filter(Boolean);
     };
     return {
-      keyword: applyOrder("keyword", relationData.keywords),
-      media: applyOrder("media", keywordContext.media),
-      article: applyOrder("article", keywordContext.articles),
+      keyword: applyOrder("keyword", relationData.keywords).filter((keyword) => !canvasFilters.keyword.size || keyword.platforms.some((platform) => canvasFilters.keyword.has(platform.id))),
+      media: applyOrder("media", keywordContext.media).filter((medium) => !canvasFilters.media.size || canvasFilters.media.has(medium.category)),
+      article: applyOrder("article", keywordContext.articles).filter((article) => !canvasFilters.article.size || canvasFilters.article.has(article.contentType)),
     };
-  }, [keywordContext, relationData.keywords, strategyOrder]);
+  }, [canvasFilters, keywordContext, relationData.keywords, strategyOrder]);
 
   useEffect(() => {
-    setStrategyOrder({
-      keyword: relationData.keywords.map((item) => item.id),
-      media: relationData.media.map((item) => item.id),
-      article: relationData.articles.map((item) => item.id),
-    });
+    setStrategySort({ keyword: "desc", media: "desc", article: "desc" });
+    setCanvasFilters({ keyword: new Set(), media: new Set(), article: new Set() });
+    setStrategyOrder(createStrategyOrder(relationData));
     setDataOrder({
       keyword: relationData.keywords.map((item) => item.id),
       media: relationData.media.map((item) => item.id),
@@ -629,8 +745,9 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
 
   const updatePaths = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
-    const canvasRect = canvas.getBoundingClientRect();
+    const lines = linesRef.current;
+    if (!canvas || !lines) return;
+    const linesRect = lines.getBoundingClientRect();
     const nextPaths = [...keywordContext.edges, ...creationEdges].flatMap((edge) => {
       const from = nodeRefs.current.get(edge.from);
       const to = nodeRefs.current.get(edge.to);
@@ -638,10 +755,10 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
       const fromRect = from.getBoundingClientRect();
       const toRect = to.getBoundingClientRect();
       const [startRect, endRect] = fromRect.left <= toRect.left ? [fromRect, toRect] : [toRect, fromRect];
-      const x1 = startRect.right - canvasRect.left;
-      const y1 = startRect.top + startRect.height / 2 - canvasRect.top;
-      const x2 = endRect.left - canvasRect.left;
-      const y2 = endRect.top + endRect.height / 2 - canvasRect.top;
+      const x1 = startRect.right - linesRect.left;
+      const y1 = startRect.top + startRect.height / 2 - linesRect.top;
+      const x2 = endRect.left - linesRect.left;
+      const y2 = endRect.top + endRect.height / 2 - linesRect.top;
       const bend = Math.max(28, (x2 - x1) * .45);
       return [{ ...edge, x1, y1, x2, y2, d: `M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}` }];
     });
@@ -653,7 +770,20 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
     const observer = new ResizeObserver(updatePaths);
     if (canvasRef.current) observer.observe(canvasRef.current);
     return () => { window.cancelAnimationFrame(frame); observer.disconnect(); };
-  }, [updatePaths, viewMode, rangeDays, dataSort]);
+  }, [updatePaths, viewMode, rangeDays, dataSort, canvasFilters]);
+
+  useEffect(() => {
+    if (!strategyData.keyword.some((keyword) => keyword.id === activeKeywordId)) {
+      const nextKeyword = strategyData.keyword[0];
+      if (nextKeyword) {
+        setActiveKeywordId(nextKeyword.id);
+        setActiveNode({ type: "keyword", id: nextKeyword.id });
+      }
+      return;
+    }
+    if (activeNode.type === "media" && !strategyData.media.some((medium) => medium.id === activeNode.id)) setActiveNode({ type: "keyword", id: activeKeywordId });
+    if (activeNode.type === "article" && !strategyData.article.some((article) => article.id === activeNode.id)) setActiveNode({ type: "keyword", id: activeKeywordId });
+  }, [activeKeywordId, activeNode, strategyData]);
 
   useLayoutEffect(() => {
     const previousRects = previousNodeRectsRef.current;
@@ -693,7 +823,7 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
       updatePaths();
     }, reduceMotion ? 0 : RELATION_REORDER_DURATION);
     return undefined;
-  }, [activeNode, dataSort, updatePaths, viewMode]);
+  }, [activeNode, dataSort, strategySort, updatePaths, viewMode]);
 
   useEffect(() => () => {
     window.clearTimeout(reorderTimerRef.current);
@@ -753,6 +883,28 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
     if (type === "keyword") setActiveKeywordId(id);
     setActiveNode({ type, id });
   };
+  const changeStrategySort = (type) => {
+    const nextDirection = strategySort[type] === "desc" ? "asc" : "desc";
+    const items = type === "keyword" ? relationData.keywords : type === "media" ? relationData.media : relationData.articles;
+    previousNodeRectsRef.current = new Map(
+      [...nodeRefs.current.entries()].map(([nodeId, element]) => [nodeId, element.getBoundingClientRect()]),
+    );
+    setIsReordering(true);
+    setStrategySort((current) => ({ ...current, [type]: nextDirection }));
+    setStrategyOrder((current) => ({
+      ...current,
+      [type]: sortRelationIdsByUpdatedAt(current[type], items, nextDirection),
+    }));
+  };
+  const toggleCanvasFilter = (type, value) => {
+    setCanvasFilters((current) => {
+      const nextValues = new Set(current[type]);
+      if (nextValues.has(value)) nextValues.delete(value);
+      else nextValues.add(value);
+      return { ...current, [type]: nextValues };
+    });
+  };
+  const clearCanvasFilter = (type) => setCanvasFilters((current) => ({ ...current, [type]: new Set() }));
   const changeDataSort = (type, key) => {
     const nextSort = dataSort[type].key === key
       ? { key, direction: dataSort[type].direction === "desc" ? "asc" : "desc" }
@@ -776,11 +928,11 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
       return dataOrder[type].map((id) => itemsById.get(id)).filter(Boolean);
     };
     return {
-      keyword: applyOrder("keyword", relationData.keywords),
-      media: applyOrder("media", keywordContext.media),
-      article: applyOrder("article", keywordContext.articles),
+      keyword: applyOrder("keyword", relationData.keywords).filter((keyword) => !canvasFilters.keyword.size || keyword.platforms.some((platform) => canvasFilters.keyword.has(platform.id))),
+      media: applyOrder("media", keywordContext.media).filter((medium) => !canvasFilters.media.size || canvasFilters.media.has(medium.category)),
+      article: applyOrder("article", keywordContext.articles).filter((article) => !canvasFilters.article.size || canvasFilters.article.has(article.contentType)),
     };
-  }, [dataOrder, keywordContext, relationData.keywords]);
+  }, [canvasFilters, dataOrder, keywordContext, relationData.keywords]);
 
   useLayoutEffect(() => {
     if (previousViewModeRef.current === viewMode) return;
@@ -805,34 +957,38 @@ function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, 
   }, [activeNetwork, activeNode.type, dataSort, orderRelatedByMetric, viewMode]);
 
   return <div className={cx("relation-canvas", viewMode === "data" && "data-view-canvas", isReordering && "reordering")} ref={canvasRef}>
-    <svg className={cx("relation-lines", viewMode === "data" ? "relation-lines-data" : "relation-lines-strategy")} aria-hidden="true"><g>{paths.map((path) => {
+    <svg ref={linesRef} className={cx("relation-lines", viewMode === "data" ? "relation-lines-data" : "relation-lines-strategy")} aria-hidden="true">
+      <defs>{paths.flatMap((path) => [
+        <clipPath id={`endpoint-start-${path.id}`} clipPathUnits="userSpaceOnUse" key={`start-${path.id}`}><rect x={path.x1} y={path.y1 - 5} width="5" height="10" /></clipPath>,
+        <clipPath id={`endpoint-end-${path.id}`} clipPathUnits="userSpaceOnUse" key={`end-${path.id}`}><rect x={path.x2 - 5} y={path.y2 - 5} width="5" height="10" /></clipPath>,
+      ])}</defs><g>{paths.map((path) => {
       const pathState = path.creation || activeNetwork.edgeIds.has(path.id) ? "active" : "muted";
       return <g className={cx("relation-edge", pathState, path.creation && "creation-edge")} key={path.id}>
         <path className={cx("relation-line", pathState)} d={path.d} />
-        <circle className={cx("relation-endpoint", pathState)} cx={path.x1} cy={path.y1} r="3.2" />
-        <circle className={cx("relation-endpoint", pathState)} cx={path.x2} cy={path.y2} r="3.2" />
+        <circle className={cx("relation-endpoint", pathState)} cx={path.x1} cy={path.y1} r="3.2" clipPath={`url(#endpoint-start-${path.id})`} />
+        <circle className={cx("relation-endpoint", pathState)} cx={path.x2} cy={path.y2} r="3.2" clipPath={`url(#endpoint-end-${path.id})`} />
       </g>;
     })}</g></svg>
     {viewMode === "strategy" ? <div className="relation-columns canvas-view-panel canvas-view-strategy" key="strategy-view">
-      <section className="relation-column keyword-relation-column"><div className="relation-column-title"><span><Target size={17} />关键词</span><small>{relationData.keywords.length} 个</small><button className="relation-manage-button" onClick={() => onManage("keyword")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list">{strategyData.keyword.map((keyword) => <div ref={bindNode(keyword.id)} className={cx(nodeClass("keyword", keyword.id), "split-card")} role="group" key={keyword.id}><button className="relation-card-main" aria-pressed={activeKeywordId === keyword.id} onClick={() => selectNode("keyword", keyword.id)}><span className="relation-card-icon"><Target size={16} /></span><span><strong>{keyword.label}</strong><small>{keyword.intent} · {relationData.media.filter((medium) => medium.keywordIds.includes(keyword.id)).length} 家发布媒体</small></span></button><button className="relation-card-inspect" aria-label={`查看关键词详情：${keyword.label}`} title="查看详情" onClick={() => onInspect("keyword", keyword)}><Eye size={17} /></button></div>)}</div></section>
-      <section className="relation-column media-relation-column"><div className="relation-column-title"><span><GlobeHemisphereWest size={17} />媒体信源</span><small>{relationData.media.length} 家</small><button className="relation-manage-button" onClick={() => onManage("media")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list"><button ref={bindNode(CREATE_MEDIA_NODE_ID)} className={cx("relation-card", "relation-create-card", (activeNode.type === "keyword" || activeNode.type === "article") && "linked")} onClick={onAddMedia}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建媒体信源</strong></button>{keywordContext.media.length ? strategyData.media.map((medium) => <button ref={bindNode(medium.id)} className={nodeClass("media", medium.id)} aria-pressed={activeNode.type === "media" && activeNode.id === medium.id} onClick={() => selectNode("media", medium.id)} key={medium.id}><span className="media-source-logo" aria-hidden="true"><img src={medium.logo} alt="" /></span><span><strong>{medium.name}</strong><small>{medium.category} · {medium.articleIds.length} 条发布内容</small></span><StatusPill>{medium.published ? "已发布" : "待发布"}</StatusPill></button>) : <div className="relation-card relation-empty-card media-empty-card" aria-disabled="true"><span className="relation-card-icon"><GlobeHemisphereWest size={16} /></span><span><strong>该关键词暂无媒体信源</strong><small>可通过上方入口新建媒体</small></span></div>}</div></section>
-      <section className="relation-column article-relation-column"><div className="relation-column-title"><span><FileText size={17} />文章/视频</span><small>{relationData.articles.length} 条</small><button className="relation-manage-button" onClick={() => onManage("content")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list"><button ref={bindNode(CREATE_ARTICLE_NODE_ID)} className={cx("relation-card", "relation-create-card", activeNode.type === "media" && "linked")} onClick={onAddContent}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建文章/视频</strong></button>{keywordContext.articles.length ? strategyData.article.map((article) => <div ref={bindNode(article.id)} className={cx(nodeClass("article", article.id), "split-card")} role="group" key={article.id}><button className="relation-card-main" aria-pressed={activeNode.type === "article" && activeNode.id === article.id} onClick={() => selectNode("article", article.id)}><span className="relation-card-icon"><FileText size={16} /></span><span className="relation-card-copy"><strong>{article.title}</strong><small>{keywordContext.media.filter((medium) => medium.articleIds.includes(article.id)).length} 家发布媒体 · {article.status}</small></span></button><button className="relation-card-inspect" aria-label={`查看文章内容：${article.title}`} title="查看内容" onClick={() => onInspect("article", article)}><Eye size={17} /></button></div>) : null}</div></section>
+      <section className="relation-column keyword-relation-column"><div className="relation-column-title"><span><Target size={17} />关键词</span><small>{relationData.keywords.length} 个</small><CanvasMultiFilter label="AI 平台" options={canvasFilterOptions.keyword} selected={canvasFilters.keyword} onToggle={(value) => toggleCanvasFilter("keyword", value)} onClear={() => clearCanvasFilter("keyword")} /><StrategyTimeSort type="keyword" direction={strategySort.keyword} onChange={() => changeStrategySort("keyword")} /></div><div className="relation-card-list">{strategyData.keyword.map((keyword) => <div ref={bindNode(keyword.id)} className={cx(nodeClass("keyword", keyword.id), "split-card")} role="group" key={keyword.id}><button className="relation-card-main" aria-pressed={activeKeywordId === keyword.id} onClick={() => selectNode("keyword", keyword.id)}><span className="relation-card-icon"><Target size={16} /></span><span><strong>{keyword.label}</strong><KeywordPlatformSummary platforms={canvasFilters.keyword.size ? keyword.platforms.filter((platform) => canvasFilters.keyword.has(platform.id)) : keyword.platforms} mediaCount={relationData.media.filter((medium) => medium.keywordIds.includes(keyword.id)).length} /></span></button><button className="relation-card-inspect" aria-label={`查看关键词详情：${keyword.label}`} title="查看详情" onClick={() => onInspect("keyword", keyword)}><Eye size={17} /></button></div>)}</div></section>
+      <section className="relation-column media-relation-column"><div className="relation-column-title"><span><GlobeHemisphereWest size={17} />媒体信源</span><small>{relationData.media.length} 家</small><CanvasMultiFilter label="媒体类型" options={canvasFilterOptions.media} selected={canvasFilters.media} onToggle={(value) => toggleCanvasFilter("media", value)} onClear={() => clearCanvasFilter("media")} /><StrategyTimeSort type="media" direction={strategySort.media} onChange={() => changeStrategySort("media")} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_MEDIA_NODE_ID)} className={cx("relation-card", "relation-create-card", (activeNode.type === "keyword" || activeNode.type === "article") && "linked")} onClick={onAddMedia}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建媒体信源</strong></button>{keywordContext.media.length ? strategyData.media.map((medium) => <button ref={bindNode(medium.id)} className={cx(nodeClass("media", medium.id), "strategy-media-card")} aria-pressed={activeNode.type === "media" && activeNode.id === medium.id} onClick={() => selectNode("media", medium.id)} key={medium.id}><span className="media-source-logo" aria-hidden="true"><img src={medium.logo} alt="" /></span><span><span className="strategy-card-title-row"><strong>{medium.name}</strong>{medium.pendingContentCount ? <span className="strategy-state-badge pending">{medium.pendingContentCount}条内容待发布</span> : null}</span><small className="strategy-card-meta-line"><span>{medium.category}</span><span>{medium.articleIds.length} 条内容</span><StrategyRelativeTime timestamp={medium.updatedAt} /></small></span></button>) : <div className="relation-card relation-empty-card media-empty-card" aria-disabled="true"><span className="relation-card-icon"><GlobeHemisphereWest size={16} /></span><span><strong>该关键词暂无媒体信源</strong><small>可通过上方入口新建媒体</small></span></div>}</div></section>
+      <section className="relation-column article-relation-column"><div className="relation-column-title"><span><FileText size={17} />文章/视频</span><small>{relationData.articles.length} 条</small><CanvasMultiFilter label="内容类型" options={canvasFilterOptions.article} selected={canvasFilters.article} onToggle={(value) => toggleCanvasFilter("article", value)} onClear={() => clearCanvasFilter("article")} /><StrategyTimeSort type="article" direction={strategySort.article} onChange={() => changeStrategySort("article")} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_ARTICLE_NODE_ID)} className={cx("relation-card", "relation-create-card", activeNode.type === "media" && "linked")} onClick={onAddContent}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建文章/视频</strong></button>{keywordContext.articles.length ? strategyData.article.map((article) => <div ref={bindNode(article.id)} className={cx(nodeClass("article", article.id), "split-card")} role="group" key={article.id}><button className="relation-card-main" aria-pressed={activeNode.type === "article" && activeNode.id === article.id} onClick={() => selectNode("article", article.id)}><span className="relation-card-icon"><FileText size={16} /></span><span className="relation-card-copy"><span className="strategy-card-title-row"><strong>{article.title}</strong>{article.status === "生成中" ? <span className="strategy-state-badge generating">生成中</span> : null}</span><small className="strategy-card-meta-line"><span>{article.contentType}</span><span>{keywordContext.media.filter((medium) => medium.articleIds.includes(article.id)).length} 家媒体</span><StrategyRelativeTime timestamp={article.updatedAt} /></small></span></button><button className="relation-card-inspect" aria-label={`查看文章内容：${article.title}`} title="查看内容" onClick={() => onInspect("article", article)}><Eye size={17} /></button></div>) : null}</div></section>
     </div> : <div className="relation-columns data-relation-columns canvas-view-panel canvas-view-data" key="data-view">
-      <section className="relation-column keyword-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><Target size={17} />关键词</span><small>{relationData.keywords.length} 个</small></div><DataSortControls type="keyword" sort={dataSort.keyword} onChange={(key) => changeDataSort("keyword", key)} /></div><div className="relation-card-list">{sortedData.keyword.map((keyword) => {
+      <section className="relation-column keyword-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><Target size={17} />关键词</span><small>{relationData.keywords.length} 个</small></div><CanvasMultiFilter label="AI 平台" options={canvasFilterOptions.keyword} selected={canvasFilters.keyword} onToggle={(value) => toggleCanvasFilter("keyword", value)} onClear={() => clearCanvasFilter("keyword")} /><DataSortControls type="keyword" sort={dataSort.keyword} onChange={(key) => changeDataSort("keyword", key)} /></div><div className="relation-card-list">{sortedData.keyword.map((keyword) => {
         const metrics = getPeriodMetric("keyword", keyword.id, rangeDays);
         return <button ref={bindNode(keyword.id)} className={cx(nodeClass("keyword", keyword.id), "data-relation-card")} aria-pressed={activeKeywordId === keyword.id} onClick={() => selectNode("keyword", keyword.id)} key={keyword.id}>
           <span className="data-card-heading"><span className="relation-card-icon"><Target size={16} /></span><strong>{keyword.label}</strong></span>
           <div className="data-metric-grid"><MetricTrend label="提及率" value={`${formatDecimal(metrics.mentionRate)}%`} trend={trendCopy(metrics.mentionDelta, "pp")} direction={metricDirection(metrics.mentionDelta)} values={metrics.mentionTrend} /><MetricTrend label="平均排名" value={formatDecimal(metrics.rank)} trend={trendCopy(metrics.rankDelta, "位")} direction={metricDirection(metrics.rankDelta)} values={metrics.rankTrend} invert /></div>
         </button>;
       })}</div></section>
-      <section className="relation-column media-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><GlobeHemisphereWest size={17} />媒体信源</span><small>{relationData.media.length} 家</small></div><DataSortControls type="media" sort={dataSort.media} onChange={(key) => changeDataSort("media", key)} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_MEDIA_NODE_ID)} className={cx("relation-card", "relation-create-card", (activeNode.type === "keyword" || activeNode.type === "article") && "linked")} onClick={onAddMedia}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建媒体信源</strong></button>{keywordContext.media.length ? sortedData.media.map((medium) => {
+      <section className="relation-column media-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><GlobeHemisphereWest size={17} />媒体信源</span><small>{relationData.media.length} 家</small></div><CanvasMultiFilter label="媒体类型" options={canvasFilterOptions.media} selected={canvasFilters.media} onToggle={(value) => toggleCanvasFilter("media", value)} onClear={() => clearCanvasFilter("media")} /><DataSortControls type="media" sort={dataSort.media} onChange={(key) => changeDataSort("media", key)} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_MEDIA_NODE_ID)} className={cx("relation-card", "relation-create-card", (activeNode.type === "keyword" || activeNode.type === "article") && "linked")} onClick={onAddMedia}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建媒体信源</strong></button>{keywordContext.media.length ? sortedData.media.map((medium) => {
         const metrics = getPeriodMetric("media", medium.id, rangeDays);
         return <button ref={bindNode(medium.id)} className={cx(nodeClass("media", medium.id), "data-relation-card")} aria-pressed={activeNode.type === "media" && activeNode.id === medium.id} onClick={() => selectNode("media", medium.id)} key={medium.id}>
           <span className="data-card-heading"><span className="media-source-logo" aria-hidden="true"><img src={medium.logo} alt="" /></span><strong>{medium.name}</strong></span>
           <div className="data-metric-grid"><MetricTrend label="引用率" value={`${formatDecimal(metrics.citationRate)}%`} trend={trendCopy(metrics.rateDelta, "pp")} direction={metricDirection(metrics.rateDelta)} values={metrics.rateTrend} /><MetricTrend label="引用次数" value={metrics.citationCount} trend={countTrendCopy(metrics.countDelta)} direction={metricDirection(metrics.countDelta)} values={metrics.countTrend} /></div>
         </button>;
       }) : <div className="relation-card relation-empty-card media-empty-card" aria-disabled="true"><span className="relation-card-icon"><GlobeHemisphereWest size={16} /></span><span><strong>暂无媒体数据</strong><small>开始发布后生成趋势</small></span></div>}</div></section>
-      <section className="relation-column article-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><FileText size={17} />文章/视频</span><small>{relationData.articles.length} 条</small></div><DataSortControls type="article" sort={dataSort.article} onChange={(key) => changeDataSort("article", key)} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_ARTICLE_NODE_ID)} className={cx("relation-card", "relation-create-card", activeNode.type === "media" && "linked")} onClick={onAddContent}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建文章/视频</strong></button>{keywordContext.articles.length ? sortedData.article.map((article) => {
+      <section className="relation-column article-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><FileText size={17} />文章/视频</span><small>{relationData.articles.length} 条</small></div><CanvasMultiFilter label="内容类型" options={canvasFilterOptions.article} selected={canvasFilters.article} onToggle={(value) => toggleCanvasFilter("article", value)} onClear={() => clearCanvasFilter("article")} /><DataSortControls type="article" sort={dataSort.article} onChange={(key) => changeDataSort("article", key)} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_ARTICLE_NODE_ID)} className={cx("relation-card", "relation-create-card", activeNode.type === "media" && "linked")} onClick={onAddContent}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建文章/视频</strong></button>{keywordContext.articles.length ? sortedData.article.map((article) => {
         const metrics = getPeriodMetric("article", article.id, rangeDays);
         return <button ref={bindNode(article.id)} className={cx(nodeClass("article", article.id), "data-relation-card", "content-data-card")} aria-pressed={activeNode.type === "article" && activeNode.id === article.id} onClick={() => selectNode("article", article.id)} key={article.id}>
           <span className="data-card-heading"><span className="relation-card-icon"><FileText size={16} /></span><strong>{article.title}</strong></span>
@@ -958,7 +1114,7 @@ function ProjectStageFloor({ project, initialPhase, notify }) {
     return () => window.clearInterval(timer);
   }, [reviewIndex]);
 
-  return <section className="project-stage-floor compact-stage-flow" aria-label="项目五阶段流程">
+  return <section className="project-stage-floor compact-stage-flow" aria-label="项目六阶段流程">
     <div className="compact-stage-grid">{STAGES.map((stage, index) => {
       const status = stageStatuses[index];
       return <article className={cx("compact-stage-card", status)} key={stage}>
@@ -975,30 +1131,22 @@ function ProjectStageFloor({ project, initialPhase, notify }) {
   </section>;
 }
 
-function ProjectDetail({ projectId, onBack, onViewStats, onManage, notify }) {
+function ProjectDetail({ projectId, onBack, onViewStats, notify }) {
   const project = PROJECTS.find((item) => item.id === projectId) || PROJECTS[0];
   const [canvasView, setCanvasView] = useState("strategy");
   const [timeRange, setTimeRange] = useState("30");
   const [customRange, setCustomRange] = useState({ start: "2026-08-08", end: "2026-09-06" });
-  const [addMenuOpen, setAddMenuOpen] = useState(false);
   const [drawerType, setDrawerType] = useState(null);
   const [previewItem, setPreviewItem] = useState(null);
-  const addMenuRef = useRef(null);
-  useEffect(() => {
-    if (!addMenuOpen) return undefined;
-    const closeMenu = (event) => { if (!addMenuRef.current?.contains(event.target)) setAddMenuOpen(false); };
-    document.addEventListener("mousedown", closeMenu);
-    return () => document.removeEventListener("mousedown", closeMenu);
-  }, [addMenuOpen]);
-  const openDrawer = (type) => { setAddMenuOpen(false); setDrawerType(type); };
-  const switchCanvasView = (nextView) => { setAddMenuOpen(false); setCanvasView(nextView); };
+  const openDrawer = (type) => setDrawerType(type);
+  const switchCanvasView = (nextView) => setCanvasView(nextView);
   return <section className="page-section detail-page">
     <div className="detail-titlebar"><div><button className="back-link" onClick={onBack}><ArrowLeft size={16} />返回项目列表</button><div className="title-line"><h1>{project.name}</h1><StatusPill>{getProjectStageLabel(project)}</StatusPill></div><p>订单号：{project.order} · 创建时间：2026-08-08</p></div><div className="heading-actions"><button className="primary-button" onClick={() => onViewStats(project.id)}><ChartBar size={17} />查看统计</button></div></div>
     <ProjectStageFloor key={project.id} project={project} initialPhase={project.phase} notify={notify} />
-    <div className="section-title relation-section-title"><div className="strategy-canvas-title-group"><h2>策略画布</h2><div className="canvas-view-switch" role="group" aria-label="策略画布视图"><button className={cx(canvasView === "strategy" && "active")} aria-pressed={canvasView === "strategy"} onClick={() => switchCanvasView("strategy")}>策略视图</button><button className={cx(canvasView === "data" && "active")} aria-pressed={canvasView === "data"} onClick={() => switchCanvasView("data")}>数据视图</button></div></div><div className="strategy-canvas-toolbar">
-      {canvasView === "data" ? <div className="canvas-time-range"><label><CalendarBlank size={16} /><span className="sr-only">时间范围</span><select value={timeRange} onChange={(event) => setTimeRange(event.target.value)} aria-label="选择数据时间范围"><option value="7">近 7 天</option><option value="30">近 30 天</option><option value="90">近 90 天</option><option value="custom">自定义</option></select><CaretDown size={13} /></label>{timeRange === "custom" ? <div className="custom-date-range"><input type="date" value={customRange.start} max={customRange.end} onInput={(event) => { const value = event.currentTarget.value; setCustomRange((current) => ({ ...current, start: value })); }} aria-label="开始日期" /><span>至</span><input type="date" value={customRange.end} min={customRange.start} onInput={(event) => { const value = event.currentTarget.value; setCustomRange((current) => ({ ...current, end: value })); }} aria-label="结束日期" /></div> : null}</div> : <div className="strategy-add-control" ref={addMenuRef}><button className="primary-button" onClick={() => setAddMenuOpen((open) => !open)} aria-expanded={addMenuOpen}><Plus size={16} />添加关键词 / 文章/视频 / 媒体<CaretDown size={14} /></button>{addMenuOpen ? <div className="strategy-add-menu"><button onClick={() => openDrawer("关键词")}><Target size={17} /><span><strong>添加关键词</strong><small>补充项目覆盖词</small></span></button><button onClick={() => openDrawer("文章")}><FileText size={17} /><span><strong>添加文章/视频</strong><small>创建内容计划</small></span></button><button onClick={() => openDrawer("媒体")}><GlobeHemisphereWest size={17} /><span><strong>添加媒体</strong><small>选择发布信源</small></span></button></div> : null}</div>}
-    </div></div>
-    <RelationMap project={project} viewMode={canvasView} timeRange={timeRange} customRange={customRange} onAddContent={() => openDrawer("文章")} onAddMedia={() => openDrawer("媒体")} onManage={(kind) => onManage(kind, project.id)} onInspect={(kind, item) => setPreviewItem({ kind, item })} />
+    <div className="section-title relation-section-title"><div className="strategy-canvas-title-group"><h2>策略画布</h2><div className="canvas-view-switch" role="group" aria-label="策略画布视图"><button className={cx(canvasView === "strategy" && "active")} aria-pressed={canvasView === "strategy"} onClick={() => switchCanvasView("strategy")}>策略视图</button><button className={cx(canvasView === "data" && "active")} aria-pressed={canvasView === "data"} onClick={() => switchCanvasView("data")}>数据视图</button></div></div>
+      {canvasView === "data" ? <div className="strategy-canvas-toolbar"><div className="canvas-time-range"><label><CalendarBlank size={16} /><span className="sr-only">时间范围</span><select value={timeRange} onChange={(event) => setTimeRange(event.target.value)} aria-label="选择数据时间范围"><option value="7">近 7 天</option><option value="30">近 30 天</option><option value="90">近 90 天</option><option value="custom">自定义</option></select><CaretDown size={13} /></label>{timeRange === "custom" ? <div className="custom-date-range"><input type="date" value={customRange.start} max={customRange.end} onInput={(event) => { const value = event.currentTarget.value; setCustomRange((current) => ({ ...current, start: value })); }} aria-label="开始日期" /><span>至</span><input type="date" value={customRange.end} min={customRange.start} onInput={(event) => { const value = event.currentTarget.value; setCustomRange((current) => ({ ...current, end: value })); }} aria-label="结束日期" /></div> : null}</div></div> : null}
+    </div>
+    <RelationMap project={project} viewMode={canvasView} timeRange={timeRange} customRange={customRange} onAddContent={() => openDrawer("文章")} onAddMedia={() => openDrawer("媒体")} onInspect={(kind, item) => setPreviewItem({ kind, item })} />
     {drawerType ? <StrategyDrawer type={drawerType} project={project} onClose={() => setDrawerType(null)} notify={notify} /> : null}
     {previewItem ? <StrategyItemDrawer kind={previewItem.kind} item={previewItem.item} project={project} onClose={() => setPreviewItem(null)} notify={notify} /> : null}
   </section>;
@@ -1239,7 +1387,7 @@ export function App() {
   const [assistantMessages, setAssistantMessages] = useState([createChatMessage("assistant", "你好，我是小智。你在 GEO 工作台里有什么问题，都可以直接问我。")]);
   const [assistantInput, setAssistantInput] = useState("");
   const [assistantTyping, setAssistantTyping] = useState(false);
-  const [assistantCollapsed, setAssistantCollapsed] = useState(false);
+  const [assistantCollapsed, setAssistantCollapsed] = useState(true);
   const assistantContext = useMemo(() => getAssistantContext(secondary, tertiary, projectView, projectId), [secondary, tertiary, projectView, projectId]);
   const lastAssistantContext = useRef("");
   useEffect(() => {
@@ -1276,7 +1424,7 @@ export function App() {
   if (primary === "首页") content = <HomePage notify={notify} onNavigate={setPrimary} />;
   else if (primary !== "GEO") content = <EmptyStub title={primary} />;
   else if (secondary === "项目" && projectView === "list") content = <ProjectList onOpenDetail={openDetail} notify={notify} />;
-  else if (secondary === "项目") content = <ProjectDetail projectId={projectId} onBack={() => setProjectView("list")} onViewStats={viewStats} onManage={openProjectManagement} notify={notify} />;
+  else if (secondary === "项目") content = <ProjectDetail projectId={projectId} onBack={() => setProjectView("list")} onViewStats={viewStats} notify={notify} />;
   else if (secondary === "选词") content = <KeywordPackages projectId={managementScope?.kind === "keyword" ? managementScope.projectId : null} notify={notify} />;
   else if (secondary === "创作") content = <ContentManager key={`${tertiary.创作}-${managementScope?.kind === "content" ? managementScope.projectId : "all"}`} type={tertiary.创作} projectId={managementScope?.kind === "content" ? managementScope.projectId : null} notify={notify} />;
   else if (secondary === "发布" && tertiary.发布 === "选择媒体") content = <MediaLibrary projectId={managementScope?.kind === "media" ? managementScope.projectId : null} selectedMedia={selectedMedia} setSelectedMedia={setSelectedMedia} onCreateTask={createPublishTask} notify={notify} />;
