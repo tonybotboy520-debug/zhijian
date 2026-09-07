@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
-  Article, ArrowLeft, ArrowRight, ArrowSquareOut, Bell, Buildings, CalendarBlank, CaretDown, CaretLeft,
+  Article, ArrowDown, ArrowLeft, ArrowRight, ArrowSquareOut, ArrowUp, At, Bell, Buildings, CalendarBlank, CaretDown, CaretLeft,
   CaretRight, ChartBar, ChartLineUp, Check, CheckCircle, ClockCountdown,
   Database, DotsThree, Eye, FileText, FilmStrip, FolderSimple, FunnelSimple,
-  GlobeHemisphereWest, House, Lightning, MagnifyingGlass, MonitorPlay,
-  Newspaper, PaperPlaneTilt, PencilLine, Plus, Pulse, Robot, SelectionAll,
-  Sparkle, Target, TrendUp, VideoCamera, X, UsersThree,
+  GlobeHemisphereWest, House, Lightning, MagnifyingGlass, Minus, MonitorPlay,
+  Newspaper, PaperPlaneTilt, PencilLine, Percent, Plus, Pulse, Quotes, Robot, SelectionAll,
+  Sparkle, Target, TrendDown, TrendUp, VideoCamera, X, UsersThree, ListNumbers,
 } from "@phosphor-icons/react";
 import { HomePortal as HomePage } from "./HomePortal.jsx";
 
@@ -46,7 +46,8 @@ const STAGE_STATUS_LABELS = {
 const PROJECTS = [
   {
     id: 1, name: "智服云 · 智能客服系统优化", order: "DD202608130001",
-    keyword: "智能客服系统", keywordCount: 5, content: [2, 2], media: [3, 4],
+    keyword: "智能客服系统", keywordCount: 10, content: [30, 30], media: [20, 20],
+    strategyCounts: { keywords: 10, media: 20, articles: 30 },
     phase: 2, updated: "08-13 10:23",
     articles: [
       { title: "智能客服系统核心功能解析与应用场景", status: "已完成", time: "2026-08-12 15:30", media: ["知乎", "百家号"] },
@@ -159,7 +160,7 @@ function EmptyStub({ title }) {
 }
 
 function ProjectExecution({ project, onViewStats }) {
-  const keywordItems = [project.keyword, `${project.keyword}平台`, `${project.keyword}解决方案`, `企业${project.keyword}`, `${project.keyword}软件`].slice(0, project.keywordCount);
+  const keywordItems = getProjectKeywords(project);
   return <div className="execution-panel">
     <div className="execution-kicker"><span>项目执行路径</span><strong>{project.keyword}</strong><ArrowRight size={15} /><span>文章生成</span><ArrowRight size={15} /><span>媒体发布</span><ArrowRight size={15} /><span>统计分析</span></div>
     <div className="execution-grid">
@@ -173,7 +174,18 @@ function ProjectExecution({ project, onViewStats }) {
 
 function getProjectKeywords(project) {
   const keyword = project.keyword;
-  return [keyword, `${keyword}平台对比`, `${keyword}解决方案`, `${keyword}价格`, `${keyword}应用场景`, `${keyword}服务商`].slice(0, project.keywordCount);
+  return [
+    keyword,
+    `${keyword}平台对比`,
+    `${keyword}解决方案`,
+    `${keyword}价格`,
+    `${keyword}应用场景`,
+    `${keyword}服务商`,
+    `${keyword}功能评测`,
+    `${keyword}选型指南`,
+    `${keyword}部署方案`,
+    `${keyword}成功案例`,
+  ].slice(0, project.strategyCounts?.keywords || project.keywordCount);
 }
 
 function getProjectStageLabel(project) {
@@ -252,13 +264,14 @@ function ProjectList({ onOpenDetail, notify }) {
 }
 
 function buildProjectRelations(project) {
+  const keywordIntents = ["产品选型", "方案对比", "场景了解", "价格评估", "应用研究", "服务商筛选", "功能验证", "采购决策", "部署评估", "案例参考"];
   const keywords = getProjectKeywords(project)
     .map((label, index) => ({
       id: `k${index + 1}`,
       label,
-      intent: ["产品选型", "方案对比", "场景了解", "价格评估", "应用研究", "服务商筛选"][index],
-      aiSearch: [12800, 9600, 7600, 6800, 5300, 4200][index],
-      pcSearch: [8600, 7200, 5900, 5100, 4300, 3500][index],
+      intent: keywordIntents[index] || "需求研究",
+      aiSearch: Math.round(12800 * Math.pow(.84, index)),
+      pcSearch: Math.round(8600 * Math.pow(.82, index)),
       type: "keyword",
     }));
   if (!project.completed && project.phase < STAGES.indexOf("创作")) {
@@ -269,97 +282,565 @@ function buildProjectRelations(project) {
     `如何选择适合企业的${project.keyword}？7个关键指标`,
     `企业落地${project.keyword}的完整实施指南`,
     `2026年${project.keyword}选型与成本分析`,
+    `${project.keyword}与传统客服系统有什么区别`,
+    `${project.keyword}提升服务效率的五种方式`,
+    `中小企业如何低成本部署${project.keyword}`,
+    `${project.keyword}知识库建设最佳实践`,
+    `${project.keyword}常见问题与避坑指南`,
+    `${project.keyword}数据安全与隐私保护详解`,
+    `${project.keyword}如何对接企业微信与公众号`,
+    `${project.keyword}在电商售后场景中的应用`,
+    `${project.keyword}在金融服务中的落地案例`,
+    `${project.keyword}在教育咨询场景中的实践`,
+    `${project.keyword}多轮对话能力评测报告`,
+    `${project.keyword}意图识别准确率如何提升`,
+    `${project.keyword}坐席协同功能深度解析`,
+    `${project.keyword}从试用到上线的完整流程`,
+    `${project.keyword}采购前必须确认的十个问题`,
+    `${project.keyword}项目实施周期与人员配置`,
+    `${project.keyword}运营指标体系搭建方法`,
+    `${project.keyword}如何降低人工客服压力`,
+    `${project.keyword}客户满意度提升案例`,
+    `${project.keyword}高峰期流量承载能力分析`,
+    `${project.keyword}私有化部署与SaaS方案对比`,
+    `${project.keyword}API接入与系统集成指南`,
+    `${project.keyword}效果评估与复盘模板`,
+    `${project.keyword}行业发展趋势与技术展望`,
+    `${project.keyword}服务商能力评估清单`,
+    `${project.keyword}上线后持续优化的方法`,
   ];
-  const articles = articleFallbacks.map((title, index) => ({
+  const articleCount = project.strategyCounts?.articles || Math.max(4, project.articles.length);
+  const articleSeeds = articleFallbacks.slice(0, articleCount).map((title, index) => ({
     id: `a${index + 1}`,
     title: project.articles[index]?.title || title,
-    time: project.articles[index]?.time || `2026-08-${12 - index} ${14 + index}:20`,
-    status: project.articles[index]?.status || (index < 3 ? "已完成" : "生成中"),
-    keywordIds: [["k1", "k2", "k4"], ["k1", "k3"], ["k2", "k4", "k5"], ["k3", "k5"]][index].filter((id) => keywords.some((item) => item.id === id)),
-    mediaIds: [["m1", "m2", "m3"], ["m1", "m3", "m4"], ["m2", "m4", "m5"], ["m1", "m4", "m5"]][index],
+    time: project.articles[index]?.time || `2026-08-${String(Math.max(1, 30 - index)).padStart(2, "0")} ${String(9 + (index % 9)).padStart(2, "0")}:${index % 2 ? "45" : "20"}`,
+    status: project.articles[index]?.status || (index < Math.ceil(articleCount * .72) ? "已完成" : "生成中"),
     type: "article",
   }));
-  const mediaNames = ["知乎", "百家号", "今日头条", "搜狐号", "网易号"];
-  const media = mediaNames.map((name, index) => ({
+  const mediaCatalog = [
+    ["官网", "自有阵地", "/media-logos/official-site.png"], ["微信公众号", "自有阵地", "/media-logos/wechat.svg"], ["百家号", "综合资讯", "/media-logos/baijiahao.png"], ["今日头条", "综合资讯", "/media-logos/toutiao.png"],
+    ["搜狐号", "新闻媒体", "/media-logos/sohu.png"], ["网易号", "新闻媒体", "/media-logos/netease.png"], ["知乎", "知识社区", "/media-logos/zhihu.svg"], ["小红书", "生活社区", "/media-logos/xiaohongshu.svg"],
+    ["哔哩哔哩", "视频平台", "/media-logos/bilibili.svg"], ["抖音", "视频平台", "/media-logos/douyin.png"], ["快手", "视频平台", "/media-logos/kuaishou.svg"], ["腾讯新闻", "新闻媒体", "/media-logos/tencent-news.jpg"],
+    ["新浪新闻", "新闻媒体", "/media-logos/sina-news.jpg"], ["36氪", "科技媒体", "/media-logos/36kr.png"], ["虎嗅", "科技媒体", "/media-logos/huxiu.png"], ["钛媒体", "科技媒体", "/media-logos/tmtpost.png"],
+    ["澎湃新闻", "新闻媒体", "/media-logos/thepaper.jpg"], ["界面新闻", "新闻媒体", "/media-logos/jiemian.jpg"], ["CSDN", "技术社区", "/media-logos/csdn.svg"], ["InfoQ", "技术社区", "/media-logos/infoq.svg"],
+  ];
+  const mediaCount = project.strategyCounts?.media || 5;
+  const mediaBlueprints = mediaCatalog.slice(0, mediaCount).map(([name, category, logo], index) => ({
     id: `m${index + 1}`,
     name,
-    category: ["知识社区", "综合资讯", "综合资讯", "新闻媒体", "新闻媒体"][index],
+    category,
+    logo,
+    keywordIds: Array.from({ length: Math.min(3, keywords.length) }, (_, offset) => `k${((index * 2 + offset * 3) % keywords.length) + 1}`),
+    articleIds: Array.from({ length: Math.min(3, articleSeeds.length) }, (_, offset) => `a${((index + offset * 10) % articleSeeds.length) + 1}`),
+  }));
+  const media = mediaBlueprints.map((medium, index) => ({
+    ...medium,
+    keywordIds: medium.keywordIds.filter((id) => keywords.some((item) => item.id === id)),
+    articleIds: medium.articleIds.filter((id) => articleSeeds.some((item) => item.id === id)),
     published: index < project.media[0],
     type: "media",
   }));
+  const articles = articleSeeds.map((article) => {
+    const linkedMedia = media.filter((medium) => medium.articleIds.includes(article.id));
+    return {
+      ...article,
+      mediaIds: linkedMedia.map((medium) => medium.id),
+      keywordIds: [...new Set(linkedMedia.flatMap((medium) => medium.keywordIds))],
+    };
+  });
   const edges = [
-    ...articles.flatMap((article) => article.keywordIds.map((keywordId) => ({ id: `${keywordId}-${article.id}`, from: keywordId, to: article.id }))),
-    ...articles.flatMap((article) => article.mediaIds.map((mediaId) => ({ id: `${article.id}-${mediaId}`, from: article.id, to: mediaId }))),
+    ...media.flatMap((medium) => medium.keywordIds.map((keywordId) => ({ id: `${keywordId}-${medium.id}`, from: keywordId, to: medium.id }))),
+    ...media.flatMap((medium) => medium.articleIds.map((articleId) => ({ id: `${medium.id}-${articleId}`, from: medium.id, to: articleId }))),
   ];
   return { keywords, articles, media, edges };
 }
 
-function RelationMap({ project, onAddContent, onManage, onInspect }) {
+const STRATEGY_DATA_METRICS = {
+  keyword: {
+    k1: { mentionRate: 42.6, mentionDelta: 3.8, rank: 3.2, rankDelta: .7, mentionTrend: [31, 33, 32, 36, 37, 39, 38, 41, 40, 43], rankTrend: [4.6, 4.4, 4.5, 4.1, 3.9, 3.8, 3.7, 3.5, 3.4, 3.2] },
+    k2: { mentionRate: 36.8, mentionDelta: 1.4, rank: 4.1, rankDelta: .3, mentionTrend: [31, 32, 34, 33, 35, 34, 36, 37, 36, 37], rankTrend: [4.8, 4.7, 4.6, 4.7, 4.5, 4.4, 4.3, 4.2, 4.3, 4.1] },
+    k3: { mentionRate: 29.5, mentionDelta: -2.2, rank: 5.6, rankDelta: -.5, mentionTrend: [36, 35, 34, 33, 34, 32, 31, 30, 31, 29], rankTrend: [4.7, 4.8, 4.9, 5.1, 5, 5.2, 5.3, 5.5, 5.4, 5.6] },
+    k4: { mentionRate: 24.2, mentionDelta: .2, rank: 6.3, rankDelta: .1, mentionTrend: [23, 24, 23, 25, 24, 24, 25, 24, 24, 24], rankTrend: [6.5, 6.4, 6.5, 6.3, 6.4, 6.3, 6.2, 6.3, 6.4, 6.3] },
+    k5: { mentionRate: 18.7, mentionDelta: 2.6, rank: 7.2, rankDelta: .8, mentionTrend: [11, 12, 13, 14, 13, 15, 16, 17, 18, 19], rankTrend: [8.6, 8.4, 8.3, 8.1, 8, 7.8, 7.7, 7.5, 7.4, 7.2] },
+  },
+  media: {
+    m1: { citationRate: 58.4, rateDelta: 5.1, citationCount: 126, countDelta: 18, rateTrend: [44, 47, 46, 49, 51, 53, 54, 55, 57, 58], countTrend: [7, 9, 8, 11, 10, 13, 12, 15, 16, 18] },
+    m2: { citationRate: 36.8, rateDelta: 1.4, citationCount: 74, countDelta: 6, rateTrend: [32, 33, 34, 33, 35, 35, 34, 36, 37, 37], countTrend: [5, 6, 7, 5, 8, 7, 6, 9, 10, 11] },
+    m3: { citationRate: 29.5, rateDelta: -2.2, citationCount: 51, countDelta: -9, rateTrend: [37, 35, 34, 33, 34, 32, 31, 30, 31, 29], countTrend: [9, 8, 7, 8, 6, 7, 5, 5, 4, 4] },
+    m4: { citationRate: 22.7, rateDelta: 0, citationCount: 38, countDelta: 1, rateTrend: [22, 23, 22, 23, 23, 22, 23, 22, 23, 23], countTrend: [3, 4, 3, 5, 4, 3, 4, 4, 4, 4] },
+    m5: { citationRate: 18.3, rateDelta: .9, citationCount: 27, countDelta: 3, rateTrend: [14, 15, 14, 16, 16, 17, 16, 18, 18, 18], countTrend: [2, 3, 2, 3, 4, 3, 4, 4, 5, 5] },
+  },
+  article: {
+    a1: { citationRate: 31.8, rateDelta: 4.2, citationCount: 68, countDelta: 11, lifecycle: 43, ongoing: true, rateTrend: [21, 23, 24, 25, 27, 26, 29, 30, 31, 32], countTrend: [3, 5, 4, 6, 7, 8, 7, 9, 10, 11], lifecycleTrend: [8, 12, 16, 20, 24, 29, 33, 37, 40, 43] },
+    a2: { citationRate: 24.6, rateDelta: 1.8, citationCount: 52, countDelta: 7, lifecycle: 29, ongoing: true, rateTrend: [19, 20, 19, 21, 22, 23, 22, 24, 24, 25], countTrend: [3, 4, 5, 4, 6, 5, 7, 7, 8, 8], lifecycleTrend: [5, 8, 11, 14, 17, 20, 23, 25, 27, 29] },
+    a3: { citationRate: 18.9, rateDelta: -1.6, citationCount: 36, countDelta: -4, lifecycle: 21, ongoing: false, inactiveDays: 12, rateTrend: [25, 24, 23, 22, 22, 21, 20, 20, 19, 19], countTrend: [7, 6, 6, 5, 5, 4, 4, 3, 3, 2], lifecycleTrend: [5, 8, 11, 14, 17, 19, 21, 21, 21, 21] },
+    a4: { citationRate: 12.4, rateDelta: .6, citationCount: 19, countDelta: 2, lifecycle: 12, ongoing: false, inactiveDays: 5, rateTrend: [9, 10, 9, 11, 10, 11, 12, 11, 12, 12], countTrend: [1, 2, 1, 2, 2, 2, 3, 2, 3, 3], lifecycleTrend: [2, 4, 6, 7, 9, 10, 11, 12, 12, 12] },
+  },
+};
+
+function roundMetric(value) {
+  return Math.round(value * 10) / 10;
+}
+
+function buildMockTrend(finalValue, movement, floor = 0) {
+  const values = Array.from({ length: 10 }, (_, index) => {
+    const distance = 9 - index;
+    const texture = ((index % 3) - 1) * Math.max(.18, Math.abs(movement) * .12);
+    return roundMetric(Math.max(floor, finalValue - movement * distance / 3 + texture));
+  });
+  values[values.length - 1] = finalValue;
+  return values;
+}
+
+function createMockStrategyMetric(type, id) {
+  const index = Math.max(1, Number.parseInt(id.slice(1), 10) || 1);
+  if (type === "keyword") {
+    const mentionRate = roundMetric(Math.max(8.6, 39.5 - index * 2.15 + (index % 3) * 1.3));
+    const mentionDelta = roundMetric(((index % 5) - 2) * .8 + .4);
+    const rank = roundMetric(2.6 + index * .58 + (index % 2) * .25);
+    const rankDelta = roundMetric(((index % 4) - 1.5) * .3);
+    return {
+      mentionRate, mentionDelta, rank, rankDelta,
+      mentionTrend: buildMockTrend(mentionRate, mentionDelta || .15, 0),
+      rankTrend: buildMockTrend(rank, -rankDelta || -.12, 1),
+    };
+  }
+  if (type === "media") {
+    const citationRate = roundMetric(Math.max(6.4, 39 - index * 1.45 + (index % 4) * 1.1));
+    const rateDelta = roundMetric(((index % 6) - 2.5) * .62);
+    const citationCount = Math.max(9, Math.round(105 - index * 4.1 + (index % 3) * 5));
+    const countDelta = Math.round(((index % 7) - 3) * 2.2);
+    return {
+      citationRate, rateDelta, citationCount, countDelta,
+      rateTrend: buildMockTrend(citationRate, rateDelta || .18, 0),
+      countTrend: buildMockTrend(citationCount, countDelta || .4, 0),
+    };
+  }
+  const citationRate = roundMetric(Math.max(4.8, 31 - index * .55 + (index % 5) * .72));
+  const rateDelta = roundMetric(((index % 7) - 3) * .48);
+  const citationCount = Math.max(8, Math.round(74 - index * 1.8 + (index % 4) * 4));
+  const countDelta = Math.round(((index % 8) - 3.5) * 1.5);
+  const lifecycle = 12 + ((index * 7) % 52);
+  const ongoing = index % 4 !== 0;
+  const lifecycleTrend = buildMockTrend(lifecycle, ongoing ? 3.2 : .25, 1);
+  if (!ongoing) lifecycleTrend.splice(-3, 3, lifecycle, lifecycle, lifecycle);
+  return {
+    citationRate, rateDelta, citationCount, countDelta, lifecycle, ongoing,
+    inactiveDays: ongoing ? 0 : 3 + (index % 11),
+    rateTrend: buildMockTrend(citationRate, rateDelta || .16, 0),
+    countTrend: buildMockTrend(citationCount, countDelta || .35, 0),
+    lifecycleTrend,
+  };
+}
+
+function getRangeDays(range, customRange) {
+  if (range !== "custom") {
+    const presetDays = Number(range);
+    return Number.isFinite(presetDays) && presetDays > 0 ? presetDays : 30;
+  }
+  const start = new Date(`${customRange.start}T00:00:00`);
+  const end = new Date(`${customRange.end}T00:00:00`);
+  const days = Math.floor((end - start) / 86400000) + 1;
+  return Number.isFinite(days) && days > 0 ? Math.min(days, 365) : 30;
+}
+
+function getPeriodMetric(type, id, days) {
+  const source = STRATEGY_DATA_METRICS[type]?.[id] || createMockStrategyMetric(type, id);
+  const durationScale = Math.max(.35, Math.min(3, days / 30));
+  const averageShift = Math.max(-1, Math.min(1, (days - 30) / 60));
+  if (type === "keyword") return {
+    ...source,
+    mentionRate: Math.max(0, source.mentionRate - source.mentionDelta * averageShift * .28),
+    mentionDelta: source.mentionDelta / Math.sqrt(durationScale),
+    rank: Math.max(1, source.rank + source.rankDelta * averageShift * .2),
+    rankDelta: source.rankDelta / Math.sqrt(durationScale),
+  };
+  return {
+    ...source,
+    citationRate: Math.max(0, source.citationRate - source.rateDelta * averageShift * .24),
+    rateDelta: source.rateDelta / Math.sqrt(durationScale),
+    citationCount: Math.max(0, Math.round(source.citationCount * durationScale)),
+    countDelta: Math.round(source.countDelta * Math.sqrt(durationScale)),
+  };
+}
+
+function MiniTrend({ values, direction = "up", invert = false, currentLabel }) {
+  const width = 88;
+  const height = 26;
+  const displayValues = invert ? values.map((value) => -value) : values;
+  const min = Math.min(...displayValues);
+  const max = Math.max(...displayValues);
+  const span = max - min || 1;
+  const coordinates = displayValues.map((value, index) => ({
+    x: (index / (displayValues.length - 1)) * width,
+    y: height - 3 - ((value - min) / span) * (height - 7),
+  }));
+  const lastPoint = coordinates[coordinates.length - 1];
+  const pointTop = 7 + (lastPoint.y / height) * 14;
+  const labelTop = Math.max(0, Math.min(14, pointTop > 10 ? pointTop - 8 : pointTop + 3));
+  const points = coordinates.map((point) => `${point.x},${point.y}`).join(" ");
+  return <span className={cx("mini-trend-wrap", `trend-${direction}`)} style={{ "--trend-point-top": `${pointTop}px`, "--trend-label-top": `${labelTop}px` }} aria-hidden="true">
+    <svg className={cx("mini-trend", `trend-${direction}`)} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none"><polyline points={points} /></svg>
+    <span className="mini-trend-point" />
+    <span className="mini-trend-current">{currentLabel}</span>
+  </span>;
+}
+
+function MetricTrend({ label, value, trend, direction, values, invert = false }) {
+  const TrendIcon = direction === "up" ? TrendUp : direction === "down" ? TrendDown : Minus;
+  return <div className="data-metric">
+    <span className="data-metric-label">{label}</span>
+    <strong>{value}</strong>
+    <span className={cx("metric-trend-label", `trend-${direction}`)}><TrendIcon size={12} weight="bold" />{trend}</span>
+    <MiniTrend values={values} direction={direction} invert={invert} currentLabel={value} />
+  </div>;
+}
+
+function metricDirection(value) {
+  if (value > 0) return "up";
+  if (value < 0) return "down";
+  return "flat";
+}
+
+const DATA_SORT_OPTIONS = {
+  keyword: [
+    { key: "mentionRate", label: "提及率", Icon: At },
+    { key: "rank", label: "平均排名", Icon: ListNumbers },
+  ],
+  media: [
+    { key: "citationRate", label: "引用率", Icon: Percent },
+    { key: "citationCount", label: "引用次数", Icon: Quotes },
+  ],
+  article: [
+    { key: "citationRate", label: "引用率", Icon: Percent },
+    { key: "citationCount", label: "引用次数", Icon: Quotes },
+    { key: "lifecycle", label: "生命周期", Icon: ClockCountdown },
+  ],
+};
+
+function DataSortControls({ type, sort, onChange }) {
+  return <div className="data-column-sort" role="group" aria-label={`${type === "keyword" ? "关键词" : type === "media" ? "媒体信源" : "文章视频"}排序`}>
+    {DATA_SORT_OPTIONS[type].map(({ key, label, Icon }) => {
+      const active = sort.key === key;
+      const DirectionIcon = sort.direction === "asc" ? ArrowUp : ArrowDown;
+      const directionLabel = sort.direction === "asc" ? "升序" : "降序";
+      return <button className={cx("data-sort-button", active && "active")} type="button" aria-pressed={active} aria-label={`${label}${active ? `，当前${directionLabel}，点击切换为${sort.direction === "asc" ? "降序" : "升序"}` : "，点击排序"}`} title={`${label}${active ? ` · ${directionLabel}` : ""}`} onClick={() => onChange(key)} key={key}>
+        <Icon size={14} weight={active ? "bold" : "regular"} />
+        {active ? <><span>{label}</span><DirectionIcon className="data-sort-direction" size={12} weight="bold" /></> : null}
+      </button>;
+    })}
+  </div>;
+}
+
+function getKeywordContext(relationData, activeKeywordId) {
+  const media = relationData.media.filter((medium) => medium.keywordIds.includes(activeKeywordId));
+  const mediaIds = new Set(media.map((medium) => medium.id));
+  const articleIds = new Set(media.flatMap((medium) => medium.articleIds));
+  const articles = relationData.articles.filter((article) => articleIds.has(article.id));
+  const edges = relationData.edges.filter((edge) =>
+    (edge.from === activeKeywordId && mediaIds.has(edge.to)) ||
+    (mediaIds.has(edge.from) && articleIds.has(edge.to)),
+  );
+  return { media, mediaIds, articles, articleIds, edges };
+}
+
+function buildActiveNetwork(activeNode, relationData, activeKeywordId) {
+  const context = getKeywordContext(relationData, activeKeywordId);
+  const nodeIds = new Set([activeKeywordId]);
+  if (activeNode.type === "keyword") {
+    context.media.forEach((medium) => { nodeIds.add(medium.id); medium.articleIds.forEach((id) => nodeIds.add(id)); });
+  } else if (activeNode.type === "article" && context.articleIds.has(activeNode.id)) {
+    nodeIds.add(activeNode.id);
+    context.media.filter((medium) => medium.articleIds.includes(activeNode.id)).forEach((medium) => nodeIds.add(medium.id));
+  } else if (activeNode.type === "media" && context.mediaIds.has(activeNode.id)) {
+    const medium = context.media.find((item) => item.id === activeNode.id);
+    nodeIds.add(activeNode.id);
+    medium?.articleIds.forEach((id) => nodeIds.add(id));
+  }
+  const edgeIds = new Set(context.edges.filter((edge) => nodeIds.has(edge.from) && nodeIds.has(edge.to)).map((edge) => edge.id));
+  return { nodeIds, edgeIds };
+}
+
+const CREATE_MEDIA_NODE_ID = "create-media-source";
+const CREATE_ARTICLE_NODE_ID = "create-article-content";
+const RELATION_REORDER_DURATION = 440;
+
+function RelationMap({ project, viewMode, timeRange, customRange, onAddContent, onAddMedia, onManage, onInspect }) {
   const relationData = useMemo(() => buildProjectRelations(project), [project]);
+  const rangeDays = getRangeDays(timeRange, customRange);
+  const [activeKeywordId, setActiveKeywordId] = useState("k1");
   const [activeNode, setActiveNode] = useState({ type: "keyword", id: "k1" });
+  const [dataSort, setDataSort] = useState({
+    keyword: { key: "mentionRate", direction: "desc" },
+    media: { key: "citationRate", direction: "desc" },
+    article: { key: "citationRate", direction: "desc" },
+  });
+  const [isReordering, setIsReordering] = useState(false);
+  const [strategyOrder, setStrategyOrder] = useState(() => ({
+    keyword: relationData.keywords.map((item) => item.id),
+    media: relationData.media.map((item) => item.id),
+    article: relationData.articles.map((item) => item.id),
+  }));
+  const [dataOrder, setDataOrder] = useState(() => ({
+    keyword: relationData.keywords.map((item) => item.id),
+    media: relationData.media.map((item) => item.id),
+    article: relationData.articles.map((item) => item.id),
+  }));
   const [paths, setPaths] = useState([]);
   const canvasRef = useRef(null);
   const nodeRefs = useRef(new Map());
+  const previousNodeRectsRef = useRef(null);
+  const reorderTimerRef = useRef(null);
+  const reorderFrameRef = useRef(null);
+  const previousViewModeRef = useRef(viewMode);
 
-  const activeNetwork = useMemo(() => {
-    const nodeIds = new Set([activeNode.id]);
-    if (activeNode.type === "keyword") {
-      const relatedArticles = relationData.articles.filter((article) => article.keywordIds.includes(activeNode.id));
-      relatedArticles.forEach((article) => { nodeIds.add(article.id); article.mediaIds.forEach((id) => nodeIds.add(id)); });
-    } else if (activeNode.type === "article") {
-      const article = relationData.articles.find((item) => item.id === activeNode.id);
-      article?.keywordIds.forEach((id) => nodeIds.add(id));
-      article?.mediaIds.forEach((id) => nodeIds.add(id));
-    } else {
-      const relatedArticles = relationData.articles.filter((article) => article.mediaIds.includes(activeNode.id));
-      relatedArticles.forEach((article) => { nodeIds.add(article.id); article.keywordIds.forEach((id) => nodeIds.add(id)); });
-    }
-    const edgeIds = new Set(relationData.edges.filter((edge) => nodeIds.has(edge.from) && nodeIds.has(edge.to)).map((edge) => edge.id));
-    return { nodeIds, edgeIds };
-  }, [activeNode, relationData]);
+  const keywordContext = useMemo(() => getKeywordContext(relationData, activeKeywordId), [activeKeywordId, relationData]);
+  const activeNetwork = useMemo(() => buildActiveNetwork(activeNode, relationData, activeKeywordId), [activeKeywordId, activeNode, relationData]);
+  const creationEdges = useMemo(() => {
+    if (activeNode.type === "keyword") return [{ id: `${activeNode.id}-${CREATE_MEDIA_NODE_ID}`, from: activeNode.id, to: CREATE_MEDIA_NODE_ID, creation: true }];
+    if (activeNode.type === "media") return [{ id: `${activeNode.id}-${CREATE_ARTICLE_NODE_ID}`, from: activeNode.id, to: CREATE_ARTICLE_NODE_ID, creation: true }];
+    return [{ id: `${CREATE_MEDIA_NODE_ID}-${activeNode.id}`, from: CREATE_MEDIA_NODE_ID, to: activeNode.id, creation: true }];
+  }, [activeNode]);
+
+  const strategyData = useMemo(() => {
+    const applyOrder = (type, items) => {
+      const itemsById = new Map(items.map((item) => [item.id, item]));
+      return strategyOrder[type].map((id) => itemsById.get(id)).filter(Boolean);
+    };
+    return {
+      keyword: applyOrder("keyword", relationData.keywords),
+      media: applyOrder("media", keywordContext.media),
+      article: applyOrder("article", keywordContext.articles),
+    };
+  }, [keywordContext, relationData.keywords, strategyOrder]);
+
+  useEffect(() => {
+    setStrategyOrder({
+      keyword: relationData.keywords.map((item) => item.id),
+      media: relationData.media.map((item) => item.id),
+      article: relationData.articles.map((item) => item.id),
+    });
+    setDataOrder({
+      keyword: relationData.keywords.map((item) => item.id),
+      media: relationData.media.map((item) => item.id),
+      article: relationData.articles.map((item) => item.id),
+    });
+  }, [relationData]);
 
   const updatePaths = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const canvasRect = canvas.getBoundingClientRect();
-    const nextPaths = relationData.edges.flatMap((edge) => {
+    const nextPaths = [...keywordContext.edges, ...creationEdges].flatMap((edge) => {
       const from = nodeRefs.current.get(edge.from);
       const to = nodeRefs.current.get(edge.to);
       if (!from || !to) return [];
       const fromRect = from.getBoundingClientRect();
       const toRect = to.getBoundingClientRect();
-      const x1 = fromRect.right - canvasRect.left;
-      const y1 = fromRect.top + fromRect.height / 2 - canvasRect.top;
-      const x2 = toRect.left - canvasRect.left;
-      const y2 = toRect.top + toRect.height / 2 - canvasRect.top;
+      const [startRect, endRect] = fromRect.left <= toRect.left ? [fromRect, toRect] : [toRect, fromRect];
+      const x1 = startRect.right - canvasRect.left;
+      const y1 = startRect.top + startRect.height / 2 - canvasRect.top;
+      const x2 = endRect.left - canvasRect.left;
+      const y2 = endRect.top + endRect.height / 2 - canvasRect.top;
       const bend = Math.max(28, (x2 - x1) * .45);
-      return [{ ...edge, d: `M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}` }];
+      return [{ ...edge, x1, y1, x2, y2, d: `M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}` }];
     });
     setPaths(nextPaths);
-  }, [relationData]);
+  }, [creationEdges, keywordContext.edges]);
 
   useLayoutEffect(() => {
     const frame = window.requestAnimationFrame(updatePaths);
     const observer = new ResizeObserver(updatePaths);
     if (canvasRef.current) observer.observe(canvasRef.current);
     return () => { window.cancelAnimationFrame(frame); observer.disconnect(); };
-  }, [updatePaths]);
+  }, [updatePaths, viewMode, rangeDays, dataSort]);
+
+  useLayoutEffect(() => {
+    const previousRects = previousNodeRectsRef.current;
+    if (!previousRects) return undefined;
+    previousNodeRectsRef.current = null;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.cancelAnimationFrame(reorderFrameRef.current);
+    if (!reduceMotion) {
+      nodeRefs.current.forEach((element, id) => {
+        const previousRect = previousRects.get(id);
+        if (!previousRect) return;
+        const nextRect = element.getBoundingClientRect();
+        const deltaY = previousRect.top - nextRect.top;
+        if (Math.abs(deltaY) < 1) return;
+        element.animate(
+          [
+            { transform: `translateY(${deltaY}px)`, zIndex: 3 },
+            { transform: "translateY(0)", zIndex: 3 },
+          ],
+          { duration: RELATION_REORDER_DURATION, easing: "cubic-bezier(.22,.78,.24,1)" },
+        );
+      });
+      const startedAt = performance.now();
+      const syncLinesWithCards = (now) => {
+        updatePaths();
+        if (now - startedAt <= RELATION_REORDER_DURATION + 32) {
+          reorderFrameRef.current = window.requestAnimationFrame(syncLinesWithCards);
+        }
+      };
+      reorderFrameRef.current = window.requestAnimationFrame(syncLinesWithCards);
+    } else {
+      updatePaths();
+    }
+    window.clearTimeout(reorderTimerRef.current);
+    reorderTimerRef.current = window.setTimeout(() => {
+      setIsReordering(false);
+      updatePaths();
+    }, reduceMotion ? 0 : RELATION_REORDER_DURATION);
+    return undefined;
+  }, [activeNode, dataSort, updatePaths, viewMode]);
+
+  useEffect(() => () => {
+    window.clearTimeout(reorderTimerRef.current);
+    window.cancelAnimationFrame(reorderFrameRef.current);
+  }, []);
 
   const bindNode = (id) => (element) => {
     if (element) nodeRefs.current.set(id, element);
     else nodeRefs.current.delete(id);
   };
-  const nodeClass = (id) => cx("relation-card", activeNode.id === id && "active", activeNode.id !== id && activeNetwork.nodeIds.has(id) && "related", !activeNetwork.nodeIds.has(id) && "dimmed");
+  const nodeClass = (type, id) => {
+    const isActive = type === "keyword" ? activeKeywordId === id : activeNode.type === type && activeNode.id === id;
+    return cx("relation-card", isActive && "active", !isActive && activeNetwork.nodeIds.has(id) && "related", !activeNetwork.nodeIds.has(id) && "dimmed");
+  };
   const selectionLabel = activeNode.type === "keyword" ? relationData.keywords.find((item) => item.id === activeNode.id)?.label : activeNode.type === "article" ? relationData.articles.find((item) => item.id === activeNode.id)?.title : relationData.media.find((item) => item.id === activeNode.id)?.name;
 
-  return <div className="relation-canvas" ref={canvasRef}>
-    <svg className="relation-lines" aria-hidden="true"><g>{paths.map((path) => <path className={cx("relation-line", activeNetwork.edgeIds.has(path.id) ? "active" : "muted")} d={path.d} key={path.id} />)}</g></svg>
-    <div className="relation-columns">
-      <section className="relation-column keyword-relation-column"><div className="relation-column-title"><span><Target size={17} />关键词</span><small>{relationData.keywords.length} 个</small><button className="relation-manage-button" onClick={() => onManage("keyword")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list">{relationData.keywords.map((keyword) => <div ref={bindNode(keyword.id)} className={cx(nodeClass(keyword.id), "split-card")} role="group" key={keyword.id}><button className="relation-card-main" aria-pressed={activeNode.id === keyword.id} onClick={() => setActiveNode({ type: "keyword", id: keyword.id })}><span className="relation-card-icon"><Target size={16} /></span><span><strong>{keyword.label}</strong><small>{keyword.intent} · {relationData.articles.filter((article) => article.keywordIds.includes(keyword.id)).length} 条内容</small></span></button><button className="relation-card-inspect" aria-label={`查看关键词详情：${keyword.label}`} title="查看详情" onClick={() => onInspect("keyword", keyword)}><Eye size={17} /></button></div>)}</div></section>
-      <section className="relation-column article-relation-column"><div className="relation-column-title"><span><FileText size={17} />文章/视频</span><small>{relationData.articles.length} 条</small><button className="relation-manage-button" onClick={() => onManage("content")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list">{relationData.articles.length ? relationData.articles.map((article) => <div ref={bindNode(article.id)} className={cx(nodeClass(article.id), "split-card")} role="group" key={article.id}><button className="relation-card-main" aria-pressed={activeNode.id === article.id} onClick={() => setActiveNode({ type: "article", id: article.id })}><span className="relation-card-icon"><FileText size={16} /></span><span className="relation-card-copy"><strong>{article.title}</strong><small>{article.keywordIds.length} 个关键词 · {article.mediaIds.length} 家媒体</small></span></button><button className="relation-card-inspect" aria-label={`查看文章内容：${article.title}`} title="查看内容" onClick={() => onInspect("article", article)}><Eye size={17} /></button></div>) : <button className="relation-card relation-empty-card article-empty-card" onClick={onAddContent}><span className="relation-card-icon"><Plus size={16} /></span><span><strong>添加文章/视频</strong><small>进入创作环节后开始创建内容</small></span></button>}</div></section>
-      <section className="relation-column media-relation-column"><div className="relation-column-title"><span><GlobeHemisphereWest size={17} />媒体信源</span><small>{relationData.media.length} 家</small><button className="relation-manage-button" onClick={() => onManage("media")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list">{relationData.media.length ? relationData.media.map((medium) => <button ref={bindNode(medium.id)} className={nodeClass(medium.id)} aria-pressed={activeNode.id === medium.id} onClick={() => setActiveNode({ type: "media", id: medium.id })} key={medium.id}><span className="media-avatar">{medium.name.slice(0, 1)}</span><span><strong>{medium.name}</strong><small>{relationData.articles.filter((article) => article.mediaIds.includes(medium.id)).length} 条关联内容 · {medium.category}</small></span><StatusPill>{medium.published ? "已发布" : "待发布"}</StatusPill></button>) : <div className="relation-card relation-empty-card media-empty-card" aria-disabled="true"><span className="relation-card-icon"><GlobeHemisphereWest size={16} /></span><span><strong>请先添加文章/视频</strong><small>添加内容后才可选择媒体信源</small></span></div>}</div></section>
-    </div>
-    <div className="relation-selection"><span>当前选中</span><strong>{selectionLabel}</strong><small>点击卡片主体切换关联关系；点击右侧查看区打开详情</small></div>
+  const formatDecimal = (value) => value.toFixed(1);
+  const trendCopy = (value, unit) => value === 0 ? "持平" : `${formatDecimal(Math.abs(value))}${unit}`;
+  const countTrendCopy = (value) => value === 0 ? "持平" : `${Math.abs(value)}次`;
+  const orderRelatedByMetric = useCallback((type, ids, network, sort) => {
+    const direction = sort.direction === "asc" ? 1 : -1;
+    const related = ids.filter((id) => network.nodeIds.has(id));
+    const unrelated = ids.filter((id) => !network.nodeIds.has(id));
+    related.sort((firstId, secondId) => {
+      const firstValue = getPeriodMetric(type, firstId, rangeDays)[sort.key] ?? 0;
+      const secondValue = getPeriodMetric(type, secondId, rangeDays)[sort.key] ?? 0;
+      if (firstValue === secondValue) return firstId.localeCompare(secondId);
+      return (firstValue - secondValue) * direction;
+    });
+    return [...related, ...unrelated];
+  }, [rangeDays]);
+  const selectNode = (type, id) => {
+    if (viewMode === "strategy" && ((type === "keyword" && activeKeywordId === id) || (type !== "keyword" && activeNode.type === type && activeNode.id === id))) return;
+    previousNodeRectsRef.current = new Map(
+      [...nodeRefs.current.entries()].map(([nodeId, element]) => [nodeId, element.getBoundingClientRect()]),
+    );
+    const nextKeywordId = type === "keyword" ? id : activeKeywordId;
+    const nextNetwork = buildActiveNetwork({ type, id }, relationData, nextKeywordId);
+    if (viewMode === "strategy") {
+      setStrategyOrder((current) => Object.fromEntries(
+        Object.entries(current).map(([columnType, ids]) => {
+          if (columnType === "keyword" || columnType === type) return [columnType, ids];
+          const related = ids.filter((nodeId) => nextNetwork.nodeIds.has(nodeId));
+          const unrelated = ids.filter((nodeId) => !nextNetwork.nodeIds.has(nodeId));
+          return [columnType, [...related, ...unrelated]];
+        }),
+      ));
+    } else {
+      setDataOrder((current) => Object.fromEntries(
+        Object.entries(current).map(([columnType, ids]) => [
+          columnType,
+          columnType === "keyword" || columnType === type ? ids : orderRelatedByMetric(columnType, ids, nextNetwork, dataSort[columnType]),
+        ]),
+      ));
+    }
+    setIsReordering(true);
+    if (type === "keyword") setActiveKeywordId(id);
+    setActiveNode({ type, id });
+  };
+  const changeDataSort = (type, key) => {
+    const nextSort = dataSort[type].key === key
+      ? { key, direction: dataSort[type].direction === "desc" ? "asc" : "desc" }
+      : { key, direction: "desc" };
+    previousNodeRectsRef.current = new Map(
+      [...nodeRefs.current.entries()].map(([nodeId, element]) => [nodeId, element.getBoundingClientRect()]),
+    );
+    setIsReordering(true);
+    setDataSort((current) => ({
+      ...current,
+      [type]: nextSort,
+    }));
+    setDataOrder((current) => ({
+      ...current,
+      [type]: orderRelatedByMetric(type, current[type], activeNetwork, nextSort),
+    }));
+  };
+  const sortedData = useMemo(() => {
+    const applyOrder = (type, items) => {
+      const itemsById = new Map(items.map((item) => [item.id, item]));
+      return dataOrder[type].map((id) => itemsById.get(id)).filter(Boolean);
+    };
+    return {
+      keyword: applyOrder("keyword", relationData.keywords),
+      media: applyOrder("media", keywordContext.media),
+      article: applyOrder("article", keywordContext.articles),
+    };
+  }, [dataOrder, keywordContext, relationData.keywords]);
+
+  useLayoutEffect(() => {
+    if (previousViewModeRef.current === viewMode) return;
+    previousViewModeRef.current = viewMode;
+    if (viewMode === "strategy") {
+      setStrategyOrder((current) => Object.fromEntries(
+        Object.entries(current).map(([columnType, ids]) => {
+          if (columnType === "keyword" || columnType === activeNode.type) return [columnType, ids];
+          const related = ids.filter((id) => activeNetwork.nodeIds.has(id));
+          const unrelated = ids.filter((id) => !activeNetwork.nodeIds.has(id));
+          return [columnType, [...related, ...unrelated]];
+        }),
+      ));
+      return;
+    }
+    setDataOrder((current) => Object.fromEntries(
+      Object.entries(current).map(([columnType, ids]) => [
+        columnType,
+        columnType === "keyword" || columnType === activeNode.type ? ids : orderRelatedByMetric(columnType, ids, activeNetwork, dataSort[columnType]),
+      ]),
+    ));
+  }, [activeNetwork, activeNode.type, dataSort, orderRelatedByMetric, viewMode]);
+
+  return <div className={cx("relation-canvas", viewMode === "data" && "data-view-canvas", isReordering && "reordering")} ref={canvasRef}>
+    <svg className={cx("relation-lines", viewMode === "data" ? "relation-lines-data" : "relation-lines-strategy")} aria-hidden="true"><g>{paths.map((path) => {
+      const pathState = path.creation || activeNetwork.edgeIds.has(path.id) ? "active" : "muted";
+      return <g className={cx("relation-edge", pathState, path.creation && "creation-edge")} key={path.id}>
+        <path className={cx("relation-line", pathState)} d={path.d} />
+        <circle className={cx("relation-endpoint", pathState)} cx={path.x1} cy={path.y1} r="3.2" />
+        <circle className={cx("relation-endpoint", pathState)} cx={path.x2} cy={path.y2} r="3.2" />
+      </g>;
+    })}</g></svg>
+    {viewMode === "strategy" ? <div className="relation-columns canvas-view-panel canvas-view-strategy" key="strategy-view">
+      <section className="relation-column keyword-relation-column"><div className="relation-column-title"><span><Target size={17} />关键词</span><small>{relationData.keywords.length} 个</small><button className="relation-manage-button" onClick={() => onManage("keyword")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list">{strategyData.keyword.map((keyword) => <div ref={bindNode(keyword.id)} className={cx(nodeClass("keyword", keyword.id), "split-card")} role="group" key={keyword.id}><button className="relation-card-main" aria-pressed={activeKeywordId === keyword.id} onClick={() => selectNode("keyword", keyword.id)}><span className="relation-card-icon"><Target size={16} /></span><span><strong>{keyword.label}</strong><small>{keyword.intent} · {relationData.media.filter((medium) => medium.keywordIds.includes(keyword.id)).length} 家发布媒体</small></span></button><button className="relation-card-inspect" aria-label={`查看关键词详情：${keyword.label}`} title="查看详情" onClick={() => onInspect("keyword", keyword)}><Eye size={17} /></button></div>)}</div></section>
+      <section className="relation-column media-relation-column"><div className="relation-column-title"><span><GlobeHemisphereWest size={17} />媒体信源</span><small>{relationData.media.length} 家</small><button className="relation-manage-button" onClick={() => onManage("media")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list"><button ref={bindNode(CREATE_MEDIA_NODE_ID)} className={cx("relation-card", "relation-create-card", (activeNode.type === "keyword" || activeNode.type === "article") && "linked")} onClick={onAddMedia}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建媒体信源</strong></button>{keywordContext.media.length ? strategyData.media.map((medium) => <button ref={bindNode(medium.id)} className={nodeClass("media", medium.id)} aria-pressed={activeNode.type === "media" && activeNode.id === medium.id} onClick={() => selectNode("media", medium.id)} key={medium.id}><span className="media-source-logo" aria-hidden="true"><img src={medium.logo} alt="" /></span><span><strong>{medium.name}</strong><small>{medium.category} · {medium.articleIds.length} 条发布内容</small></span><StatusPill>{medium.published ? "已发布" : "待发布"}</StatusPill></button>) : <div className="relation-card relation-empty-card media-empty-card" aria-disabled="true"><span className="relation-card-icon"><GlobeHemisphereWest size={16} /></span><span><strong>该关键词暂无媒体信源</strong><small>可通过上方入口新建媒体</small></span></div>}</div></section>
+      <section className="relation-column article-relation-column"><div className="relation-column-title"><span><FileText size={17} />文章/视频</span><small>{relationData.articles.length} 条</small><button className="relation-manage-button" onClick={() => onManage("content")}><span>管理</span><ArrowRight size={13} /></button></div><div className="relation-card-list"><button ref={bindNode(CREATE_ARTICLE_NODE_ID)} className={cx("relation-card", "relation-create-card", activeNode.type === "media" && "linked")} onClick={onAddContent}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建文章/视频</strong></button>{keywordContext.articles.length ? strategyData.article.map((article) => <div ref={bindNode(article.id)} className={cx(nodeClass("article", article.id), "split-card")} role="group" key={article.id}><button className="relation-card-main" aria-pressed={activeNode.type === "article" && activeNode.id === article.id} onClick={() => selectNode("article", article.id)}><span className="relation-card-icon"><FileText size={16} /></span><span className="relation-card-copy"><strong>{article.title}</strong><small>{keywordContext.media.filter((medium) => medium.articleIds.includes(article.id)).length} 家发布媒体 · {article.status}</small></span></button><button className="relation-card-inspect" aria-label={`查看文章内容：${article.title}`} title="查看内容" onClick={() => onInspect("article", article)}><Eye size={17} /></button></div>) : null}</div></section>
+    </div> : <div className="relation-columns data-relation-columns canvas-view-panel canvas-view-data" key="data-view">
+      <section className="relation-column keyword-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><Target size={17} />关键词</span><small>{relationData.keywords.length} 个</small></div><DataSortControls type="keyword" sort={dataSort.keyword} onChange={(key) => changeDataSort("keyword", key)} /></div><div className="relation-card-list">{sortedData.keyword.map((keyword) => {
+        const metrics = getPeriodMetric("keyword", keyword.id, rangeDays);
+        return <button ref={bindNode(keyword.id)} className={cx(nodeClass("keyword", keyword.id), "data-relation-card")} aria-pressed={activeKeywordId === keyword.id} onClick={() => selectNode("keyword", keyword.id)} key={keyword.id}>
+          <span className="data-card-heading"><span className="relation-card-icon"><Target size={16} /></span><strong>{keyword.label}</strong></span>
+          <div className="data-metric-grid"><MetricTrend label="提及率" value={`${formatDecimal(metrics.mentionRate)}%`} trend={trendCopy(metrics.mentionDelta, "pp")} direction={metricDirection(metrics.mentionDelta)} values={metrics.mentionTrend} /><MetricTrend label="平均排名" value={formatDecimal(metrics.rank)} trend={trendCopy(metrics.rankDelta, "位")} direction={metricDirection(metrics.rankDelta)} values={metrics.rankTrend} invert /></div>
+        </button>;
+      })}</div></section>
+      <section className="relation-column media-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><GlobeHemisphereWest size={17} />媒体信源</span><small>{relationData.media.length} 家</small></div><DataSortControls type="media" sort={dataSort.media} onChange={(key) => changeDataSort("media", key)} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_MEDIA_NODE_ID)} className={cx("relation-card", "relation-create-card", (activeNode.type === "keyword" || activeNode.type === "article") && "linked")} onClick={onAddMedia}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建媒体信源</strong></button>{keywordContext.media.length ? sortedData.media.map((medium) => {
+        const metrics = getPeriodMetric("media", medium.id, rangeDays);
+        return <button ref={bindNode(medium.id)} className={cx(nodeClass("media", medium.id), "data-relation-card")} aria-pressed={activeNode.type === "media" && activeNode.id === medium.id} onClick={() => selectNode("media", medium.id)} key={medium.id}>
+          <span className="data-card-heading"><span className="media-source-logo" aria-hidden="true"><img src={medium.logo} alt="" /></span><strong>{medium.name}</strong></span>
+          <div className="data-metric-grid"><MetricTrend label="引用率" value={`${formatDecimal(metrics.citationRate)}%`} trend={trendCopy(metrics.rateDelta, "pp")} direction={metricDirection(metrics.rateDelta)} values={metrics.rateTrend} /><MetricTrend label="引用次数" value={metrics.citationCount} trend={countTrendCopy(metrics.countDelta)} direction={metricDirection(metrics.countDelta)} values={metrics.countTrend} /></div>
+        </button>;
+      }) : <div className="relation-card relation-empty-card media-empty-card" aria-disabled="true"><span className="relation-card-icon"><GlobeHemisphereWest size={16} /></span><span><strong>暂无媒体数据</strong><small>开始发布后生成趋势</small></span></div>}</div></section>
+      <section className="relation-column article-relation-column"><div className="relation-column-title data-column-title"><div className="data-column-heading"><span><FileText size={17} />文章/视频</span><small>{relationData.articles.length} 条</small></div><DataSortControls type="article" sort={dataSort.article} onChange={(key) => changeDataSort("article", key)} /></div><div className="relation-card-list"><button ref={bindNode(CREATE_ARTICLE_NODE_ID)} className={cx("relation-card", "relation-create-card", activeNode.type === "media" && "linked")} onClick={onAddContent}><span className="relation-create-icon"><Plus size={16} weight="bold" /></span><strong>新建文章/视频</strong></button>{keywordContext.articles.length ? sortedData.article.map((article) => {
+        const metrics = getPeriodMetric("article", article.id, rangeDays);
+        return <button ref={bindNode(article.id)} className={cx(nodeClass("article", article.id), "data-relation-card", "content-data-card")} aria-pressed={activeNode.type === "article" && activeNode.id === article.id} onClick={() => selectNode("article", article.id)} key={article.id}>
+          <span className="data-card-heading"><span className="relation-card-icon"><FileText size={16} /></span><strong>{article.title}</strong></span>
+          <div className="data-metric-grid three-metrics"><MetricTrend label="引用率" value={`${formatDecimal(metrics.citationRate)}%`} trend={trendCopy(metrics.rateDelta, "pp")} direction={metricDirection(metrics.rateDelta)} values={metrics.rateTrend} /><MetricTrend label="引用次数" value={metrics.citationCount} trend={countTrendCopy(metrics.countDelta)} direction={metricDirection(metrics.countDelta)} values={metrics.countTrend} /><MetricTrend label="生命周期" value={`${metrics.lifecycle}天`} trend={metrics.ongoing ? "持续中" : `停滞${metrics.inactiveDays}天`} direction={metrics.ongoing ? "up" : "flat"} values={metrics.lifecycleTrend} /></div>
+        </button>;
+      }) : <button className="relation-card relation-empty-card article-empty-card" onClick={onAddContent}><span className="relation-card-icon"><Plus size={16} /></span><span><strong>暂无内容数据</strong><small>生成并发布内容后展示</small></span></button>}</div></section>
+    </div>}
+    <div className="relation-selection"><span>当前选中</span><strong>{selectionLabel}</strong><small>{viewMode === "data" ? `数据周期：${rangeDays} 天 · 点击卡片查看完整数据链路` : "关系路径：关键词 → 发布媒体 → 文章/视频"}</small></div>
   </div>;
 }
 
@@ -496,6 +977,9 @@ function ProjectStageFloor({ project, initialPhase, notify }) {
 
 function ProjectDetail({ projectId, onBack, onViewStats, onManage, notify }) {
   const project = PROJECTS.find((item) => item.id === projectId) || PROJECTS[0];
+  const [canvasView, setCanvasView] = useState("strategy");
+  const [timeRange, setTimeRange] = useState("30");
+  const [customRange, setCustomRange] = useState({ start: "2026-08-08", end: "2026-09-06" });
   const [addMenuOpen, setAddMenuOpen] = useState(false);
   const [drawerType, setDrawerType] = useState(null);
   const [previewItem, setPreviewItem] = useState(null);
@@ -507,11 +991,14 @@ function ProjectDetail({ projectId, onBack, onViewStats, onManage, notify }) {
     return () => document.removeEventListener("mousedown", closeMenu);
   }, [addMenuOpen]);
   const openDrawer = (type) => { setAddMenuOpen(false); setDrawerType(type); };
+  const switchCanvasView = (nextView) => { setAddMenuOpen(false); setCanvasView(nextView); };
   return <section className="page-section detail-page">
     <div className="detail-titlebar"><div><button className="back-link" onClick={onBack}><ArrowLeft size={16} />返回项目列表</button><div className="title-line"><h1>{project.name}</h1><StatusPill>{getProjectStageLabel(project)}</StatusPill></div><p>订单号：{project.order} · 创建时间：2026-08-08</p></div><div className="heading-actions"><button className="primary-button" onClick={() => onViewStats(project.id)}><ChartBar size={17} />查看统计</button></div></div>
     <ProjectStageFloor key={project.id} project={project} initialPhase={project.phase} notify={notify} />
-    <div className="section-title relation-section-title"><div><h2>策略画布</h2><p>点击卡片主体切换关联关系，点击卡片右侧查看区打开关键词或内容详情。</p></div><div className="strategy-add-control" ref={addMenuRef}><button className="primary-button" onClick={() => setAddMenuOpen((open) => !open)} aria-expanded={addMenuOpen}><Plus size={16} />添加关键词 / 文章/视频 / 媒体<CaretDown size={14} /></button>{addMenuOpen ? <div className="strategy-add-menu"><button onClick={() => openDrawer("关键词")}><Target size={17} /><span><strong>添加关键词</strong><small>补充项目覆盖词</small></span></button><button onClick={() => openDrawer("文章")}><FileText size={17} /><span><strong>添加文章/视频</strong><small>创建内容计划</small></span></button><button onClick={() => openDrawer("媒体")}><GlobeHemisphereWest size={17} /><span><strong>添加媒体</strong><small>选择发布信源</small></span></button></div> : null}</div></div>
-    <RelationMap project={project} onAddContent={() => openDrawer("文章")} onManage={(kind) => onManage(kind, project.id)} onInspect={(kind, item) => setPreviewItem({ kind, item })} />
+    <div className="section-title relation-section-title"><div className="strategy-canvas-title-group"><h2>策略画布</h2><div className="canvas-view-switch" role="group" aria-label="策略画布视图"><button className={cx(canvasView === "strategy" && "active")} aria-pressed={canvasView === "strategy"} onClick={() => switchCanvasView("strategy")}>策略视图</button><button className={cx(canvasView === "data" && "active")} aria-pressed={canvasView === "data"} onClick={() => switchCanvasView("data")}>数据视图</button></div></div><div className="strategy-canvas-toolbar">
+      {canvasView === "data" ? <div className="canvas-time-range"><label><CalendarBlank size={16} /><span className="sr-only">时间范围</span><select value={timeRange} onChange={(event) => setTimeRange(event.target.value)} aria-label="选择数据时间范围"><option value="7">近 7 天</option><option value="30">近 30 天</option><option value="90">近 90 天</option><option value="custom">自定义</option></select><CaretDown size={13} /></label>{timeRange === "custom" ? <div className="custom-date-range"><input type="date" value={customRange.start} max={customRange.end} onInput={(event) => { const value = event.currentTarget.value; setCustomRange((current) => ({ ...current, start: value })); }} aria-label="开始日期" /><span>至</span><input type="date" value={customRange.end} min={customRange.start} onInput={(event) => { const value = event.currentTarget.value; setCustomRange((current) => ({ ...current, end: value })); }} aria-label="结束日期" /></div> : null}</div> : <div className="strategy-add-control" ref={addMenuRef}><button className="primary-button" onClick={() => setAddMenuOpen((open) => !open)} aria-expanded={addMenuOpen}><Plus size={16} />添加关键词 / 文章/视频 / 媒体<CaretDown size={14} /></button>{addMenuOpen ? <div className="strategy-add-menu"><button onClick={() => openDrawer("关键词")}><Target size={17} /><span><strong>添加关键词</strong><small>补充项目覆盖词</small></span></button><button onClick={() => openDrawer("文章")}><FileText size={17} /><span><strong>添加文章/视频</strong><small>创建内容计划</small></span></button><button onClick={() => openDrawer("媒体")}><GlobeHemisphereWest size={17} /><span><strong>添加媒体</strong><small>选择发布信源</small></span></button></div> : null}</div>}
+    </div></div>
+    <RelationMap project={project} viewMode={canvasView} timeRange={timeRange} customRange={customRange} onAddContent={() => openDrawer("文章")} onAddMedia={() => openDrawer("媒体")} onManage={(kind) => onManage(kind, project.id)} onInspect={(kind, item) => setPreviewItem({ kind, item })} />
     {drawerType ? <StrategyDrawer type={drawerType} project={project} onClose={() => setDrawerType(null)} notify={notify} /> : null}
     {previewItem ? <StrategyItemDrawer kind={previewItem.kind} item={previewItem.item} project={project} onClose={() => setPreviewItem(null)} notify={notify} /> : null}
   </section>;
